@@ -1,0 +1,41 @@
+.DayView fieldset{
+flex:0 45%;
+}
+
+
+.DayView {
+    position: fixed;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+
+  }
+  
+  .ModalContent {
+    background-color: white;
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 60%;
+    height:60%;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid black;
+  }
+
+  .ModalContent div{
+    display: flex;
+    flex-flow:row wrap;
+    height:100%;
+  }
+  
+  .close {
+    color: Black;
+    float: right;
+  }
+  
+  .close:hover {
+    color: cyan;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,63 @@
+#WeekView{
+display: flex;
+flex-flow:column;
+flex:0 100%;
+gap:0.25rem;
+}
+
+#WeekView .row, #WeekView .head, #WeekView .head-2{
+    display: flex;
+    flex-flow:row nowrap;
+    justify-content: space-evenly;
+    cursor: default;
+}
+
+ #WeekView .head div,  #WeekView .head-2 div {
+text-align: center;
+border: 1px solid black;
+}
+
+#WeekView .dayRecord{
+    text-align: center;
+    flex-grow:1;
+}
+
+.dayRecordGrp{
+    text-align: center;
+}
+
+#WeekView .cropGrp {
+
+}
+
+.dayRecord{
+    border: 1px solid black;
+}
+.head-2 div{
+    cursor: pointer;
+}
+
+.head-2 div:hover{
+    background-color: lightskyblue;
+}
+
+
+#WeekView fieldset{
+padding: 0.1rem;
+}
+
+#WeekView legend{
+    font-size:0.75rem;
+}
+
+.cropInfo{
+    display: flex;
+    flex-flow:column nowrap;
+    gap:0.1rem;
+}
+
+.cropInfo p{
+    padding: 0;
+    margin: 0;
+    font-weight: 700;
+}

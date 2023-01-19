@@ -1,0 +1,159 @@
+#MonthView{
+    display: flex;
+    flex-flow:column;
+    flex:0 100%;
+
+    }
+    /*     background-image: linear-gradient(lightskyblue 1px, transparent 0px), linear-gradient(90deg, lightskyblue 1px, transparent 0);
+    background-size: 5px 5px; */
+#MonthView .row, #MonthView .head{
+        display: flex;
+        flex-flow:row nowrap;
+    }
+
+    #MonthView .head div:hover{
+        background-color: lightskyblue;
+    }
+
+    #MonthView .head div{
+        cursor:pointer;
+        border: 1px solid black;
+flex-grow:1;
+flex-basis:0;
+text-align: center;
+    }
+    
+
+    #MonthView .row div {
+        cursor: default;
+    }
+.filter{
+    display: flex;
+    flex-flow:row nowrap;
+    gap: 0.5rem;
+}
+
+.filter div > * {
+    margin:0.25rem;
+}
+.filter div{
+    display: flex;
+    flex-flow:row nowrap;
+
+}
+.control-row > *{
+flex:0 5%;
+text-align: center;
+}
+
+.control-row{
+    display: flex;
+    flex-flow:row nowrap;
+}
+
+.hidden{
+    display: none;
+}
+
+#MonthView .dayRecord{
+flex-grow:1;
+border: 1px solid green;
+}
+
+.dayRecordGrp{
+flex-grow:1;
+
+}
+
+
+.monthCrops{
+    display: flex;
+    flex-flow:column nowrap;
+    flex:0 80%;
+    gap:0.5rem;
+} 
+
+.monthCrops div{
+    text-align: center;
+}
+.monthCrops fieldset{
+padding: 0.1rem;
+}
+
+.monthCrops legend{
+    font-size:0.75rem;
+}
+
+.cropGrp{
+    flex-basis:0;
+    border:1px solid black;
+}
+
+
+.group{
+}
+
+/* SLIDER */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {display:none;}
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+
+.slider-green {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #9BD770;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider-green:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider-green {
+    background-color: #66B032;
+  }
+  
+  input:focus + .slider-green {
+    box-shadow: 0 0 1px #66B032;
+  }
+  
+  input:checked + .slider-green:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+
+  .switchWrapper{
+display: flex;
+justify-content: flex-end;
+  }
+
+  .cropGrp.row:hover{
+border:3px solid #66B032;
+  }

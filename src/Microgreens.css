@@ -1,0 +1,41 @@
+.Microgreens{
+    display: flex;
+    flex-flow:row nowrap;
+    flex:0 100%;
+    justify-content: space-between;
+  }
+
+  #microgreens-list{
+    flex:0 78%;
+  }
+
+  .Microgreens table{
+    width:100%;
+  }
+
+  #microgreens-color-picker{
+    width:100%;
+  }
+
+#addMicrogreens {
+    display: flex;
+    flex-flow:row nowrap;
+    flex:0 10%;
+}
+
+#addMicrogreens form{
+    display: flex;
+    flex-flow:column nowrap;    
+    flex:0 100%;
+}
+
+  #addMicrogreens form  input{
+    flex:0 5%;
+    margin-bottom:1rem;
+  }
+  
+  #addMicrogreens button{
+    flex:0 7%;
+  }
+
+  

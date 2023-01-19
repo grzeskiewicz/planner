@@ -1,0 +1,92 @@
+.Crops{
+    display: flex;
+    flex-flow:row nowrap;
+    flex:0 100%;
+    justify-content: space-between;
+  }
+
+  #crop-list{
+    flex:0 78%;
+  }
+
+.Crops table{
+  flex:0 80%;
+}
+
+.Crops table tr td {
+  white-space: nowrap;
+  resize:none;
+}
+
+.color{
+  width:5%;
+}
+#addCrops {
+    display: flex;
+    flex-flow:row nowrap;
+    flex:0 10%;
+}
+
+
+#addCrops form{
+    display: flex;
+    flex-flow:column nowrap;
+    flex:0 100%;
+}
+
+#addCrops form  input, #addCrops form select {
+  flex:0 5%;
+  margin-bottom: 1rem;
+}
+
+#addCrops button{
+  flex:0 7%;
+}
+
+#addCrops form textarea {
+  flex:0 30%;
+}
+
+.cropNotes{
+  width:100%;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+.cropNotesEnabled textarea:hover{
+  border: 1px solid green;
+}
+
+.cropNotesEnabled textarea{
+  resize: none;
+}
+
+.cropNotesDisabled textarea{
+  width:100%;
+  cursor: pointer;
+  resize: none;
+background-color: white;
+color:black;
+border:none;
+}
+
+.cropNotesEnabled{
+  display: flex;
+  flex-flow:column;
+}
+
+.cropNotesDisabled:hover{
+  border: 1px solid green;
+}
+
+.cropNotesDisabled{
+  width:100%;
+}
+
+
+.simulation div {
+  display: flex;
+  flex-flow:row nowrap;
+  justify-content: space-between;
+}
