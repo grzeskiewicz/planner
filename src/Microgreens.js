@@ -1,6 +1,7 @@
 import "./Microgreens.css";
 import React from "react";
 import { API_URL, request } from "./APIConnection";
+import Microgreen from "./Microgreen";
 
 class Microgreens extends React.Component {
   constructor(props) {
@@ -15,6 +16,8 @@ class Microgreens extends React.Component {
     this.handleBottomWater=this.handleBottomWater.bind(this);
     this.handleColor=this.handleColor.bind(this);
     this.addMicrogreens=this.addMicrogreens.bind(this);
+    this.setSelectedMicrogreens=this.setSelectedMicrogreens.bind(this);
+    this.editMicrogreens=this.editMicrogreens.bind(this);
 
     this.state = {
       nameEN:'',
@@ -25,12 +28,17 @@ class Microgreens extends React.Component {
       weight:'',
       blackout:'',
       light:'',
-      color:''
+      color:'',
+      selectedMicrogreens: ''
     };
   }
 
 refreshMicrogreens(){
   this.props.refreshMicrogreens();
+}
+
+setSelectedMicrogreens(id){
+  this.setState({selectedMicrogreens:id});
 }
 
   addMicrogreens(event) {
@@ -46,6 +54,20 @@ refreshMicrogreens(){
         }
       })
       .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error))
+  }
+
+
+  editMicrogreens(microgreensData){
+    fetch(request(`${API_URL}/editmicrogreens`, "POST", microgreensData))
+    .then((res) => res.json())
+    .then((result) => {
+     if (result.success) {
+      this.props.refreshMicrogreens(); 
+      } else {
+        alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
+      }
+    })
+    .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error)) */
   }
 
   handleNameEN(event) {
@@ -85,17 +107,7 @@ handleColor(event){
 
 renderMicrogreensTable(){
   return this.props.microgreens.map((microgreen, index) => {
-    return <tr key={index}>
-        <td>{microgreen.name_pl}</td>
-        <td>{microgreen.name_en}</td>
-        <td>{microgreen.grams_tray}</td>
-        <td>{microgreen.top_water}</td>
-        <td>{microgreen.bottom_water}</td>
-        <td>{microgreen.weight}</td>
-        <td>{microgreen.blackout}</td>
-        <td>{microgreen.light}</td>
-        <td style={{backgroundColor:microgreen.color}}>{microgreen.color.toUpperCase() }</td>
-    </tr>
+    return <Microgreen editMicrogreens={this.editMicrogreens} selectedMicrogreens={this.state.selectedMicrogreens} setSelectedMicrogreens={this.setSelectedMicrogreens} microgreen={microgreen} key={index} index={index}></Microgreen>
 });
 }
 

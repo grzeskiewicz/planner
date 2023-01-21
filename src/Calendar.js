@@ -118,8 +118,6 @@ if (selectedMonth===11) {
   }
 
   render() {
-   // const yearNow = new Date().getFullYear();
-    const monthNow = new Date().getMonth();
     const today = new Date();
     const calendar = this.createCalendar(this.state.selectedYear, this.state.selectedMonth);
 

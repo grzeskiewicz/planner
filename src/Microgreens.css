@@ -38,4 +38,23 @@
     flex:0 7%;
   }
 
+.MicrogreenEntry{
+  cursor: pointer;
+}
+
+  .MicrogreenEntry:hover{
+    border:3px solid green;
+  }
+
+  .MicrogreenEntry.edit{
+    border:3px solid green;
+  }
   
+  .MicrogreenEntry td{
+    width:100%;
+    padding: 0;
+  }
+
+  .MicrogreenEntry td input {
+    width:100%;
+  }

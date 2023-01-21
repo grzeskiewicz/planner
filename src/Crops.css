@@ -46,7 +46,13 @@
 #addCrops form textarea {
   flex:0 30%;
 }
+.cropEntry{
+  cursor: default;
+}
 
+.cropEntry:hover{
+  border: 3px solid green;
+}
 .cropNotes{
   width:100%;
   cursor: pointer;
@@ -54,12 +60,11 @@
 }
 
 
-.cropNotesEnabled textarea:hover{
-  border: 1px solid green;
-}
+
 
 .cropNotesEnabled textarea{
   resize: none;
+  border:none;
 }
 
 .cropNotesDisabled textarea{

@@ -84,7 +84,7 @@ const microgreenData=this.props.microgreenData;
 const shelfData=this.props.shelfData;
 const crop=this.props.crop;
   return (
-     <tr key={this.props.index}>
+     <tr className='cropEntry' key={this.props.index}>
         <td className='color' style={{backgroundColor:this.props.microgreenData.color}}> </td>
         <td>{microgreenData.name_pl}</td>
         <td>{moment(crop.start).format('DD.MM.YYYY')}</td>

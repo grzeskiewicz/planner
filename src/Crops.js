@@ -97,7 +97,7 @@ makeSimulation(microgreen){
     const lightExposureStart=moment(blackoutStart).add(microgreen.blackout, "days");
     const harvest=moment(lightExposureStart).add(microgreen.light, "days");
     return <div className='simulation'>
-    <div><p>Start:</p><p>{this.state.start.format('DD.MM.YYYY')}</p></div>
+    <div><p>Start:</p><p>{moment(this.state.start).format('DD.MM.YYYY')}</p></div>
  <div><p>Blackout:</p><p>{blackoutStart.format('DD.MM.YYYY')}</p></div>
  <div><p>Naświetlanie:</p><p>{lightExposureStart.format('DD.MM.YYYY')}</p></div>
  <div><p>Zbiór:</p><p>{harvest.format('DD.MM.YYYY')}</p></div>
