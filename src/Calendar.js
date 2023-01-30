@@ -127,7 +127,8 @@ if (selectedMonth===11) {
 
     const renderMonth = calendar.map((week, index) => {
       let renderWeek = week.map((day, index2) => {
-        const unactive=((day.date < new Date(today).setHours(0, 0, 0, 0))  && day.date.getDate() !== today.getDate()) || (day.date < new Date(today).setHours(0, 0, 0, 0) && day.date!==new Date(today).setHours(0, 0, 0, 0)) ? true: false) ;
+        const unactive=((day.date < new Date(today).setHours(0, 0, 0, 0))  && day.date.getDate() !== today.getDate()) || 
+        (day.date < new Date(today).setHours(0, 0, 0, 0) && day.date!==new Date(today).setHours(0, 0, 0, 0)) ? true: false ;
         let className =
        unactive ? "unactive":'' + " " +
           (day.date.getMonth() === today.getMonth() &&
