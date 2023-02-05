@@ -23,7 +23,21 @@ class Crop extends React.Component {
     this.setState({ editNotesEnabled: !this.state.editNotesEnabled });
   }
 
-  //TODO: dokonczyc crop,valve,start,end,duration!!!
+  deleteSchedule(crop) {
+    fetch(request(`http://83.21.159.163:3051/deleteschedule`, "POST", {crop:crop.id}))
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      if (result.success) {
+        //this.props.refreshCrops();
+      } else {
+        alert("SQL Erro - błędne wartości!");
+      }
+    })
+    .catch((error) => Promise.reject(new Error(error)));
+}
+  
+
   scheduleWatering(crop) {
     const level = this.props.shelfData.level;
     let valve;
@@ -181,7 +195,7 @@ class Crop extends React.Component {
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
         <td onClick={() => this.scheduleWatering(crop)}>[S]</td>
-        <td>OK</td>
+        <td onClick={() => this.deleteSchedule(crop)}>OK</td>
       </tr>
     );
   }
