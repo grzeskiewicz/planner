@@ -57,7 +57,7 @@ class Crop extends React.Component {
     };
 
     if (window.confirm("Czy zaplanować nawadnianie?")) {
-      fetch(request(`83.21.159.163:3051/schedule`, "POST", job))
+      fetch(request(`http://83.21.159.163:3051/schedule`, "POST", job))
         .then((res) => res.json())
         .then((result) => {
           console.log(result);
