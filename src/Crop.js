@@ -24,6 +24,47 @@ class Crop extends React.Component {
     this.setState({editNotesEnabled: !this.state.editNotesEnabled});
   }
 
+//TODO: dokonczyc crop,valve,start,end,duration!!!
+/* confirmWatering(crop){
+    const level=this.props.shelfData.level;
+    let valve;
+    switch (level) {
+      case 1:
+        valve = 4;
+        break;
+      case 2:
+        valve = 3;
+        break;
+      case 3:
+        valve = 2;
+        break;
+      case 4:
+        minute = 1;
+        break;
+    }
+    const job={
+      crop:crop.id,
+valve:valve,
+start:crop.start,
+end:crop.end,
+duration: crop.duration
+    }
+
+    if (window.confirm("Czy zaplanować nawadnianie?")) {
+      fetch(request(`${API_URL}/schedule`, "POST", job))
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      if (result.success) {
+        //this.props.refreshCrops();
+      } else {
+        alert("SQL Erro - błędne wartości!")
+      }
+    })
+    .catch((error) => Promise.reject(new Error(error)));
+    } else {
+    } 
+  }*/
 
   deleteCrop(crop){
     if (window.confirm("Czy usunąć zasiew?")) {
