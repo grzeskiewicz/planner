@@ -29,7 +29,7 @@ class Crop extends React.Component {
     .then((result) => {
       console.log(result);
       if (result.success) {
-        //this.props.refreshCrops();
+        this.props.refreshCrops();
       } else {
         alert("SQL Erro - błędne wartości!");
       }
@@ -206,8 +206,8 @@ class Crop extends React.Component {
         <td onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
-        {crop.scheduled===1?<td>Scheduled</td>:<td onClick={() => this.scheduleWatering(crop)}>[S]</td>}
-        <td onClick={() => this.deleteSchedule(crop)}>OK</td>
+        {crop.scheduled===1?<td>&#10004;</td>:<td onClick={() => this.scheduleWatering(crop)}>[Schedule]</td>}
+        {crop.completed===1?<td>&#10004;</td>:<td onClick={() => this.deleteSchedule(crop)}>[Finish]</td>}
       </tr>
     );
   }
