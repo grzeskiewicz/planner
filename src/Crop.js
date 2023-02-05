@@ -77,6 +77,18 @@ class Crop extends React.Component {
           console.log(result);
           if (result.success) {
             //this.props.refreshCrops();
+                  fetch(request(`${API_URL}/schedulewatering`, "POST", { crop: crop.id }))
+        .then((res2) => res2.json())
+        .then((result2) => {
+          console.log(result2);
+          if (result.success) {
+            this.props.refreshCrops();
+          } else {
+            alert("SQL Erro - błędne wartości!");
+          }
+        })
+        .catch((error) => Promise.reject(new Error(error)));
+
           } else {
             alert("SQL Erro - błędne wartości!");
           }
