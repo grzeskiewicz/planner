@@ -198,7 +198,7 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
     <div id="crop-list">
     <table>
 <thead>
-<tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Półka</td><td>Tace</td><td>Notatki</td><td> </td></tr>
+<tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Półka</td><td>Tace</td><td>Notatki</td><td>X</td><td>Schedule</td>OK</tr>
 </thead>
       <tbody>
         {cropsTable}
