@@ -207,7 +207,7 @@ class Crop extends React.Component {
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
         {crop.scheduled===1?<td>&#10004;</td>:<td onClick={() => this.scheduleWatering(crop)}>[Schedule]</td>}
-        {crop.completed===1 && crop.scheduled===0?<td>&#10004;</td>:<td onClick={() => this.deleteSchedule(crop)}>[Finish]</td>}
+        {crop.completed===1 && crop.scheduled===1?<td>&#10004;</td>:<td onClick={() => this.deleteSchedule(crop)}>[Finish]</td>}
       </tr>
     );
   }
