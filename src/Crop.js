@@ -156,7 +156,7 @@ class Crop extends React.Component {
     const microgreenData = this.props.microgreenData;
     const shelfData = this.props.shelfData;
     const crop = this.props.crop;
-   // console.log(crop);
+    console.log(crop);
     //console.log(microgreenData);
 
     return (
@@ -206,7 +206,7 @@ class Crop extends React.Component {
         <td onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
-        {crop.scheduled? <td>Scheduled</td>:<td onClick={() => this.scheduleWatering(crop)}>[S]</td>}
+        {crop.scheduled?<td>Scheduled</td>:<td onClick={() => this.scheduleWatering(crop)}>[S]</td>}
         <td onClick={() => this.deleteSchedule(crop)}>OK</td>
       </tr>
     );
