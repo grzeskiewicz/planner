@@ -156,8 +156,8 @@ class Crop extends React.Component {
     const microgreenData = this.props.microgreenData;
     const shelfData = this.props.shelfData;
     const crop = this.props.crop;
-    console.log(crop);
-    console.log(microgreenData);
+   // console.log(crop);
+    //console.log(microgreenData);
 
     return (
       <tr className="cropEntry" key={this.props.index}>
