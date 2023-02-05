@@ -30,6 +30,17 @@ class Crop extends React.Component {
       console.log(result);
       if (result.success) {
         this.props.refreshCrops();
+              fetch(request(`${API_URL}/completewatering`, "POST", { crop: crop.id }))
+        .then((res2) => res2.json())
+        .then((result2) => {
+          console.log(result2);
+          if (result.success) {
+            this.props.refreshCrops();
+          } else {
+            alert("SQL Erro - błędne wartości!");
+          }
+        })
+        .catch((error) => Promise.reject(new Error(error)));
       } else {
         alert("SQL Erro - błędne wartości!");
       }
@@ -106,6 +117,11 @@ class Crop extends React.Component {
           console.log(result);
           if (result.success) {
             this.props.refreshCrops();
+            fetch(request(`http://83.21.159.163:3051/deleteschedule`, "POST", {crop:crop.id}))
+            .then((res2) => res2.json())
+            .then((result2) => {
+              console.log(result2)
+            }).catch((error) => Promise.reject(new Error(error)));
           } else {
             alert("SQL Erro - błędne wartości!");
           }
