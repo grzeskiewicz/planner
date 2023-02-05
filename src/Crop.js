@@ -124,6 +124,9 @@ render(){
 const microgreenData=this.props.microgreenData;
 const shelfData=this.props.shelfData;
 const crop=this.props.crop;
+console.log(crop);
+console.log(microgreenData);
+
   return (
      <tr className='cropEntry' key={this.props.index}>
         <td className='color' style={{backgroundColor:this.props.microgreenData.color}}> </td>
