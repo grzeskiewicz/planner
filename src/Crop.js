@@ -172,6 +172,7 @@ class Crop extends React.Component {
     const microgreenData = this.props.microgreenData;
     const shelfData = this.props.shelfData;
     const crop = this.props.crop;
+    console.log(crop.id,this.props.markedCrop)
     const isMarked=Number(this.props.markedCrop)===Number(crop.id) ? true : false;
     //console.log(crop);
     //console.log(microgreenData);
