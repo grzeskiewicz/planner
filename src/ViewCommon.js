@@ -77,7 +77,7 @@ export function renderEmptyRow(days){
   }
 
 
-export function renderRowShelves(crops,microgreens,days,monthNow,weekNow,checkedItems){ //crops shown on one shelf
+export function renderRowShelves(crops,microgreens,days,monthNow,weekNow,checkedItems,setSelectedCrop){ //crops shown on one shelf
 
 const row=[];
 const cropGroups=[];
@@ -117,7 +117,7 @@ const check=cropNowCopyDays.find((x)=>x.day===i);
 
 const isChecked=checkedItems.get(microgreen.name_pl);
 
-  row.push(<Tooltip title={cropInfoRender(cropInfo,microgreen)}><div key={i} className={isChecked ? 'cropGrp row': 'cropGrp row hidden'} style={{'flexBasis':100/days*cropNow.cropDays.length+"%"}}>{grpRender}</div></Tooltip>);
+  row.push(<Tooltip title={cropInfoRender(cropInfo,microgreen)}><div onClick={()=>setSelectedCrop(cropInfo.id)} key={i} className={isChecked ? 'cropGrp row': 'cropGrp row hidden'} style={{'flexBasis':100/days*cropNow.cropDays.length+"%"}}>{grpRender}</div></Tooltip>);
   } else if (check) {
     continue;
   } else {
@@ -132,12 +132,12 @@ const isChecked=checkedItems.get(microgreen.name_pl);
 
 
 
-  export function renderByShelves(crops,microgreens,shelves,days,monthNow,weekNow,checkedItems){
+  export function renderByShelves(crops,microgreens,shelves,days,monthNow,weekNow,checkedItems,setSelectedCrop){
     const rows=[];
     for (const shelf of shelves){
       const cropsGrouped=crops.filter((x)=> x.shelf_id===shelf.id);
       if (cropsGrouped.length>0){
-          const row=renderRowShelves(cropsGrouped,microgreens,days,monthNow,weekNow,checkedItems);
+          const row=renderRowShelves(cropsGrouped,microgreens,days,monthNow,weekNow,checkedItems,setSelectedCrop);
           rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
     } else if (cropsGrouped.length===0){
       const row=renderEmptyRow(days);
@@ -149,7 +149,7 @@ const isChecked=checkedItems.get(microgreen.name_pl);
 
 
 
-export function renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekNow){
+export function renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekNow,setSelectedCrop){
     const row=[];
     const grp=[];
     let firstDayWithStage;
@@ -177,7 +177,7 @@ export function renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekN
       const shelf=shelves.find((x)=>x.id===crop.shelf_id);
 
     
-      row.push(<Tooltip title={cropInfoRender(crop,microgreen)}><div key={i} className='cropGrp row' style={{'flexBasis':100/days*grp.length+"%"}}>{grpRender}</div></Tooltip>);
+      row.push(<Tooltip title={cropInfoRender(crop,microgreen)}><div onClick={()=>setSelectedCrop(crop.id)} key={i} className='cropGrp row' style={{'flexBasis':100/days*grp.length+"%"}}>{grpRender}</div></Tooltip>);
     } else if(firstDayWithStage!==i && stage!==undefined && stage !==false) {
         continue;
       } else {
@@ -188,14 +188,14 @@ export function renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekN
         return row;
       }
     
-    export function renderByMicrogreens(crops,microgreens,shelves,days,monthNow,weekNow,checkedItems){
+    export function renderByMicrogreens(crops,microgreens,shelves,days,monthNow,weekNow,checkedItems,setSelectedCrop){
       const groupedRows=[];
       for (const microgreen of microgreens){
         const cropsGrouped=crops.filter((x)=> x.microgreen_id===microgreen.id);
         if (cropsGrouped.length>0){
           const rows=[];
         for (const crop of cropsGrouped){
-            const row=renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekNow);
+            const row=renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekNow,setSelectedCrop);
             rows.push(<div className='row' key={crop.id}>{row}</div>);
         }
         const isChecked=checkedItems.get(microgreen.name_pl);

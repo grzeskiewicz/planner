@@ -104,9 +104,9 @@ render(){
 
   const head=this.renderHead();
   const filter=this.renderMicrogreensFilter();
-
-  const month=renderByMicrogreens(monthCrops,this.props.microgreens,this.props.shelves,days,monthNow,null,this.state.checkedItems);
-  const monthShelves=renderByShelves(monthCrops,this.props.microgreens,this.props.shelves,days,monthNow,null,this.state.checkedItems);
+//here pass the function for setSelectedCrop for App.js
+  const month=renderByMicrogreens(monthCrops,this.props.microgreens,this.props.shelves,days,monthNow,null,this.state.checkedItems,this.props.setSelectedCrop);
+  const monthShelves=renderByShelves(monthCrops,this.props.microgreens,this.props.shelves,days,monthNow,null,this.state.checkedItems,this.props.setSelectedCrop);
   return (
     <div id="MonthView">
       <div className='switchWrapper'>

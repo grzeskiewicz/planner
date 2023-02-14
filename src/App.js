@@ -15,7 +15,8 @@ class App extends React.Component {
         microgreens:'', 
         crops:'',
         shelves:'',
-        selectedDay:false
+        selectedDay:false,
+        selectedCrop:''
       }
       this.showMicrogreensTab=this.showMicrogreensTab.bind(this);
       this.showAddCropTab=this.showAddCropTab.bind(this);
@@ -24,6 +25,7 @@ class App extends React.Component {
       this.setSelectedDay=this.setSelectedDay.bind(this);
       this.getCrops=this.getCrops.bind(this);
       this.getMicrogreens=this.getMicrogreens.bind(this);
+      this.setSelectedCrop=this.setSelectedCrop.bind(this);
   }
 
   componentDidMount(){
@@ -81,6 +83,11 @@ setSelectedDay(day){
   this.setState({selectedDay:day});
 }
 
+setSelectedCrop(crop){
+  alert(crop)
+  this.setState({selectedCrop:crop});
+}
+
 render(){
   return (
     <div className="App">
@@ -92,8 +99,8 @@ render(){
       </div>
       <div id="board">
 {this.state.microgreens !=='' && this.state.tab===0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} shelves={this.state.shelves} refreshCrops={this.getCrops}></Crops>: null}
-{this.state.crops !=='' && this.state.tab===1 ? <WeekView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay}></WeekView>:null}
-{this.state.crops !=='' && this.state.tab===2? <MonthView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay}></MonthView>:null}
+{this.state.crops !=='' && this.state.tab===1 ? <WeekView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView>:null}
+{this.state.crops !=='' && this.state.tab===2? <MonthView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView>:null}
 {this.state.microgreens !=='' && this.state.tab===3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
 {this.state.crops !=='' && this.state.selectedDay ? <DayView selectedDay={this.state.selectedDay} setSelectedDay={this.setSelectedDay} crops={this.state.crops} microgreens={this.state.microgreens}></DayView>:''}
 </div>
