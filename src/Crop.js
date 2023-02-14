@@ -179,7 +179,7 @@ class Crop extends React.Component {
     //console.log(microgreenData);
 
     return (
-      <tr className={"cropEntry " + isMarked ? "marked":""} key={this.props.index}>
+      <tr className={"cropEntry " + (isMarked ? "marked":"")} key={this.props.index}>
         <td
           className="color"
           style={{ backgroundColor: this.props.microgreenData.color }}
