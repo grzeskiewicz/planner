@@ -16,7 +16,7 @@ class App extends React.Component {
         crops:'',
         shelves:'',
         selectedDay:false,
-        selectedCrop:''
+        markedCrop:''
       }
       this.showMicrogreensTab=this.showMicrogreensTab.bind(this);
       this.showAddCropTab=this.showAddCropTab.bind(this);
@@ -85,7 +85,7 @@ setSelectedDay(day){
 
 setSelectedCrop(crop){
   alert(crop)
-  this.setState({selectedCrop:crop});
+  this.setState({markedCrop:crop,tab:0});
 }
 
 render(){
@@ -98,7 +98,7 @@ render(){
 <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>Microgreens</p></div>
       </div>
       <div id="board">
-{this.state.microgreens !=='' && this.state.tab===0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} shelves={this.state.shelves} refreshCrops={this.getCrops}></Crops>: null}
+{this.state.microgreens !=='' && this.state.tab===0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} shelves={this.state.shelves} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop}></Crops>: null}
 {this.state.crops !=='' && this.state.tab===1 ? <WeekView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView>:null}
 {this.state.crops !=='' && this.state.tab===2? <MonthView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView>:null}
 {this.state.microgreens !=='' && this.state.tab===3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}

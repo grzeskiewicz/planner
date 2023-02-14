@@ -172,11 +172,12 @@ class Crop extends React.Component {
     const microgreenData = this.props.microgreenData;
     const shelfData = this.props.shelfData;
     const crop = this.props.crop;
+    const isMarked=Number(this.props.markedCrop)===Number(crop.id) ? true : false;
     //console.log(crop);
     //console.log(microgreenData);
 
     return (
-      <tr className="cropEntry" key={this.props.index}>
+      <tr className={"cropEntry " + isMarked ? "marked":""} key={this.props.index}>
         <td
           className="color"
           style={{ backgroundColor: this.props.microgreenData.color }}

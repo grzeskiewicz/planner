@@ -81,8 +81,8 @@ render(){
   calcDatesCrop(this.props.crops,this.props.microgreens);
   const weekCrops=this.weekCrops(this.props.crops);
 
-  const week=renderByMicrogreens(weekCrops,this.props.microgreens,this.props.shelves,7,null,weekNow,this.state.checkedItems);
-  const weekShelves=renderByShelves(weekCrops,this.props.microgreens,this.props.shelves,7,null,weekNow,this.state.checkedItems);
+  const week=renderByMicrogreens(weekCrops,this.props.microgreens,this.props.shelves,7,null,weekNow,this.state.checkedItems,this.props.setSelectedCrop);
+  const weekShelves=renderByShelves(weekCrops,this.props.microgreens,this.props.shelves,7,null,weekNow,this.state.checkedItems,this.props.setSelectedCrop);
 
 const [mon,tue,wed,thu,fri,sat,sun]=[JSON.parse(JSON.stringify(weekNow.weekday(1))),JSON.parse(JSON.stringify(weekNow.weekday(2))),JSON.parse(JSON.stringify(weekNow.weekday(3))),
   JSON.parse(JSON.stringify(weekNow.weekday(4))),JSON.parse(JSON.stringify(weekNow.weekday(5))),

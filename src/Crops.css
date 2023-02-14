@@ -52,7 +52,11 @@
 
 .cropEntry:hover{
   border: 3px solid green;
+} 
+.cropEntry .marked{
+  border:2px solid green;
 }
+
 .cropNotes{
   width:100%;
   cursor: pointer;
