@@ -124,6 +124,21 @@ calcDatesCrop(crops){
 
 
 renderCropsTable(){
+  //filter here? last 2 weeks from now harvest date
+  const borderDate=moment().subtract(14, "days");
+  const cropsLast2Weeks=this.props.crops.filter((x)=> moment(x.harvest).isAfter(moment(borderDate)));
+
+  this.calcDatesCrop(cropsLast2Weeks);
+  return this.props.crops.map((crop, index) => {
+    const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
+    const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
+return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} shelfData={shelfData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
+});
+}
+
+
+renderAllCropsTable(){
+  //filter here?
   this.calcDatesCrop(this.props.crops);
   return this.props.crops.map((crop, index) => {
     const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
