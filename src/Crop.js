@@ -55,20 +55,20 @@ class Crop extends React.Component {
     let duration;
     switch (level) {
       case 1:
-        valve = 4;
-        duration = 5;
-        break;
-      case 2:
-        valve = 3;
+        valve = 1;
         duration = 10;
         break;
-      case 3:
+      case 2:
         valve = 2;
-        duration = 12;
+        duration = 20;
+        break;
+      case 3:
+        valve = 3;
+        duration = 25;
         break;
       case 4:
-        valve = 1;
-        duration = 15;
+        valve = 4;
+        duration = 30;
         break;
     }
 
@@ -82,7 +82,7 @@ class Crop extends React.Component {
     };
 
     if (window.confirm("Czy zaplanować nawadnianie?")) {
-      fetch(request(`http://83.21.159.163:3051/schedule`, "POST", job))
+      fetch(request(`http://83.21.145.35:3051/schedule`, "POST", job)) //TODO: API ADDRESS OGARNAC STALE IP/DNS/PROXY !!!!!!!!!!!!!
         .then((res) => res.json())
         .then((result) => {
           console.log(result);
