@@ -5,6 +5,8 @@ import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
+const WATERING_API='http://watering.farmabracia.ovh:3051';
+
 class Crop extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +26,7 @@ class Crop extends React.Component {
   }
 
   deleteSchedule(crop) {
-    fetch(request(`http://83.21.159.163:3051/deleteschedule`, "POST", {crop:crop.id}))
+    fetch(request(`${WATERING_API}/deleteschedule`, "POST", {crop:crop.id}))
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
@@ -82,7 +84,7 @@ class Crop extends React.Component {
     };
 
     if (window.confirm("Czy zaplanować nawadnianie?")) {
-      fetch(request(`http://83.21.145.35:3051/schedule`, "POST", job)) //TODO: API ADDRESS OGARNAC STALE IP/DNS/PROXY !!!!!!!!!!!!!
+      fetch(request(`${WATERING_API}/schedule`, "POST", job)) //TODO: API ADDRESS OGARNAC STALE IP/DNS/PROXY !!!!!!!!!!!!!
         .then((res) => res.json())
         .then((result) => {
           console.log(result);
@@ -117,7 +119,7 @@ class Crop extends React.Component {
           console.log(result);
           if (result.success) {
             this.props.refreshCrops();
-            fetch(request(`http://83.21.159.163:3051/deleteschedule`, "POST", {crop:crop.id}))
+            fetch(request(`${WATERING_API}/deleteschedule`, "POST", {crop:crop.id}))
             .then((res2) => res2.json())
             .then((result2) => {
               console.log(result2)
