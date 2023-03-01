@@ -62,15 +62,15 @@ class Crop extends React.Component {
         break;
       case 2:
         valve = 2;
-        duration = 20;
+        duration = 15;
         break;
       case 3:
         valve = 3;
-        duration = 25;
+        duration = 20;
         break;
       case 4:
         valve = 4;
-        duration = 30;
+        duration = 25;
         break;
     }
 
@@ -84,13 +84,12 @@ class Crop extends React.Component {
     };
 
     if (window.confirm("Czy zaplanować nawadnianie?")) {
-      fetch(request(`${WATERING_API}/schedule`, "POST", job)) //TODO: API ADDRESS OGARNAC STALE IP/DNS/PROXY !!!!!!!!!!!!!
+      fetch(request(`${WATERING_API}/schedule`, "POST", job)) //SENDING JOB TO WATERING CONTROLLER
         .then((res) => res.json())
         .then((result) => {
           console.log(result);
           if (result.success) {
-            //this.props.refreshCrops();
-                  fetch(request(`${API_URL}/schedulewatering`, "POST", { crop: crop.id }))
+                  fetch(request(`${API_URL}/schedulewatering`, "POST", { crop: crop.id })) //update status in db
         .then((res2) => res2.json())
         .then((result2) => {
           console.log(result2);
