@@ -1,3 +1,13 @@
+@media (max-width: 768px)  {
+.Crops{
+  flex-flow:column;
+}
+
+#addCrops form  input, #addCrops form select {
+  margin-bottom: 0;
+}
+}
+
 .Crops{
     display: flex;
     flex-flow:row nowrap;
@@ -34,10 +44,7 @@
     flex:0 100%;
 }
 
-#addCrops form  input, #addCrops form select {
-  flex:0 5%;
-  margin-bottom: 1rem;
-}
+
 
 #addCrops button{
   flex:0 7%;
