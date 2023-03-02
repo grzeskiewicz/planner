@@ -61,7 +61,8 @@ padding: 0.1rem;
     margin: 0;
     font-weight: 700;
 }
-@media screen and (max-width: 400px)  {
+
+@media screen and (min-width: 400px)  {
     .filter{
         flex:row wrap;
         gap:1px;
