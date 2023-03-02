@@ -84,7 +84,6 @@ setSelectedDay(day){
 }
 
 setSelectedCrop(crop){
-  alert(crop)
   this.setState({markedCrop:crop,tab:0});
 }
 
