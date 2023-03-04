@@ -63,7 +63,9 @@
     .Microgreens{
       display: flex;
       flex-flow:column nowrap;
-
     }
-  
+    #addMicrogreens form  input{
+   margin-bottom:4px; 
+    }
+
   }
