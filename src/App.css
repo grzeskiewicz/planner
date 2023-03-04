@@ -82,4 +82,8 @@ flex-flow: column;
     word-wrap: break-word;
   }
 
+  #crops-month-tab{
+display: none;
+  }
+
 }
