@@ -58,3 +58,12 @@
   .MicrogreenEntry td input {
     width:100%;
   }
+
+  @media screen and (max-width: 400px)  {
+    .Microgreens{
+      display: flex;
+      flex-flow:column nowrap;
+
+    }
+  
+  }
