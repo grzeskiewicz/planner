@@ -11,6 +11,14 @@ table {
   border-collapse: collapse;
   text-align: center;
   table-layout: fixed;
+  overflow-x: auto;
+  display: block;
+}
+
+td { 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  word-wrap: break-word;
 }
 
 table td,
