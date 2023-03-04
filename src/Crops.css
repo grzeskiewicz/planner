@@ -1,13 +1,3 @@
-@media screen and (max-width: 400px)  {
-  .Crops{
-  flex-flow:column;
-}
-
-#addCrops form  input, #addCrops form select {
-  margin-bottom: 0;
-}
-}
-
 .Crops{
     display: flex;
     flex-flow:row nowrap;
@@ -105,4 +95,15 @@ border:none;
   display: flex;
   flex-flow:row nowrap;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 400px)  {
+  .Crops{
+    flex-flow:column;
+  }
+  
+  #addCrops form  input, #addCrops form select {
+    margin-bottom: 0;
+  }
+
 }
