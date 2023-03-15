@@ -82,6 +82,10 @@ flex-flow: column;
     word-wrap: break-word;
   }
 
+  #menu div{
+display: block;
+  }
+
   #crops-month-tab{
 display: none;
   }
