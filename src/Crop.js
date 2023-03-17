@@ -58,19 +58,19 @@ class Crop extends React.Component {
     switch (level) {
       case 1:
         valve = 1;
-        duration = 10;
+        duration = 20;
         break;
       case 2:
         valve = 2;
-        duration = 20;
+        duration = 30;
         break;
       case 3:
         valve = 3;
-        duration = 30;
+        duration = 40;
         break;
       case 4:
         valve = 4;
-        duration = 40;
+        duration = 50;
         break;
     }
 
