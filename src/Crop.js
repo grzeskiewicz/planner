@@ -62,15 +62,15 @@ class Crop extends React.Component {
         break;
       case 2:
         valve = 2;
-        duration = 30;
+        duration = 25;
         break;
       case 3:
         valve = 3;
-        duration = 40;
+        duration = 30;
         break;
       case 4:
         valve = 4;
-        duration = 50;
+        duration = 35;
         break;
     }
 
