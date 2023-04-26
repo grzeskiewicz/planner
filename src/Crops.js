@@ -125,7 +125,7 @@ calcDatesCrop(crops){
 
 renderCropsTable(){
   //filter here? last 2 weeks from now harvest date
-  const borderDate=moment().subtract(14, "days");
+  const borderDate=moment().subtract(30, "days");
   const cropsLast2Weeks=this.props.crops.filter((x)=> moment(x.harvest).isAfter(moment(borderDate)));
 //console.log(cropsLast2Weeks);
   this.calcDatesCrop(cropsLast2Weeks);
