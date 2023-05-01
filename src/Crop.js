@@ -84,6 +84,7 @@ class Crop extends React.Component {
     };
 
     if (window.confirm("Czy zaplanować nawadnianie?")) {
+      console.log("Planowanie nawadniania...");
       fetch(request(`${WATERING_API}/schedule`, "POST", job)) //SENDING JOB TO WATERING CONTROLLER
         .then((res) => res.json())
         .then((result) => {
