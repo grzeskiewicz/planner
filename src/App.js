@@ -108,7 +108,7 @@ render(){
 {this.state.crops !=='' && this.state.tab===1 ? <WeekView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView>:null}
 {this.state.crops !=='' && this.state.tab===2? <MonthView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView>:null}
 {this.state.microgreens !=='' && this.state.tab===3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
-{this.state.tab===3 ? <Devices></Devices> : null}
+{this.state.tab===4 ? <Devices></Devices> : null}
 
 {this.state.crops !=='' && this.state.selectedDay ? <DayView selectedDay={this.state.selectedDay} setSelectedDay={this.setSelectedDay} crops={this.state.crops} microgreens={this.state.microgreens}></DayView>:''}
 </div>

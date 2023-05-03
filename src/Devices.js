@@ -62,7 +62,7 @@ render(){
 
   return (
 <div>
-    <button onClick={this.getControllerState}>TEST ORANGE PI</button>
+    <button onClick={this.getControllerState()}>TEST ORANGE PI</button>
 </div>);}
 }
 
