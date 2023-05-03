@@ -31,11 +31,10 @@ getPumpStatus(rack){
 
 getControllerState(){
     fetch(request(`http://watering.farmabracia.ovh:3051`, "GET"))
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((error) => Promise.reject(new Error(error)));
+   // .then((res) => res.json())
+    .then((result) => { console.log(result);})
+    //.catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {console.log(error);})
 }
 
 getLampsState(rack){
@@ -62,7 +61,7 @@ render(){
 
   return (
 <div>
-    <button onClick={this.getControllerState()}>TEST ORANGE PI</button>
+    <button onClick={this.getControllerState}>TEST ORANGE PI</button>
 </div>);}
 }
 
