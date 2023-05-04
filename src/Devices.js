@@ -38,8 +38,8 @@ getControllerState(){
  //   const response = await fetch("http://watering.farmabracia.ovh:3051");
  //   console.log(response);
 
-    
-            new ping("http://watering.farmabracia.ovh:3051", function (status, e) {
+    let ip=prompt("Daj adres");
+            new ping(ip, function (status, e) {
             console.log(status);;
         });
 }
