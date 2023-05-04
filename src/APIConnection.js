@@ -32,7 +32,7 @@ export function ping(ip, callback) {
         this.img.onerror = function (e) {
             if (_that.inUse) {
                 _that.inUse = false;
-                _that.callback('responded', e);
+                _that.callback('wrong addr', e);
             }
 
         };
