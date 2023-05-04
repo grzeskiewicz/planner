@@ -1,6 +1,6 @@
 import './Devices.css';
 import React from 'react';
-import { API_URL, request } from "./APIConnection";
+import { API_URL, request,ping } from "./APIConnection";
 
 
 
@@ -29,12 +29,19 @@ getPumpStatus(rack){
     .catch((error) => Promise.reject(new Error(error)));
 }
 
-getControllerState(){
-    fetch(request(`http://watering.farmabracia.ovh:3051`, "GET"))
+async getControllerState(){
+   /* fetch(request(`http://watering.farmabracia.ovh:3051`, "GET"))
    // .then((res) => res.json())
     .then((result) => { console.log(result);})
     //.catch((error) => Promise.reject(new Error(error)));
-    .catch((error) => {console.log(error);})
+    .catch((error) => {console.log(error);})*/
+    const response = await fetch("http://watering.farmabracia.ovh:3051");
+    console.log(response);
+
+    /*
+            new ping(s.name, function (status, e) {
+            s.status(status);
+        });*/
 }
 
 getLampsState(rack){
