@@ -30,18 +30,19 @@ getPumpStatus(rack){
 }
 
 getControllerState(){
-   /* fetch(request(`http://watering.farmabracia.ovh:3051`, "GET"))
-   // .then((res) => res.json())
-    .then((result) => { console.log(result);})
-    //.catch((error) => Promise.reject(new Error(error)));
-    .catch((error) => {console.log(error);})*/
- //   const response = await fetch("http://watering.farmabracia.ovh:3051");
- //   console.log(response);
-
     let ip=prompt("Daj adres");
+    fetch(request(`${API_URL}/pingcheck`, "POST", {ip:ip}))
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      }
+    )
+    .catch((error) => Promise.reject(new Error(error)));
+
+   /* let ip=prompt("Daj adres");
             new ping(ip, function (status, e) {
             console.log(status);;
-        });
+        });*/
 }
 
 getLampsState(rack){
