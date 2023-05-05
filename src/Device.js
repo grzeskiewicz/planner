@@ -18,8 +18,8 @@ componentDidMount(){
     this.checkStatus();
 }
 
-checkStatus(){
-    this.setState({status:pingCheck(RACK_URL,this.props.port)});
+async checkStatus(){
+    this.setState({status:await pingCheck(RACK_URL,this.props.port)});
 }
 
 render(){

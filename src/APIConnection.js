@@ -14,8 +14,8 @@ export function request(url, method, dataset) {
     });
 }
 
-export function pingCheck(ip,port){
-    fetch(request(`${API_URL}/pingcheck`, "POST", {ip:ip,port:port}))
+export async function pingCheck(ip,port){
+ let status=await fetch(request(`${API_URL}/pingcheck`, "POST", {ip:ip,port:port}))
   .then((res) => res.json())
   .then((result) => {
     console.log(result);
@@ -23,4 +23,5 @@ export function pingCheck(ip,port){
     }
   )
   .catch((error) => Promise.reject(new Error(error)));
+  return status;
 }
