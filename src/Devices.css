@@ -1,0 +1,9 @@
+.Devices{
+display: flex;
+flex-flow:column;
+}
+
+.Device{
+display: flex;
+flex-flow:row nowrap;
+}

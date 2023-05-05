@@ -19,10 +19,9 @@ componentDidMount(){
 
 render(){
   return (
-<div>
-  <Device name='ORANGE PI' port='3051'></Device>
-  <Device name='PUMP' port='3069'></Device>
-  <Device name='LAMPS' port='3070'></Device>
+<div className='Devices'>
+  <Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
+  <Device name='LAMPS' port='3070' socketPort=''></Device>
 </div>);}
 }
 
