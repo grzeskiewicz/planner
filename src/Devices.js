@@ -1,9 +1,6 @@
 import './Devices.css';
 import React from 'react';
-import { API_URL, request,ping } from "./APIConnection";
-
-
-
+import Device from './Device';
 class Devices extends React.Component {
   constructor(props) {
       super(props);
@@ -12,65 +9,20 @@ class Devices extends React.Component {
 }
 
 componentDidMount(){
-
 }
 
-getPumpStatus(rack){
-    fetch(request(`${API_URL}/pumpstatus`, "POST", {"rack_id": rack}))
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      if (result.success) {
-
-      } else {
-
-      }
-    })
-    .catch((error) => Promise.reject(new Error(error)));
-}
-
-getControllerState(){
-    let ip=prompt("Daj adres");
-    let port=prompt("Daj PORT");
-    fetch(request(`${API_URL}/pingcheck`, "POST", {ip:ip,port:port}))
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      }
-    )
-    .catch((error) => Promise.reject(new Error(error)));
-
-   /* let ip=prompt("Daj adres");
-            new ping(ip, function (status, e) {
-            console.log(status);;
-        });*/
-}
-
-getLampsState(rack){
-    fetch(request(`${API_URL}/lampsstate`, "POST", {"rack_id": rack}))
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      if (result.success) {
-        
-      } else {
-
-      }
-    })
-    .catch((error) => Promise.reject(new Error(error)));
-}
 
 //getLampState(shelf){}
 
 //getFanState(shelf){}
 
 
-
 render(){
-
   return (
 <div>
-    <button onClick={this.getControllerState}>TEST ORANGE PI</button>
+  <Device name='ORANGE PI' port='3051'></Device>
+  <Device name='PUMP' port='3069'></Device>
+  <Device name='LAMPS' port='3070'></Device>
 </div>);}
 }
 
