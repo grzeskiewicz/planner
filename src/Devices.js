@@ -31,7 +31,8 @@ getPumpStatus(rack){
 
 getControllerState(){
     let ip=prompt("Daj adres");
-    fetch(request(`${API_URL}/pingcheck`, "POST", {ip:ip}))
+    let port=prompt("Daj PORT");
+    fetch(request(`${API_URL}/pingcheck`, "POST", {ip:ip,port:port}))
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
