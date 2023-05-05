@@ -1,6 +1,6 @@
 import './Devices.css';
 import React from 'react';
-import {pingCheck,fetch,request} from "./APIConnection";
+import {pingCheck,request} from "./APIConnection";
 const RACK_URL='watering.farmabracia.ovh'
 
 
