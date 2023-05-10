@@ -23,7 +23,7 @@ async checkStatus(){
 }
 
 resetDevice(ip,port){
-    fetch(request(`${ip}:${port}/cm?cmnd=Power%20off`, "GET"))
+    fetch(request(`http://${ip}:${port}/cm?cmnd=Power%20off`, "GET"))
   .then((res) => res.json())
   .then((result) => {
     console.log(result)
@@ -44,7 +44,7 @@ render(){
     const port=this.props.socketPort!=='' ? this.props.socketPort : this.props.port;
   return (
 <div className='Device'>
-   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active"? <button onClick={this.resetDevice(RACK_URL,port)}>Reset</button>:''}
+   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active"? <button onClick={()=>this.resetDevice(RACK_URL,port)}>Reset</button>:''}
 </div>);}
 }
 
