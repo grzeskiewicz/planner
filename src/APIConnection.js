@@ -1,4 +1,4 @@
-export const API_URL='http://localhost:3001';
+export const API_URL='http://192.158.1.35:3001';
 export const headers = new Headers({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
