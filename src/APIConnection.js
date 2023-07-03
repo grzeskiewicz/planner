@@ -9,7 +9,7 @@ export function request(url, method, dataset) {
     return new Request(url, {
         method: method,
         headers: headers,
-        mode: 'cors',
+        mode: 'no-cors',
         body: JSON.stringify(dataset)
     });
 }
