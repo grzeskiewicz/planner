@@ -112,8 +112,9 @@ class Crop extends React.Component {
   }
 
   deleteCrop(crop) {
+    console.log(crop.id);
     if (window.confirm("Czy usunąć zasiew?")) {
-      fetch(request(`${API_URL}/deletecrop`, "POST", { crop_id: crop.id }))
+      fetch(request(`${API_URL}/deletecrop`, "POST", { "crop_id": crop.id }))
         .then((res) => res.json())
         .then((result) => {
           console.log(result);
