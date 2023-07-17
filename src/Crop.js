@@ -26,13 +26,13 @@ class Crop extends React.Component {
   }
 
   deleteSchedule(crop) {
-    fetch(request(`${WATERING_API}/deleteschedule`, "POST", {crop:crop.id}))
+    fetch(request(`${WATERING_API}/deleteschedule`, "POST", {crop_id:crop.id}))
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
       if (result.success) {
         this.props.refreshCrops();
-              fetch(request(`${API_URL}/completewatering`, "POST", { crop: crop.id }))
+              fetch(request(`${API_URL}/completewatering`, "POST", { crop_id: crop.id }))
         .then((res2) => res2.json())
         .then((result2) => {
           console.log(result2);
