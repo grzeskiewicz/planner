@@ -1,4 +1,4 @@
-export const API_URL='';
+export const API_URL='192.168.0.200';
 export const headers = new Headers({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
