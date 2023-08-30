@@ -42,7 +42,7 @@ this.setState({shelves:shelves});
 
 
   getMicrogreens(){
-     return fetch(request(`${API_URL}/microgreens`, 'GET'))
+     return fetch(request(`"${API_URL}/microgreens"`, 'GET'))
     .then(res => res.json())
     .then(result => { 
       this.setState({microgreens:result});
@@ -50,13 +50,13 @@ this.setState({shelves:shelves});
   }
   
   getShelves(){
-  return fetch(request(`${API_URL}/shelves`, 'GET'))
+  return fetch(request(`"${API_URL}/shelves"`, 'GET'))
     .then(res => res.json())
     .then(result =>result).catch(error => Promise.reject(new Error(error))); 
   }
 
   getCrops() {
-  return fetch(request(`${API_URL}/crops`, 'GET'))
+  return fetch(request(`"${API_URL}/crops"`, 'GET'))
       .then(res => res.json())
       .then(result => {
         this.setState({crops:result});
