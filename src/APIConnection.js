@@ -1,5 +1,5 @@
 //export const API_URL='http://192.168.0.200:3001';
-export const API_URL='http://127.0.0.1:3001';
+export const API_URL='http://192.168.0.200:3001';
 export const headers = new Headers({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
