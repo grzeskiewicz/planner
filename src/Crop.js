@@ -5,7 +5,7 @@ import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
-const WATERING_API='http://192.168.0.210:3051';
+const WATERING_API='http://192.168.0.5:3051';
 
 class Crop extends React.Component {
   constructor(props) {
