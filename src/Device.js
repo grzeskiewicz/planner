@@ -1,7 +1,7 @@
 import './Devices.css';
 import React from 'react';
 import {pingCheck,request} from "./APIConnection";
-const RACK_URL='192.168.0.5'
+const RACK_URL='192.168.2.5'
 
 
 
