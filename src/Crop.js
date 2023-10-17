@@ -5,7 +5,7 @@ import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
-const WATERING_API='http://192.168.2.5:3051';
+const WATERING_API = 'http://192.168.2.5:3051';
 
 class Crop extends React.Component {
   constructor(props) {
@@ -26,30 +26,30 @@ class Crop extends React.Component {
   }
 
   deleteSchedule(crop) {
-    fetch(request(`${WATERING_API}/deleteschedule`, "POST", {crop_id:crop.id}))
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      if (result.success) {
-        this.props.refreshCrops();
-              fetch(request(`${API_URL}/completewatering`, "POST", { crop_id: crop.id }))
-        .then((res2) => res2.json())
-        .then((result2) => {
-          console.log(result2);
-          if (result.success) {
-            this.props.refreshCrops();
-          } else {
-            alert("SQL Erro - błędne wartości!");
-          }
-        })
-        .catch((error) => Promise.reject(new Error(error)));
-      } else {
-        alert("SQL Erro - błędne wartości!");
-      }
-    })
-    .catch((error) => Promise.reject(new Error(error)));
-}
-  
+    fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop_id: crop.id }))
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result.success) {
+          this.props.refreshCrops();
+          fetch(request(`${API_URL}/completewatering`, "POST", { crop_id: crop.id }))
+            .then((res2) => res2.json())
+            .then((result2) => {
+              console.log(result2);
+              if (result.success) {
+                this.props.refreshCrops();
+              } else {
+                alert("SQL Erro - błędne wartości!");
+              }
+            })
+            .catch((error) => Promise.reject(new Error(error)));
+        } else {
+          alert("SQL Erro - błędne wartości!");
+        }
+      })
+      .catch((error) => Promise.reject(new Error(error)));
+  }
+
 
   scheduleWatering(crop) {
     const level = this.props.shelfData.level;
@@ -90,17 +90,17 @@ class Crop extends React.Component {
         .then((result) => {
           console.log(result);
           if (result.success) {
-                  fetch(request(`${API_URL}/schedulewatering`, "POST", { crop: crop.id })) //update status in db
-        .then((res2) => res2.json())
-        .then((result2) => {
-          console.log(result2);
-          if (result.success) {
-            this.props.refreshCrops();
-          } else {
-            alert("SQL Erro - błędne wartości!");
-          }
-        })
-        .catch((error) => Promise.reject(new Error(error)));
+            fetch(request(`${API_URL}/schedulewatering`, "POST", { crop: crop.id })) //update status in db
+              .then((res2) => res2.json())
+              .then((result2) => {
+                console.log(result2);
+                if (result.success) {
+                  this.props.refreshCrops();
+                } else {
+                  alert("SQL Erro - błędne wartości!");
+                }
+              })
+              .catch((error) => Promise.reject(new Error(error)));
 
           } else {
             alert("SQL Erro - błędne wartości!");
@@ -120,11 +120,11 @@ class Crop extends React.Component {
           console.log(result);
           if (result.success) {
             this.props.refreshCrops();
-            fetch(request(`${WATERING_API}/deleteschedule`, "POST", {crop:crop.id}))
-            .then((res2) => res2.json())
-            .then((result2) => {
-              console.log(result2)
-            }).catch((error) => Promise.reject(new Error(error)));
+            fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
+              .then((res2) => res2.json())
+              .then((result2) => {
+                console.log(result2)
+              }).catch((error) => Promise.reject(new Error(error)));
           } else {
             alert("SQL Erro - błędne wartości!");
           }
@@ -161,7 +161,7 @@ class Crop extends React.Component {
       .catch((error) => Promise.reject(new Error(error)));
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   enter(e) {
     if (e.key === "Enter") {
@@ -175,14 +175,14 @@ class Crop extends React.Component {
     const microgreenData = this.props.microgreenData;
     const shelfData = this.props.shelfData;
     const crop = this.props.crop;
-    const isMarked=Number(this.props.markedCrop)===Number(crop.id) ? true : false;
-    console.log(Number(crop.id),Number(this.props.markedCrop), isMarked)
+    const isMarked = Number(this.props.markedCrop) === Number(crop.id) ? true : false;
+    console.log(Number(crop.id), Number(this.props.markedCrop), isMarked)
 
     //console.log(crop);
     //console.log(microgreenData);
 
     return (
-      <tr className={"cropEntry " + (isMarked ? "marked":"")} key={this.props.index}>
+      <tr className={"cropEntry " + (isMarked ? "marked" : "")} key={this.props.index}>
         <td
           className="color"
           style={{ backgroundColor: this.props.microgreenData.color }}
@@ -196,9 +196,9 @@ class Crop extends React.Component {
         <td>{moment(crop.harvest).format("DD.MM.YYYY")}</td>
         <td>{shelfData.rack_name + shelfData.level}</td>
         <td>{crop.trays}</td>
-        <td className="cropNotes">
+        <td className="cropNotes" onClick={this.triggerEditNotes}>
           {this.state.editNotesEnabled &&
-          Number(crop.id) === Number(this.props.selectedCrop) ? (
+            Number(crop.id) === Number(this.props.selectedCrop) ? (
             <div className="cropNotesEnabled">
               <textarea
                 onKeyDown={this.enter}
@@ -214,7 +214,7 @@ class Crop extends React.Component {
               />
             </div>
           ) : (
-            <div className="cropNotesDisabled" onClick={this.triggerEditNotes}>
+            <div className="cropNotesDisabled">
               <textarea
                 disabled
                 rows="2"
@@ -228,8 +228,8 @@ class Crop extends React.Component {
         <td onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
-        {crop.scheduled===1?<td>&#10004;</td>:<td onClick={() => this.scheduleWatering(crop)}>[Schedule]</td>}
-        {crop.completed===1 ? <td>&#10004;</td>: crop.scheduled===1 ?<td onClick={() => this.deleteSchedule(crop)}>[Finish]</td>:<td>-</td>}
+        {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleWatering(crop)}>[Schedule]</td>}
+        {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
       </tr>
     );
   }

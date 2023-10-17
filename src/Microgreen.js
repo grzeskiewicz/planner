@@ -1,6 +1,8 @@
 import './Crops.css';
 import React from 'react';
 import { API_URL, request } from "./APIConnection";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -31,6 +33,7 @@ this.handleWeight=this.handleWeight.bind(this);
 this.handleBlackout=this.handleBlackout.bind(this);
 this.handleLight=this.handleLight.bind(this);
 this.handleColor=this.handleColor.bind(this);
+this.saveMicrogreen=this.saveMicrogreen.bind(this);
 this.enter=this.enter.bind(this);
 }
 
@@ -93,12 +96,16 @@ handleColor(e){
   this.setState({color:e.target.value});
 }
 
+saveMicrogreen(){
+  const microgreensData=this.state;
+  delete microgreensData.editMicrogreensEnabled;
+  this.props.editMicrogreens(microgreensData);
+  this.setState({editMicrogreensEnabled:false});
+}
+
 enter(e){
   if (e.key === 'Enter') {
-    const microgreensData=this.state;
-    delete microgreensData.editMicrogreensEnabled;
-    this.props.editMicrogreens(microgreensData);
-    this.setState({editMicrogreensEnabled:false});
+this.saveMicrogreen();
   }
 }
 
@@ -120,6 +127,11 @@ const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
     <td>{ amISelectedToEdit? <input type="text" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</td>
     <td>{ amISelectedToEdit? <input type="text" value={this.state.light} onChange={this.handleLight}></input>:microgreen.light}</td>
     <td style={{backgroundColor:microgreen.color}}>{ amISelectedToEdit? <input type="color" value={this.state.color} onChange={this.handleColor}></input>:microgreen.color.toUpperCase()}</td>
+<td>              <FontAwesomeIcon
+                onClick={this.saveNotes}
+                icon={faCheckCircle}
+                size="lg"
+              /></td>
 </tr>);}
 }
 
