@@ -58,6 +58,7 @@ setSelectedMicrogreens(id){
 
 
   editMicrogreens(microgreensData){
+    console.log(microgreensData);
     fetch(request(`${API_URL}/editmicrogreens`, "POST", microgreensData))
     .then((res) => res.json())
     .then((result) => {
