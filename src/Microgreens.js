@@ -62,6 +62,7 @@ setSelectedMicrogreens(id){
     fetch(request(`${API_URL}/editmicrogreens`, "POST", microgreensData))
     .then((res) => res.json())
     .then((result) => {
+      console.log(result);
      if (result.success) {
       this.props.refreshMicrogreens(); 
       } else {
