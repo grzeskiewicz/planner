@@ -127,11 +127,7 @@ const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
     <td>{ amISelectedToEdit? <input type="text" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</td>
     <td>{ amISelectedToEdit? <input type="text" value={this.state.light} onChange={this.handleLight}></input>:microgreen.light}</td>
     <td style={{backgroundColor:microgreen.color}}>{ amISelectedToEdit? <input type="color" value={this.state.color} onChange={this.handleColor}></input>:microgreen.color.toUpperCase()}</td>
-<td>              <FontAwesomeIcon
-                onClick={this.saveNotes}
-                icon={faCheckCircle}
-                size="lg"
-              /></td>
+    { amISelectedToEdit ? <td><FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg"/></td>:null}
 </tr>);}
 }
 
