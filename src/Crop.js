@@ -21,6 +21,7 @@ class Crop extends React.Component {
   }
 
   triggerEditNotes() {
+    console.log(this.props.crop);
     this.props.setSelectedCrop(this.props.crop.id);
     this.setState({ editNotesEnabled: !this.state.editNotesEnabled });
   }
