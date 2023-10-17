@@ -62,6 +62,10 @@ this.enter=this.enter.bind(this);
     this.props.setSelectedMicrogreens(this.props.microgreen.id);
     this.setState({editMicrogreensEnabled: true});
   }
+
+  disableEdit(){
+    this.setState({editMicrogreensEnabled: false});
+  }
 handleNamePL(e){
   this.setState({name_pl:e.target.value});
 }
