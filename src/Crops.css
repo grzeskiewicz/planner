@@ -97,9 +97,41 @@ border:none;
   justify-content: space-between;
 }
 
+#cropDateRange > div{
+  display: flex;
+  flex-flow:row nowrap;
+}
+
 @media screen and (max-width: 400px)  {
   .Crops{
     flex-flow:column;
+    width:85vw;
+  }
+  .Crops > * {
+    font-size: 0.6rem;
+
+  }
+
+  .Crops table  td {
+    padding:0;
+    font-size:0.5rem;
+    line-height: 0.6rem;
+
+  }
+  .Crops table  tr {
+    line-height: 0.6rem;
+  }
+
+  .cropNotesDisabled textarea {
+    font-size:0.5rem;
+  }
+
+  #cropDateRange {
+    display:flex;
+    flex-flow:row nowrap;
+  }
+  #cropDateRange input {
+    width:20vw;
   }
   
   #addCrops form  input, #addCrops form select {

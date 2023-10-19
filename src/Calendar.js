@@ -111,14 +111,14 @@ if (selectedMonth===11) {
         this.setState({ selectedMonth: --selectedMonth });
      //   this.props.handleMonthSelection(selectedMonth, this.state.selectedYear);
       }
-
-
-
     }
   }
 
   render() {
+    const calendarType=this.props.calendarType;
     const today = new Date();
+    const d=new Date();
+    const weekAgo=d.setDate(d.getDate() - 7);
     const calendar = this.createCalendar(this.state.selectedYear, this.state.selectedMonth);
 
     const week = weekdays.map((day, index) => {
@@ -127,8 +127,13 @@ if (selectedMonth===11) {
 
     const renderMonth = calendar.map((week, index) => {
       let renderWeek = week.map((day, index2) => {
-        const unactive=((day.date < new Date(today).setHours(0, 0, 0, 0))  && day.date.getDate() !== today.getDate()) || 
-        (day.date < new Date(today).setHours(0, 0, 0, 0) && day.date!==new Date(today).setHours(0, 0, 0, 0)) ? true: false ;
+        const unactive= calendarType==="addCrop" ?
+        (((day.date < new Date(weekAgo).setHours(0, 0, 0, 0))  && day.date.getDate() !== new Date(weekAgo).getDate()) || 
+        (day.date < new Date(weekAgo).setHours(0, 0, 0, 0) && day.date!==new Date(weekAgo).setHours(0, 0, 0, 0)) ? true: false)
+        : false;
+      
+
+
         let className =
        unactive ? "unactive":'' + " " +
           (day.date.getMonth() === today.getMonth() &&

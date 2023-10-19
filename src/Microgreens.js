@@ -65,6 +65,7 @@ setSelectedMicrogreens(id){
       console.log(result);
      if (result.success) {
       this.props.refreshMicrogreens(); 
+      this.setState({selectedMicrogreens:''});
       } else {
         alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
       }

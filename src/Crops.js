@@ -18,6 +18,10 @@ class Crops extends React.Component {
         start:'',
         showHarvestSim:true,
         showCalendar:false,
+        showCalendarRange:false,
+        cropDateFrom :moment().subtract(15, 'days'),
+        cropDateTo: moment().add(15,'days'),
+        clicks:Number(0)
       }
       this.handleMicrogreens = this.handleMicrogreens.bind(this);
       this.handleShelf = this.handleShelf.bind(this);
@@ -25,6 +29,7 @@ class Crops extends React.Component {
       this.handleNotes = this.handleNotes.bind(this);
       this.handleHarvest=this.handleHarvest.bind(this);
       this.handleDaySelection=this.handleDaySelection.bind(this);
+      this.handleRangeSelection=this.handleRangeSelection.bind(this);
       this.toggleCalendar=this.toggleCalendar.bind(this);
       this.renderMicrogreensSelection=this.renderMicrogreensSelection.bind(this);
       this.renderShelvesSelection=this.renderShelvesSelection.bind(this);
@@ -32,6 +37,8 @@ class Crops extends React.Component {
       this.handleStart=this.handleStart.bind(this);
       this.toggleSimulation=this.toggleSimulation.bind(this);
       this.setSelectedCrop=this.setSelectedCrop.bind(this);
+      this.toggleCalendarRange=this.toggleCalendarRange.bind(this);
+      
   }
 
 
@@ -152,8 +159,26 @@ handleDaySelection(date){
   this.state.showHarvestSim ?this.setState({harvest:date,showCalendar:false}):this.setState({start:date,showCalendar:false});
 }
 
+handleRangeSelection(date){
+
+  if (this.state.clicks===0){
+    console.log(0);
+    this.setState({cropDateFrom: moment(date),clicks:1}); return;
+  } else if (this.state.clicks===1)  {
+    console.log(1);
+    this.setState({cropDateTo:moment(date),clicks:0});
+    return;
+  } else if (this.state.clicks===2) {console.log(2);this.setState({clicks:0});return;}
+}
+
 toggleCalendar(){
   this.setState({showCalendar:!this.state.showCalendar});
+}
+
+toggleCalendarRange(){
+  //this.setState({showCalendarRange:!this.state.showCalendarRange});
+  this.setState({showCalendarRange:true});
+
 }
 
 addCrops(event){
@@ -196,7 +221,7 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
             <input placeholder='DATA ZBIORU'  value={this.state.harvest!=='' ? moment(this.state.harvest).format('DD.MM.YYYY'):''} onChange={this.handleHarvest} onClick={this.toggleCalendar} required></input>:
             <input placeholder='DATA ZASIEWU' value={this.state.start!=='' ? moment(this.state.start).format('DD.MM.YYYY'):''} onChange={this.handleStart} onClick={this.toggleCalendar} required></input>}
 
-            {this.state.showCalendar ?  <Calendar handleDaySelection={this.handleDaySelection}/> : null}
+            {this.state.showCalendar ?  <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection}/> : null}
             <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
               {mappedMicrogreens}
                 </select>
@@ -211,6 +236,11 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
 
     </div>
     <div id="crop-list">
+      <div id="cropDateRange">
+        <div><p>Od</p><input placeholder={this.state.cropDateFrom}  value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} required></input></div>
+        <div><p>Do</p><input placeholder={this.state.cropDateTo}  value={moment(this.state.cropDateTo).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} required></input></div>
+      </div>
+      {this.state.showCalendarRange ?  <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection}/> : null}
     <table>
 <thead>
 <tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Półka</td><td>Tace</td><td>Notatki</td><td>X</td><td>Scheduled</td><td>Completed</td></tr>

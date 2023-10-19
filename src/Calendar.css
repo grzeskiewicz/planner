@@ -2,7 +2,7 @@
     background-color: gray;
   }
     #calendar-wrapper {
-      flex:0 30%;
+      width:14vw;
     }
     #calendar {
       display: flex;
@@ -134,4 +134,10 @@
     }
     .today:hover {
       border: 1px double black;
+    }
+
+    @media screen and (max-width: 400px)  {
+      #calendar-wrapper {
+        width:80%;
+      }
     }

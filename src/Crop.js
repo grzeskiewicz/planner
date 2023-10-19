@@ -14,17 +14,13 @@ class Crop extends React.Component {
       editNotesEnabled: false,
       notes: this.props.crop.notes,
     };
-    this.triggerEditNotes = this.triggerEditNotes.bind(this);
+    this.triggerEditNotes=this.triggerEditNotes.bind(this);
     this.editNotes = this.editNotes.bind(this);
     this.saveNotes = this.saveNotes.bind(this);
     this.deleteCrop = this.deleteCrop.bind(this);
   }
 
-  triggerEditNotes() {
-    console.log(this.props.crop);
-    this.props.setSelectedCrop(this.props.crop.id);
-    this.setState({ editNotesEnabled: !this.state.editNotesEnabled });
-  }
+
 
   deleteSchedule(crop) {
     fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop_id: crop.id }))
@@ -162,12 +158,19 @@ class Crop extends React.Component {
       .catch((error) => Promise.reject(new Error(error)));
   }
 
-  componentDidMount() { }
-
   enter(e) {
     if (e.key === "Enter") {
       //alert("PEDAU");
     }
+  }
+
+
+  triggerEditNotes(e) {
+    e.preventDefault();
+    console.log("XDD");
+    console.log(this.props.crop);
+   this.props.setSelectedCrop(this.props.crop.id);
+    this.setState({ editNotesEnabled: !this.state.editNotesEnabled });
   }
 
   //<textarea disabled={this.state.editNotesEnabled} onChange={this.editNotes} className='cropNotes'>  </textarea>
@@ -177,7 +180,7 @@ class Crop extends React.Component {
     const shelfData = this.props.shelfData;
     const crop = this.props.crop;
     const isMarked = Number(this.props.markedCrop) === Number(crop.id) ? true : false;
-    console.log(Number(crop.id), Number(this.props.markedCrop), isMarked)
+    //console.log(Number(crop.id), Number(this.props.markedCrop), isMarked)
 
     //console.log(crop);
     //console.log(microgreenData);
@@ -197,7 +200,7 @@ class Crop extends React.Component {
         <td>{moment(crop.harvest).format("DD.MM.YYYY")}</td>
         <td>{shelfData.rack_name + shelfData.level}</td>
         <td>{crop.trays}</td>
-        <td className="cropNotes" onClick={this.triggerEditNotes}>
+        <td className="cropNotes">
           {this.state.editNotesEnabled &&
             Number(crop.id) === Number(this.props.selectedCrop) ? (
             <div className="cropNotesEnabled">
@@ -215,13 +218,13 @@ class Crop extends React.Component {
               />
             </div>
           ) : (
-            <div className="cropNotesDisabled">
+            <div className="cropNotesDisabled" onClick={this.triggerEditNotes}>
               <textarea
-                disabled
                 rows="2"
-                onChange={this.editNotes}
+                onClick={this.triggerEditNotes}
                 type="text"
-                value={this.state.notes}
+    value={this.state.notes}
+    onChange={()=>{}}
               ></textarea>
             </div>
           )}
