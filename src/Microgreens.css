@@ -76,4 +76,8 @@
       height:100%;
     }
 
+    .Microgreens table thead td {
+      padding: 0;
+    }
+
   }

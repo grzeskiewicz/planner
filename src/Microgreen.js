@@ -6,6 +6,7 @@ import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 
 
+
 class Microgreen extends React.Component {
   constructor(props) {
       super(props);
@@ -116,6 +117,7 @@ this.saveMicrogreen();
 
 
 render(){
+  
 const microgreen=this.props.microgreen;
 const isEditEnabled=this.state.editMicrogreensEnabled;
 const selectedMicrogreens=this.props.selectedMicrogreens;
