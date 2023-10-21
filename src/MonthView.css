@@ -171,4 +171,12 @@ border:3px solid #66B032;
   #MonthView .row, #MonthView .head, #MonthView .head-2{
   line-height:80%;
   }
+
+  #MonthView .head {
+width:180vw;
+padding:2px;
+  }
+ .monthCrops{
+width:180vw;
+  }
   }

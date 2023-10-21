@@ -73,7 +73,6 @@ flex-flow: column;
 
   table {
     overflow-x: auto;
-    display: block;
     font-size:0.7rem;
   }
   td { 
