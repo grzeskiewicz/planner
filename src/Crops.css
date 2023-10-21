@@ -168,4 +168,29 @@ border:none;
   .cropNotes {
     width:auto;
   }
+
+  .cropNotesEnabled textarea{
+width:90vw;
+  }
+
+  .cropEntry{
+display: flex;
+flex-flow:row wrap;
+width: 100vw;
+  }
+
+  .cropEntry td{
+    flex:1;
+  }
+
+  .rowNotesEdit{
+    flex:0 100%;
+ }
+ .rowNotesEdit td {
+width:100vw;
+}
+
+ .rowNotesEdit textarea {
+  width: 90%;
+ }
 }

@@ -110,7 +110,7 @@ if (cropNow){
 const check=cropNowCopyDays.find((x)=>x.day===i);
  if (cropNow.cropDays[0].day===i) {
     const microgreen=microgreens.find((x)=> x.id===cropNow.crop.microgreen_id);
-    const grpRender=cropNow.cropDays.map((x,index)=><div className='dayRecordGrp' style={{backgroundColor: x.stage!==false && x.stage!==undefined ? microgreen.color:'', 'flexBasis': 100/cropNow.cropDays.length+"%"}} key={index}><div>{x.stage}</div></div>);     
+    const grpRender=cropNow.cropDays.map((x,index)=><div className='dayRecordGrp' style={{backgroundColor: x.stage!==false && x.stage!==undefined ? microgreen.color:'', 'flexBasis': 100/cropNow.cropDays.length+"%"}} key={index}><div></div></div>);     
     const cropInfo=cropNow.crop;
 
 
@@ -165,7 +165,7 @@ export function renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekN
             if (stage!==undefined && stage!==false) grp.push({stage:stage, day:i});
     if (grp.length===1) firstDayWithStage=i;    
     }
-    const grpRender=grp.map((x,index)=><div className='dayRecordGrp' style={{backgroundColor: x.stage!==false && x.stage!==undefined ? microgreen.color:'', 'flexBasis': 100/grp.length+"%"}} key={index}><div>{x.stage}</div></div>);
+    const grpRender=grp.map((x,index)=><div className='dayRecordGrp' style={{backgroundColor: x.stage!==false && x.stage!==undefined ? microgreen.color:'', 'flexBasis': 100/grp.length+"%"}} key={index}><div></div></div>);
         for (let i=1;i<=days;i++){
             let stage;
             if (weekNow===null) {
@@ -182,7 +182,7 @@ export function renderRowMicrogreens(crop,microgreen,shelves,days,monthNow,weekN
     } else if(firstDayWithStage!==i && stage!==undefined && stage !==false) {
         continue;
       } else {
-    row.push(<div className='dayRecord' style={{backgroundColor: stage!==false && stage!==undefined ? microgreen.color:''}} key={i}><div>{stage}</div></div>);
+    row.push(<div className='dayRecord' style={{backgroundColor: stage!==false && stage!==undefined ? microgreen.color:''}} key={i}><div></div></div>);
     }
         }
     

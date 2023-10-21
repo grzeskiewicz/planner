@@ -40,7 +40,7 @@ table th {
 #menu{
 display: flex;
 flex-flow:row nowrap;
-justify-content: space-evenly;
+justify-content: flex-start;
 flex:0 5%;
 }
 #menu div {
@@ -79,7 +79,9 @@ flex-flow: column;
     text-overflow: ellipsis; 
     word-wrap: break-word;
   }
-
+#menu{
+  justify-content: space-evenly;
+}
   #menu div{
 display: block;
   }

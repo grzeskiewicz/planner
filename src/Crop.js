@@ -189,12 +189,7 @@ class Crop extends React.Component {
 
     return (
       <tr className={"cropEntry " + (isMarked ? "marked" : "")} key={this.props.index}>
-        <td
-          className="color"
-          style={{ backgroundColor: this.props.microgreenData.color }}
-        >
-          {" "}
-        </td>
+        <td className="color" style={{ backgroundColor: this.props.microgreenData.color }}>{" "}</td>
         <td>{microgreenData.name_pl}</td>
         <td>{isMobile?moment(crop.start).format("DD.MM") : moment(crop.start).format("DD.MM.YYYY")}</td>
         <td>{isMobile? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")}</td>
@@ -230,6 +225,10 @@ class Crop extends React.Component {
         </td>
         {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleWatering(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg"/></td>}
         {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
+               {this.state.editNotesEnabled  && Number(crop.id) === Number(this.props.selectedCrop)? 
+               <tr className='rowNotesEdit'><td>              
+                <textarea onKeyDown={this.enter} rows="8"  onChange={this.editNotes}  type="text"  value={this.state.notes}></textarea>
+                <FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg" /></td></tr>:''}
       </tr>
     );
   }
