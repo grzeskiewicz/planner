@@ -61,7 +61,7 @@ class Crops extends React.Component {
 
 renderShelvesSelection() {
   const shelves=JSON.parse(JSON.stringify(this.props.shelves));
-  shelves.unshift({id:999, rack_name: "PÓŁKA:",level:""})
+  shelves.unshift({id:999, rack_name: "PÓŁKA",level:""})
   return shelves.map((shelf, index) => {
       return <option key={index} value={shelf.id} id={shelf.id}>{shelf.rack_name + " " + shelf.level}</option>
   });
@@ -230,7 +230,17 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
          <select id="shelf-selection" name="shelf-selection" onChange={this.handleShelf} value={this.state.shelfID}>
            {mappedShelves}
          </select>
-         <input placeholder='ILE TAC?' value={this.state.trays} onChange={this.handleTrays} required></input>
+         <select value={this.state.trays} onChange={this.handleTrays} required>
+         <option value="99">ILE TAC?</option>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+         </select>
 <textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
        <button type='submit'>DODAJ</button>
  {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) :'' }

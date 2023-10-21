@@ -160,7 +160,7 @@ if (selectedMonth===11) {
     });
 
     return (
-      <div id="calendar-wrapper">
+      <div id="calendar-wrapper" className={this.props.calendarType}>
         <div id="calendar" className={this.props.className}>
           <div id="calendar-head">
             <div id="year-selection"><p>{this.state.selectedYear}</p></div>

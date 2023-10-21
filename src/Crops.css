@@ -154,17 +154,32 @@ border:none;
   }
   .acfWrapper{
     display: flex;
-    flex-flow:column wrap;
+    flex-flow:row wrap;
     flex:0 100%;
   }
 
-  .acfWrapper button{
+  .acfWrapper > div, .acfWrapper > button{
+    flex:0 100%;
+  }
+
+  #addCrops .acfWrapper button{
     flex:0 100%;
   }
 
   #crop-list{
     flex:0 90%;
   }
+
+  #crop-list thead tr{
+    display: flex;
+flex-flow:row wrap;
+width: 100vw;
+  }
+
+  #crop-list thead tr td{
+    flex:1;
+  }
+
   .cropNotes {
     width:auto;
   }
@@ -193,4 +208,15 @@ width:100vw;
  .rowNotesEdit textarea {
   width: 90%;
  }
+
+ .cropEntry:hover{
+  border: 1px solid green;
+} 
+.cropEntry.marked{
+  border:1px solid green;
+}
+
+.showCrops{
+  width: 100%;
+}
 }

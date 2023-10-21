@@ -138,6 +138,25 @@
 
     @media screen and (max-width: 400px)  {
       #calendar-wrapper {
-        width:80%;
+        width:100%;
       }
+      .day {
+        font-size: 0.8rem;
+      }
+
+      .day:before {
+        content: "";
+        padding-top: 50%;
+      }
+    
+      .day p {
+  font-size:0.8rem;
+      }
+
+      .day-name{
+        margin:0;
+        font-size:0.8rem;
+      }
+      
+
     }
