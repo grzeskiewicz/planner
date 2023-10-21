@@ -196,10 +196,10 @@ class Crop extends React.Component {
           {" "}
         </td>
         <td>{microgreenData.name_pl}</td>
-        <td>{moment(crop.start).format("DD.MM.YYYY")}</td>
-        <td>{moment(crop.blackoutStart).format("DD.MM.YYYY")}</td>
-        <td>{moment(crop.lightExposureStart).format("DD.MM.YYYY")}</td>
-        <td>{moment(crop.harvest).format("DD.MM.YYYY")}</td>
+        <td>{isMobile?moment(crop.start).format("DD.MM") : moment(crop.start).format("DD.MM.YYYY")}</td>
+        <td>{isMobile? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")}</td>
+        <td>{isMobile? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")}</td>
+        <td>{isMobile? moment(crop.harvest).format("DD.MM"): moment(crop.harvest).format("DD.MM.YYYY")}</td>
         <td>{shelfData.rack_name + shelfData.level}</td>
         <td>{crop.trays}</td>
         <td className="cropNotes">

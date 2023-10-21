@@ -239,7 +239,7 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
   return (
     <div className='Crops'>
     <div id="addCrops">
-{isMobile ?<div className="acfWrapper"><button onClick={()=>this.setState({showACF:!this.state.showACF})}>DODAJ ZASIEW</button>{this.state.showACF ?<div>{addCropForm}</div>:''}</div>:{addCropForm}}
+{isMobile ?<div className="acfWrapper"><button onClick={()=>this.setState({showACF:!this.state.showACF})}>DODAJ ZASIEW</button>{this.state.showACF ?<div>{addCropForm}</div>:''}</div>:<div>{addCropForm}</div>}
     </div>
     <div id="crop-list">
       <div id="cropDateRange">
