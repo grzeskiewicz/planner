@@ -108,7 +108,13 @@ border:none;
   }
   .Crops > * {
     font-size: 0.6rem;
+  }
 
+  .Crops table {
+    width:100%;
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
   }
 
   .Crops table  td {
@@ -132,9 +138,34 @@ border:none;
   #cropDateRange input {
     width:20vw;
   }
+
+  .Crops input {
+    font-size:0.6rem;
+  }
   
   #addCrops form  input, #addCrops form select {
     margin-bottom: 0;
+    font-size:0.6rem;
+
   }
 
+  .Crops textarea {
+    font-size:0.6rem;
+  }
+  .acfWrapper{
+    display: flex;
+    flex-flow:column wrap;
+    flex:0 100%;
+  }
+
+  .acfWrapper button{
+    flex:0 100%;
+  }
+
+  #crop-list{
+    flex:0 90%;
+  }
+  .cropNotes {
+    width:auto;
+  }
 }

@@ -99,11 +99,11 @@ render(){
   return (
     <div className="App">
       <div id="menu">
-<div id="add-crops-tab" onClick={this.showAddCropTab}><p>Zasiewy</p></div>
-<div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]':'Widok [Tydzień]'}</p></div>
-<div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile?'[Msc]':'Widok [Miesiąc]'}</p></div>
-<div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>Microgreens</p></div>
-<div id="microgreens-tab" onClick={this.showDevicesTab}><p>{isMobile ? 'Urządzenia': 'Menedżer urządzeń'}</p></div>
+<div id="add-crops-tab" onClick={this.showAddCropTab}><p>ZASIEWY</p></div>
+<div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]':'Widok [TYDZIEŃ]'}</p></div>
+<div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile?'[MSC]':'WIDOK [MIESIĄC]'}</p></div>
+<div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
+<div id="microgreens-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
       </div>
       <div id="board">
 {this.state.microgreens !=='' && this.state.tab===0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} shelves={this.state.shelves} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop}></Crops>: null}

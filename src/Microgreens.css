@@ -80,4 +80,24 @@
       padding: 0;
     }
 
+    .amfWrapper{
+      display: flex;
+      flex-flow:column wrap;
+      flex:0 100%;
+    }
+
+    .amfWrapper button{
+      flex:0 100%;
+    }
+
+
+    .Microgreens input {
+      font-size: 0.6rem;
+
+    }
+
+    #microgreens-list {
+      flex:0 90%;
+    }
+
   }

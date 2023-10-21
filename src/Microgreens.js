@@ -31,7 +31,8 @@ class Microgreens extends React.Component {
       blackout:'',
       light:'',
       color:'',
-      selectedMicrogreens: ''
+      selectedMicrogreens: '',
+      showAMF:false
     };
   }
 
@@ -117,26 +118,30 @@ renderMicrogreensTable(){
 }
 
 
+
+
   render() {
+    const addMicrogreensForm=<form className="" onSubmit={this.addMicrogreens}>
+    <input placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
+    <input placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
+    <input placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+    <input placeholder= {isMobile? 'Opr.[ml]': 'Opryskiwanie [ml]'} value={this.state.topWater} onChange={this.handleTopWater} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+    <input placeholder={isMobile ? 'Nawodn.[ml]':'Nawodnienie [ml]'} value={this.state.bottomWater} onChange={this.handleBottomWater} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+    <input placeholder={isMobile ? 'Obciąż.':'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+    <input placeholder={isMobile ?'Black.':'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+    <input placeholder={isMobile ? 'Naśw.': 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+    <input id="microgreens-color-picker" placeholder='Kolor' value={this.state.color} onChange={this.handleColor} type="color"></input>
+    <button type='submit'>DODAJ</button>
+                  {this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
+</form>;
     console.log(isMobile)
     let microgreensTable;
     if (this.props.microgreens!=='') microgreensTable=this.renderMicrogreensTable();
     return <div className="Microgreens">
 <div id="addMicrogreens">
-            <form className="" onSubmit={this.addMicrogreens}>
-                    <input placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
-                    <input placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
-                    <input placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-                    <input placeholder= {isMobile? 'Opr.[ml]': 'Opryskiwanie [ml]'} value={this.state.topWater} onChange={this.handleTopWater} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-                    <input placeholder={isMobile ? 'Nawodn.[ml]':'Nawodnienie [ml]'} value={this.state.bottomWater} onChange={this.handleBottomWater} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-                    <input placeholder={isMobile ? 'Obciąż.':'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-                    <input placeholder={isMobile ?'Black.':'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-                    <input placeholder={isMobile ? 'Naśw.': 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-                    <input id="microgreens-color-picker" placeholder='Kolor' value={this.state.color} onChange={this.handleColor} type="color"></input>
-                    <button type='submit'>Dodaj</button>
-                                  {this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
-            </form>
+{isMobile ?<div className="amfWrapper"><button onClick={()=>this.setState({showAMF:!this.state.showAMF})}>DODAJ MICROGREENS</button>{this.state.showAMF? <div>{addMicrogreensForm}</div>:''}</div>: {addMicrogreensForm}}
             </div>
+
             <div id="microgreens-list">
             <table>
 <thead>

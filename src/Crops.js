@@ -6,6 +6,7 @@ import { API_URL, request } from "./APIConnection";
 import Crop from './Crop';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarCheck,faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
+import {isMobile} from 'react-device-detect';
 
 
 
@@ -24,7 +25,8 @@ class Crops extends React.Component {
         showCalendarRange:false,
         cropDateFrom :moment().subtract(15, 'days'),
         cropDateTo: moment().add(15,'days'),
-        clicks:Number(0)
+        clicks:Number(0),
+        showACF:false
       }
       this.handleMicrogreens = this.handleMicrogreens.bind(this);
       this.handleShelf = this.handleShelf.bind(this);
@@ -214,29 +216,30 @@ render(){
 const  mappedMicrogreens= this.renderMicrogreensSelection();
  const mappedShelves= this.renderShelvesSelection();
  const selectedMicrogreens=Number(this.state.microgreensID)!==99 ? this.props.microgreens.find((x)=> x.id===Number(this.state.microgreensID)): '' ;
+ const addCropForm=<form className="" onSubmit={this.addCrops}>
+ <div><input type="radio" id="harvest-option" checked={this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label for="harvest-option">DATA ZBIORU</label></div> 
+ <div><input type="radio" id="start-option" checked={!this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label for="start-option">DATA ZASIEWU</label></div>
+     {this.state.showHarvestSim ? 
+     <input placeholder='DATA ZBIORU'  value={this.state.harvest!=='' ? moment(this.state.harvest).format('DD.MM.YYYY'):''} onChange={this.handleHarvest} onClick={this.toggleCalendar} required></input>:
+     <input placeholder='DATA ZASIEWU' value={this.state.start!=='' ? moment(this.state.start).format('DD.MM.YYYY'):''} onChange={this.handleStart} onClick={this.toggleCalendar} required></input>}
+
+     {this.state.showCalendar ?  <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection}/> : null}
+     <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
+       {mappedMicrogreens}
+         </select>
+         <select id="shelf-selection" name="shelf-selection" onChange={this.handleShelf} value={this.state.shelfID}>
+           {mappedShelves}
+         </select>
+         <input placeholder='ILE TAC?' value={this.state.trays} onChange={this.handleTrays} required></input>
+<textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
+       <button type='submit'>DODAJ</button>
+ {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) :'' }
+</form>;
+
   return (
     <div className='Crops'>
     <div id="addCrops">
-        <form className="" onSubmit={this.addCrops}>
-        <div><input type="radio" id="harvest-option" checked={this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label for="harvest-option">Data zbioru</label></div> 
-        <div><input type="radio" id="start-option" checked={!this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label for="start-option">Data zasiewu</label></div>
-            {this.state.showHarvestSim ? 
-            <input placeholder='DATA ZBIORU'  value={this.state.harvest!=='' ? moment(this.state.harvest).format('DD.MM.YYYY'):''} onChange={this.handleHarvest} onClick={this.toggleCalendar} required></input>:
-            <input placeholder='DATA ZASIEWU' value={this.state.start!=='' ? moment(this.state.start).format('DD.MM.YYYY'):''} onChange={this.handleStart} onClick={this.toggleCalendar} required></input>}
-
-            {this.state.showCalendar ?  <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection}/> : null}
-            <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
-              {mappedMicrogreens}
-                </select>
-                <select id="shelf-selection" name="shelf-selection" onChange={this.handleShelf} value={this.state.shelfID}>
-                  {mappedShelves}
-                </select>
-                <input placeholder='ILE TAC?' value={this.state.trays} onChange={this.handleTrays} required></input>
-<textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
-              <button type='submit'>Dodaj</button>
-        {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) :'' }
-      </form>
-
+{isMobile ?<div className="acfWrapper"><button onClick={()=>this.setState({showACF:!this.state.showACF})}>DODAJ ZASIEW</button>{this.state.showACF ?<div>{addCropForm}</div>:''}</div>:{addCropForm}}
     </div>
     <div id="crop-list">
       <div id="cropDateRange">
