@@ -4,6 +4,9 @@ import Calendar from './Calendar';
 import moment from 'moment';
 import { API_URL, request } from "./APIConnection";
 import Crop from './Crop';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarCheck,faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
+
 
 
 class Crops extends React.Component {
@@ -243,7 +246,8 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
       {this.state.showCalendarRange ?  <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection}/> : null}
     <table>
 <thead>
-<tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Półka</td><td>Tace</td><td>Notatki</td><td>X</td><td>Scheduled</td><td>Completed</td></tr>
+<tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Półka</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+</td><td><FontAwesomeIcon icon={faCheckToSlot} size="lg"/></td></tr>
 </thead>
       <tbody>
         {cropsTable}

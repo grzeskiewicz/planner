@@ -7,6 +7,8 @@ import Devices from './Devices';
 import { API_URL, request } from './APIConnection';
 import MonthView from './MonthView';
 import DayView from './DayView';
+import {isMobile} from 'react-device-detect';
+
 
 //TODO: poprawic renderowanie selectów, weekView, monthView, 
 class App extends React.Component {
@@ -98,10 +100,10 @@ render(){
     <div className="App">
       <div id="menu">
 <div id="add-crops-tab" onClick={this.showAddCropTab}><p>Zasiewy</p></div>
-<div id="crops-week-tab" onClick={this.showWeekTab}><p>Widok [Tydzień]</p></div>
-<div id="crops-month-tab" onClick={this.showMonthTab}><p>Widok [Miesiąc]</p></div>
+<div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]':'Widok [Tydzień]'}</p></div>
+<div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile?'[Msc]':'Widok [Miesiąc]'}</p></div>
 <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>Microgreens</p></div>
-<div id="microgreens-tab" onClick={this.showDevicesTab}><p>Menedżer urządzeń</p></div>
+<div id="microgreens-tab" onClick={this.showDevicesTab}><p>{isMobile ? 'Urządzenia': 'Menedżer urządzeń'}</p></div>
       </div>
       <div id="board">
 {this.state.microgreens !=='' && this.state.tab===0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} shelves={this.state.shelves} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop}></Crops>: null}

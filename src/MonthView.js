@@ -68,7 +68,7 @@ class MonthView extends React.Component {
     }
     return month.map((day,index)=> {
       const dayViewDate=JSON.parse(JSON.stringify(day));
-   return <div key={index} onClick={()=>this.showDayView(dayViewDate)}>{day.format('DD/MM')}</div>
+   return <div key={index} onClick={()=>this.showDayView(dayViewDate)}>{day.format('D')}</div>
   });
   }
 

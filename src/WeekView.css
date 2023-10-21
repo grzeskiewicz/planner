@@ -62,3 +62,13 @@ padding: 0.1rem;
     font-weight: 700;
 }
 
+@media screen and (max-width: 400px)  {
+#WeekView .filter div > *{
+    padding:0;
+    margin:0;
+}
+#WeekView .row, #WeekView .head, #WeekView .head-2{
+line-height:80%;
+}
+
+}

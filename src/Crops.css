@@ -105,7 +105,6 @@ border:none;
 @media screen and (max-width: 400px)  {
   .Crops{
     flex-flow:column;
-    width:85vw;
   }
   .Crops > * {
     font-size: 0.6rem;

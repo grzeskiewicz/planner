@@ -3,7 +3,9 @@ import React from "react";
 import moment from "moment";
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faCheckCircle,faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
+import {isMobile} from 'react-device-detect';
+
 
 const WATERING_API = 'http://192.168.2.5:3051';
 
@@ -219,20 +221,14 @@ class Crop extends React.Component {
             </div>
           ) : (
             <div className="cropNotesDisabled" onClick={this.triggerEditNotes}>
-              <textarea
-                rows="2"
-                onClick={this.triggerEditNotes}
-                type="text"
-    value={this.state.notes}
-    onChange={()=>{}}
-              ></textarea>
+            {isMobile ? 'Notatki': <textarea rows="2" onClick={this.triggerEditNotes} type="text" value={this.state.notes} onChange={()=>{}}></textarea>}
             </div>
           )}
         </td>
         <td onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
-        {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleWatering(crop)}>[Schedule]</td>}
+        {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleWatering(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg"/></td>}
         {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
       </tr>
     );
