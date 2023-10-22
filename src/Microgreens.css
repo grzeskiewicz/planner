@@ -81,13 +81,12 @@
     }
 
     .amfWrapper{
-      display: flex;
-      flex-flow:column wrap;
       flex:0 100%;
     }
 
     .amfWrapper button{
-      flex:0 100%;
+width:100%;
+height:30%;
     }
 
 

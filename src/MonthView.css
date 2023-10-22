@@ -153,6 +153,9 @@ padding: 0.1rem;
 display: flex;
 justify-content: flex-end;
   }
+  .switchWrapper p{
+    margin-right: 0.5rem;;
+  }
 
   .cropGrp.row:hover{
 border:3px solid #66B032;

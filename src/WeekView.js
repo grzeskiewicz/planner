@@ -91,7 +91,7 @@ const [mon,tue,wed,thu,fri,sat,sun]=[JSON.parse(JSON.stringify(weekNow.weekday(1
   return (
     <div id="WeekView">
 <div className='switchWrapper'>
-      <p>{this.state.toggleVal ? 'Microgreens':'Półki'}</p>
+      <p>{this.state.toggleVal ? 'MICROGREENS':'PÓŁKI'}</p>
       <label className='switch'>
   <input type="checkbox" onChange={this.toggleView}></input>
   <span className='slider-green'></span>

@@ -110,7 +110,7 @@ render(){
   return (
     <div id="MonthView">
       <div className='switchWrapper'>
-      <p>{this.state.toggleVal ? 'Microgreens':'Półki'}</p>
+      <p>{this.state.toggleVal ? 'MICROGREENS':'PÓŁKI'}</p>
       <label className='switch'>
   <input type="checkbox" onChange={this.toggleView}></input>
   <span className='slider-green'></span>
