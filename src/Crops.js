@@ -44,6 +44,7 @@ class Crops extends React.Component {
       this.setSelectedCrop=this.setSelectedCrop.bind(this);
       this.toggleCalendarRange=this.toggleCalendarRange.bind(this);
       this.renderRangeCropsTable=this.renderRangeCropsTable.bind(this);
+      this.hideCalendarRange=this.hideCalendarRange.bind(this);
   }
 
 
@@ -153,9 +154,9 @@ renderRangeCropsTable(){
   const to=this.state.cropDateTo;
   console.log(from,to);
   const rangeDateCrops=this.props.crops.filter((x)=> 
-  moment(x.start).isBefore(moment(from)) && moment(x.harvest).isAfter(moment(from)) ||
-  moment(x.start).isBefore(moment(to)) && moment(x.harvest).isAfter(moment(to)) ||
-  moment(x.start).isAfter(moment(from)) && moment(x.harvest).isBefore(moment(to)));
+  moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from)) ||
+  moment(x.start).isSameOrBefore(moment(to)) && moment(x.harvest).isSameOrAfter(moment(to)) ||
+  moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)));
 console.log(rangeDateCrops);
   this.calcDatesCrop(rangeDateCrops);
   return rangeDateCrops.map((crop, index) => {
@@ -191,6 +192,7 @@ handleRangeSelection(date){
     console.log(1);
     this.setState({cropDateTo:moment(date),clicks:0});
     this.renderRangeCropsTable();
+    this.hideCalendarRange();
     return;
   } else if (this.state.clicks===2) {console.log(2);this.setState({clicks:0});return;}
 }
@@ -202,7 +204,9 @@ toggleCalendar(){
 toggleCalendarRange(){
   //this.setState({showCalendarRange:!this.state.showCalendarRange});
   this.setState({showCalendarRange:true});
-
+}
+hideCalendarRange(){
+this.setState({showCalendarRange: false});
 }
 
 addCrops(event){
