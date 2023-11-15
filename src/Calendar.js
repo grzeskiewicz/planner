@@ -1,5 +1,6 @@
 import React from "react";
 import "./Calendar.css";
+import moment from 'moment';
 
 
 //TODO: generacja następnego roku!
@@ -27,7 +28,7 @@ class Calendar extends React.Component {
     super(props);
     this.handleDaySelection = this.handleDaySelection.bind(this);
     this.changeMonth=this.changeMonth.bind(this);
-    this.state = { dayClicked: '', selectedMonth: new Date().getMonth(), selectedYear: new Date().getFullYear() };
+    this.state = { dayClicked: '', selectedMonth: new Date().getMonth(), selectedYear: new Date().getFullYear() ,clicks:Number(0), cropDateFrom :moment().subtract(15, 'days'), cropDateTo: moment(),};
   }
 
 
@@ -87,8 +88,24 @@ class Calendar extends React.Component {
     return result;
   }
 
+
+  //TODO ustawic tutaj
   handleDaySelection(date) {
+   if(this.props.calendarType==="showCrops") {
+    if (this.state.clicks===0){
+      console.log(0);
+      this.setState({cropDateFrom: moment(date),clicks:1}); return;
+    } else if (this.state.clicks===1)  {
+      console.log(1);
+      this.setState({cropDateTo:moment(date),clicks:0});
+      return;
+    } //else if (this.state.clicks===2) {console.log(2);this.setState({clicks:0});return;}
+   } else {
     this.setState({ dayClicked: date });
+
+   }
+    //this.setState({cropDateFrom: moment(date),clicks:1}); return;
+
     this.props.handleDaySelection(date);
   }
 
@@ -131,11 +148,15 @@ if (selectedMonth===11) {
         (((day.date < new Date(weekAgo).setHours(0, 0, 0, 0))  && day.date.getDate() !== new Date(weekAgo).getDate()) || 
         (day.date < new Date(weekAgo).setHours(0, 0, 0, 0) && day.date!==new Date(weekAgo).setHours(0, 0, 0, 0)) ? true: false)
         : false;
-      
-
+let showCropsClassname;      
+    if (calendarType==="showCrops") {
+      console.log("TEST KLASY")
+      showCropsClassname=moment(day.date).set('hours',0).isSameOrBefore(moment(this.state.cropDateTo).set('hours',0)) && moment(day.date).set('hours',0).isSameOrAfter(moment(this.state.cropDateFrom).set('hours',0)) ? "InRange":''; 
+      console.log(showCropsClassname)
+    }
 
         let className =
-       unactive ? "unactive":'' + " " +
+       unactive ? "unactive": " " +
           (day.date.getMonth() === today.getMonth() &&
             day.date.getDate() === today.getDate()
             ? "today"
@@ -148,7 +169,7 @@ if (selectedMonth===11) {
           <div
             key={index2}
             date={day.date}
-            className={"day " + className}
+            className={"day " + className + " " + showCropsClassname}
             onClick={!unactive? () => this.handleDaySelection(day.date):null}
           >
             <p>{day.date.getDate()}</p>

@@ -89,4 +89,8 @@ display: block;
   #crops-month-tab{
 display: none;
   }
+
+  .filter{
+    font-size: 0.7rem;
+  }
 }

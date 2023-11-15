@@ -142,11 +142,14 @@ border:none;
   .Crops input {
     font-size:0.6rem;
   }
+
+  #addCrops {
+    display: block;
+  }
   
   #addCrops form  input, #addCrops form select {
     margin-bottom: 0;
     font-size:0.6rem;
-
   }
 
   .Crops textarea {
@@ -157,11 +160,15 @@ border:none;
   }
   .acfWrapper > button{
     width:100%;
-    height:30%;
+    height:10%;
   }
 
   .acfWrapper > div, {
     flex:0 100%;
+  }
+
+  .acf{
+    height: 90vh;
   }
 
   #addCrops .acfWrapper button{

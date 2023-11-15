@@ -1,6 +1,10 @@
   .unactive {
     background-color: gray;
   }
+
+  .InRange{
+    background-color: #f5821e;
+  }
     #calendar-wrapper {
       width:14vw;
     }

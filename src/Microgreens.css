@@ -63,7 +63,9 @@
     .Microgreens{
       display: flex;
       flex-flow:column nowrap;
+      justify-content: flex-start;
     }
+
     #addMicrogreens form  input{
    margin-bottom:4px; 
     }
@@ -98,5 +100,7 @@ height:30%;
     #microgreens-list {
       flex:0 90%;
     }
+
+    
 
   }

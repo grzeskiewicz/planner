@@ -24,7 +24,7 @@ class Crops extends React.Component {
         showCalendar:false,
         showCalendarRange:false,
         cropDateFrom :moment().subtract(15, 'days'),
-        cropDateTo: moment(),
+        cropDateTo: moment().add(15, 'days'),
         clicks:Number(0),
         showACF:false
       }
@@ -45,6 +45,8 @@ class Crops extends React.Component {
       this.toggleCalendarRange=this.toggleCalendarRange.bind(this);
       this.renderRangeCropsTable=this.renderRangeCropsTable.bind(this);
       this.hideCalendarRange=this.hideCalendarRange.bind(this);
+      this.handleDateFrom=this.handleDateFrom.bind(this);
+      this.handleDateTo=this.handleDateTo.bind(this);
   }
 
 
@@ -154,9 +156,10 @@ renderRangeCropsTable(){
   const to=this.state.cropDateTo;
   console.log(from,to);
   const rangeDateCrops=this.props.crops.filter((x)=> 
-  moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from)) ||
-  moment(x.start).isSameOrBefore(moment(to)) && moment(x.harvest).isSameOrAfter(moment(to)) ||
-  moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)));
+  //moment(x.start).isSameOrBefore(moment(to)) && moment(x.start).isSameOrAfter(moment(from)));
+(moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from))) ||
+ ( moment(x.start).isSameOrBefore(moment(to)) && moment(x.harvest).isSameOrAfter(moment(to))) ||
+  (moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to))));
 console.log(rangeDateCrops);
   this.calcDatesCrop(rangeDateCrops);
   return rangeDateCrops.map((crop, index) => {
@@ -201,13 +204,23 @@ toggleCalendar(){
   this.setState({showCalendar:!this.state.showCalendar});
 }
 
-toggleCalendarRange(){
+toggleCalendarRange(e){
+  e.preventDefault();
   //this.setState({showCalendarRange:!this.state.showCalendarRange});
   this.setState({showCalendarRange:true});
 }
 hideCalendarRange(){
 this.setState({showCalendarRange: false});
 }
+
+handleDateFrom(e){
+//this.setState({cropDateFrom: moment(e.target.value)})
+}
+
+handleDateTo(e){
+  //this.setState({cropDateTo: moment(e.target.value)})
+}
+
 
 addCrops(event){
   event.preventDefault();
@@ -273,12 +286,12 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
   return (
     <div className='Crops'>
     <div id="addCrops">
-{isMobile ?<div className="acfWrapper"><button onClick={()=>this.setState({showACF:!this.state.showACF})}>DODAJ ZASIEW</button>{this.state.showACF ?<div>{addCropForm}</div>:''}</div>:<div>{addCropForm}</div>}
+{isMobile ?<div className="acfWrapper"><button onClick={()=>this.setState({showACF:!this.state.showACF})}>DODAJ ZASIEW</button>{this.state.showACF ?<div className="acf">{addCropForm}</div>:''}</div>:<div>{addCropForm}</div>}
     </div>
     <div id="crop-list">
       <div id="cropDateRange">
-        <div><p>Od</p><input placeholder={this.state.cropDateFrom}  value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} required></input></div>
-        <div><p>Do</p><input placeholder={this.state.cropDateTo}  value={moment(this.state.cropDateTo).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} required></input></div>
+        <div><p>Od</p><input type="text" placeholder={this.state.cropDateFrom}  value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} onChange={this.handleDateFrom}  required></input></div>
+        <div><p>Do</p><input type="text" placeholder={this.state.cropDateTo}  value={moment(this.state.cropDateTo).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} onChange={this.handleDateTo}  required></input></div>
       </div>
       {this.state.showCalendarRange ?  <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection}/> : null}
     <table>
