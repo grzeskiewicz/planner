@@ -126,7 +126,7 @@ class Microgreens extends React.Component {
     const microgreensListTable = <div id="microgreens-list">
       <table>
         <thead>
-          <tr><td>Nazwa</td><td>Name</td><td>Taca[g]</td><td>{isMobile ? 'Opr.[ml]' : 'Opryskiwanie [ml]'}</td><td>{isMobile ? 'Nawodn.[ml]' : 'Nawodnienie [ml]'}</td><td>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</td><td>{isMobile ? 'Black.' : 'Blackout [dni]'}</td><td>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</td><td>Kolor</td></tr>
+          <tr><td>Nazwa</td><td>Name</td><td>Taca[g]</td><td>{isMobile ? 'Opr.[ml]' : 'Opryskiwanie [ml]'}</td><td>{isMobile ? 'Nawodn.[ml]' : 'Nawodnienie [ml]'}</td><td>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</td><td>{isMobile ? 'Black.' : 'Blackout [dni]'}</td><td>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</td><td>Całość [dni]</td><td>Kolor</td></tr>
         </thead>
         <tbody>
           {microgreensTable}

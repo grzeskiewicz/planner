@@ -78,6 +78,7 @@ flex-grow:1;
 }
 .monthCrops fieldset{
 padding: 0.1rem;
+border:none;
 }
 
 .monthCrops legend{

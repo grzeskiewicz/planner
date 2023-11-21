@@ -119,7 +119,7 @@ export function renderRowShelves(crops, microgreens, days, monthNow, weekNow, ch
         const isChecked = checkedItems.get(microgreen.name_pl);
 
         row.push(<Tooltip title={cropInfoRender(cropInfo, microgreen)}><div onClick={() => setSelectedCrop(cropInfo.id)} key={i} 
-        className={isChecked ? 'cropGrp row' : 'cropGrp row hidden'} style={{ backgroundImage: `linear-gradient(to right,white, ${microgreen.color})`, 'flexBasis': 100 / days * cropNow.cropDays.length + "%" }}>{grpRender}</div></Tooltip>);
+        className={isChecked ? 'cropGrp row' : 'cropGrp row hidden'} style={{ backgroundImage: `linear-gradient(to right,white,30%, ${microgreen.color})`, 'flexBasis': 100 / days * cropNow.cropDays.length + "%" }}>{grpRender}</div></Tooltip>);
       } else if (check) {
         continue;
       } else {
@@ -166,7 +166,7 @@ export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, 
     if (stage !== undefined && stage !== false) grp.push({ stage: stage, day: i });
     if (grp.length === 1) firstDayWithStage = i;
   }
-  const grpRender = grp.map((x, index) => <div className='dayRecordGrp' style={{ backgroundImage: x.stage !== false && x.stage !== undefined ? `linear-gradient(to right,white, ${microgreen.color})` : '', 'flexBasis': 100 / grp.length + "%" }} key={index}><div></div></div>);
+  const grpRender = grp.map((x, index) => <div className='dayRecordGrp' style={{ backgroundImage: x.stage !== false && x.stage !== undefined ? `linear-gradient(to right,white,30%, ${microgreen.color})` : '', 'flexBasis': 100 / grp.length + "%" }} key={index}><div></div></div>);
   for (let i = 1; i <= days; i++) {
     let stage;
     if (weekNow === null) {
@@ -179,11 +179,10 @@ export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, 
       const shelf = shelves.find((x) => x.id === crop.shelf_id);
 
 
-      row.push(<Tooltip title={cropInfoRender(crop, microgreen)}><div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' style={{ backgroundImage: `linear-gradient(to right,white, ${microgreen.color})`, 'flexBasis': 100 / days * grp.length + "%" }}>{grpRender}</div></Tooltip>);
+      row.push(<Tooltip title={cropInfoRender(crop, microgreen)}><div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': 100 / days * grp.length + "%" }}>{grpRender}</div></Tooltip>);
     } else if (firstDayWithStage !== i && stage !== undefined && stage !== false) {
       continue;
     } else {
-      row.push(<div className='dayRecord' style={{ backgroundImage: stage !== false && stage !== undefined ? `linear-gradient(to right,white, ${microgreen.color})` : '' }} key={i}><div></div></div>);
     }
   }
 
