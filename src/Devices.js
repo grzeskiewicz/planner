@@ -75,6 +75,7 @@ render(){
          </select>
          <p>Czas nawadniania [s]:</p>
          <input type="text" value={this.state.durationl} onChange={this.handleDuration}></input>
+         <button type='submit'>Start</button>
     </form>
     </div>
   <Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
