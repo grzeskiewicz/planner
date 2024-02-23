@@ -30,7 +30,7 @@ componentDidMount(){
 
 runValve(e){
   e.preventDefault();
-  if (Number(this.state.duration).isInteger()) {alert("Not a number!"); return;}
+  if (Number.isInteger(this.state.duration)) {alert("Not a number!"); return;}
   this.setState({isDisabled:true});
   fetch(request(`${RACK_URL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
   .then((res) => res.json())
