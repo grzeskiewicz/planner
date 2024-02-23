@@ -1,7 +1,7 @@
 import './Devices.css';
 import React from 'react';
 import Device from './Device';
-import {request,API_URL} from "./APIConnection";
+import {request} from "./APIConnection";
 const RACK_URL='192.168.2.5'
 
 class Devices extends React.Component {
@@ -31,7 +31,7 @@ componentDidMount(){
 
 runValve(){
   this.setState({isDisabled:true});
-  fetch(request(`${API_URL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
+  fetch(request(`${RACK_URL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
   .then((res) => res.json())
   .then((result) => {
     this.setState({isDisabled:false});
