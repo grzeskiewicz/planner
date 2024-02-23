@@ -75,7 +75,7 @@ render(){
          <option value="15">15</option>
          <option value="16">16</option>
          </select>
-         <p>Czas nawadniania [s]:</p>
+         <p>Czas otwarcia [s]:</p>
          <input type="text" value={this.state.duration} onChange={this.handleDuration}></input>
          <button disabled={this.state.isDisabled} type='submit'>Start</button>
     </form>
