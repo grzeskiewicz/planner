@@ -22,7 +22,6 @@ handleValve(e){
 }
 
 handleDuration(e){
-  if (e.target.value.isInteger()) {alert("Not a number!"); return;}
   this.setState({valve:e.target.value})
 }
 
@@ -31,6 +30,7 @@ componentDidMount(){
 
 runValve(e){
   e.preventDefault();
+  if (Number(this.state.duration).isInteger()) {alert("Not a number!"); return;}
   this.setState({isDisabled:true});
   fetch(request(`${RACK_URL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
   .then((res) => res.json())
@@ -75,7 +75,7 @@ render(){
          <option value="16">16</option>
          </select>
          <p>Czas nawadniania [s]:</p>
-         <input type="text" value={this.state.durationl} onChange={this.handleDuration}></input>
+         <input type="text" value={this.state.duration} onChange={this.handleDuration}></input>
          <button type='submit'>Start</button>
     </form>
     </div>
