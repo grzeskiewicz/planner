@@ -50,7 +50,7 @@ alert("Nawodniono");
 
 //getFanState(shelf){}
 
-
+//  <Device name='LAMPS' port='3070' socketPort=''></Device>
 render(){
   return (
 <div className='Devices'>
@@ -80,7 +80,6 @@ render(){
     </form>
     </div>
   <Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
-  <Device name='LAMPS' port='3070' socketPort=''></Device>
 </div>);}
 }
 
