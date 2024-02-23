@@ -22,7 +22,7 @@ handleValve(e){
 }
 
 handleDuration(e){
-  this.setState({valve:e.target.value})
+  this.setState({duration:e.target.value})
 }
 
 componentDidMount(){
