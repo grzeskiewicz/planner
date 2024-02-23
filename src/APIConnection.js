@@ -2,7 +2,6 @@ export const API_URL='http://192.168.2.3:3001';
 export const headers = new Headers({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin':'*'
 });
 
 
@@ -13,6 +12,15 @@ export function request(url, method, dataset) {
         mode: 'cors',
         body: JSON.stringify(dataset)
     });
+}
+
+export function request2(url, method, dataset) {
+  return new Request(url, {
+      method: method,
+      headers: headers,
+      mode: 'no-cors',
+      body: JSON.stringify(dataset)
+  });
 }
 
 export async function pingCheck(ip,port){

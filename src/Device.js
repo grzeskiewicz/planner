@@ -1,6 +1,6 @@
 import './Devices.css';
 import React from 'react';
-import {pingCheck,request} from "./APIConnection";
+import {pingCheck,request,request2} from "./APIConnection";
 const RACK_URL='192.168.2.5'
 
 
@@ -23,13 +23,13 @@ async checkStatus(){
 }
 
 resetDevice(ip,port){
-    fetch(request(`http://${ip}/cm?cmnd=Power%20off`, "GET"))
+    fetch(request2(`http://${ip}/cm?cmnd=Power%20off`, "GET"))
   .then((res) => res.json())
   .then((result) => {
     console.log(result)
     if (result.POWER === "OFF") {
     setTimeout(() => {
-        fetch(request(`http://${ip}/cm?cmnd=Power%20off`, "GET"))
+        fetch(request2(`http://${ip}/cm?cmnd=Power%20off`, "GET"))
         .then((res) => res.json())
         .then((result2) => {
             this.checkStatus();
