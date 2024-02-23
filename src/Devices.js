@@ -22,7 +22,7 @@ handleValve(e){
 }
 
 handleDuration(e){
-  if (e.target.value.isNaN()) {alert("Not a number!"); return;}
+  if (e.target.value.isInteger()) {alert("Not a number!"); return;}
   this.setState({valve:e.target.value})
 }
 
