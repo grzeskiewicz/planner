@@ -9,7 +9,7 @@ class Device extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        status: 'checking'
+        status: 'checking',
       }
       this.checkStatus=this.checkStatus.bind(this);
 }
@@ -38,6 +38,8 @@ resetDevice(ip,port){
     }
     }).catch((error) => Promise.reject(new Error(error)));
 }
+
+
 
 
 render(){
