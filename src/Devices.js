@@ -2,7 +2,7 @@ import './Devices.css';
 import React from 'react';
 import Device from './Device';
 import {request} from "./APIConnection";
-const RACK_URL='192.168.2.5'
+const RACK_URL='http://192.168.2.5:3051'
 
 class Devices extends React.Component {
   constructor(props) {
