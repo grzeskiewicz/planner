@@ -54,6 +54,7 @@ alert("Nawodniono");
 render(){
   return (
 <div className='Devices'>
+<Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
   <div><form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
   <p>Elektrozawór:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
@@ -76,10 +77,9 @@ render(){
          </select>
          <p>Czas nawadniania [s]:</p>
          <input type="text" value={this.state.duration} onChange={this.handleDuration}></input>
-         <button type='submit'>Start</button>
+         <button disabled={this.state.isDisabled} type='submit'>Start</button>
     </form>
     </div>
-  <Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
 </div>);}
 }
 
