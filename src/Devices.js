@@ -1,8 +1,7 @@
 import './Devices.css';
 import React from 'react';
 import Device from './Device';
-import {request} from "./APIConnection";
-import { isDisabled } from '@testing-library/user-event/dist/utils';
+import {request,API_URL} from "./APIConnection";
 const RACK_URL='192.168.2.5'
 
 class Devices extends React.Component {
