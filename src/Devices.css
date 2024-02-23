@@ -7,3 +7,8 @@ flex-flow:column;
 display: flex;
 flex-flow:row nowrap;
 }
+
+.runValveForm{
+    display: flex;
+    flex-flow:column;
+}

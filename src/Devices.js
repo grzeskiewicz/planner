@@ -53,7 +53,7 @@ alert("Nawodniono");
 render(){
   return (
 <div className='Devices'>
-  <div><form disabled={this.state.isDisabled} className="" onSubmit={this.runValve}>
+  <div><form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
   <p>Elektrozawór:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
          <option value="1">1</option>
