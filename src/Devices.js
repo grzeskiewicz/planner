@@ -29,7 +29,8 @@ handleDuration(e){
 componentDidMount(){
 }
 
-runValve(){
+runValve(e){
+  e.preventDefault();
   this.setState({isDisabled:true});
   fetch(request(`${RACK_URL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
   .then((res) => res.json())
