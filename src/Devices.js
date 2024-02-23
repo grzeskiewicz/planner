@@ -70,7 +70,7 @@ alert("Nawodniono");
 render(){
   return (
 <div className='Devices'>
-<Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
+<Device name='ORANGE PI' port='3051' socketPort='3069' socketIP='192.168.2.10'></Device>
   <div><form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
   <p>Elektrozawór:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
