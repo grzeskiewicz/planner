@@ -76,7 +76,7 @@ render(){
          <option value="16">16</option>
          </select>
          <p>Czas otwarcia [s]:</p>
-         <input type="text" value={this.state.duration} onChange={this.handleDuration} pattern="\d{1,3}"></input>
+         <input type="text" value={this.state.duration} onChange={this.handleDuration} pattern="[0-9]{1,3}"></input>
          <button disabled={this.state.isDisabled} type='submit'>Start</button>
     </form>
     </div>
