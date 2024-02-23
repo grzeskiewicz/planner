@@ -14,12 +14,10 @@ export function request(url, method, dataset) {
     });
 }
 
-export function request2(url, method, dataset) {
+export function request2(url, method) {
   return new Request(url, {
       method: method,
-      headers: headers,
-      mode: 'no-cors',
-      body: JSON.stringify(dataset)
+      mode: 'cors'
   });
 }
 

@@ -1,6 +1,7 @@
 import './Devices.css';
 import React from 'react';
 import {pingCheck,request,request2} from "./APIConnection";
+import axios from 'axios';
 const RACK_URL='192.168.2.5'
 
 
@@ -23,21 +24,42 @@ async checkStatus(){
 }
 
 resetDevice(ip,port){
+  axios.get(`http://${ip}/cm?cmnd=Power%20off`)
+    .then((response) => {
+console.log(response);
+setTimeout(() => {
+  axios.get(`http://${ip}/cm?cmnd=Power%20on`)
+  .then((result2) => {
+      this.checkStatus();
+  }).catch((error2) => {
+    console.log(error2);
+  });
+}, 5000);
+
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+ /* console.log(`http://${ip}/cm?cmnd=Power%20off`);
     fetch(request2(`http://${ip}/cm?cmnd=Power%20off`, "GET"))
-  .then((res) => res.json())
+  //.then((res) => res.json())
   .then((result) => {
     console.log(result)
-    if (result.POWER === "OFF") {
+    }).catch((error) => Promise.reject(new Error(error)));
+}*/
+
+/*
+    if (result.POWER == "OFF") {
     setTimeout(() => {
-        fetch(request2(`http://${ip}/cm?cmnd=Power%20off`, "GET"))
+        fetch(request2(`http://${ip}/cm?cmnd=Power%20on`, "GET"))
         .then((res) => res.json())
         .then((result2) => {
             this.checkStatus();
         })
       }, 5000);
     }
-    }).catch((error) => Promise.reject(new Error(error)));
-}
+*/
 
 
 
