@@ -51,18 +51,9 @@ alert("Nawodniono");
 //getFanState(shelf){}
 
 //  <Device name='LAMPS' port='3070' socketPort=''></Device>
-render(){
-  return (
-<div className='Devices'>
-<Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
-  <div><form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
-  <p>Elektrozawór:</p>
-  <select value={this.state.valve} onChange={this.handleValve} required>
-         <option value="1">1</option>
-         <option value="2">2</option>
-         <option value="3">3</option>
-         <option value="4">4</option>
-         <option value="5">5</option>
+
+/*
+        <option value="5">5</option>
          <option value="6">6</option>
          <option value="7">7</option>
          <option value="8">8</option>
@@ -74,6 +65,19 @@ render(){
          <option value="14">14</option>
          <option value="15">15</option>
          <option value="16">16</option>
+
+*/
+render(){
+  return (
+<div className='Devices'>
+<Device name='ORANGE PI' port='3051' socketPort='3069'></Device>
+  <div><form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
+  <p>Elektrozawór:</p>
+  <select value={this.state.valve} onChange={this.handleValve} required>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
          </select>
          <p>Czas otwarcia [s]:</p>
          <input type="number" value={this.state.duration} onChange={this.handleDuration}></input>
