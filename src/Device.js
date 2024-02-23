@@ -29,9 +29,9 @@ resetDevice(ip,port){
     console.log(result)
     if (result.POWER === "OFF") {
     setTimeout(() => {
-        fetch(request(`${ip}:${port}/cm?cmnd=Power%20on`, "GET"))
+        fetch(request(`http://${ip}:${port}/cm?cmnd=Power%20off`, "GET"))
         .then((res) => res.json())
-        .then((result) => {
+        .then((result2) => {
             this.checkStatus();
         })
       }, 5000);
