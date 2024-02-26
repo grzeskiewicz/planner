@@ -26,6 +26,7 @@ resetDevice(){
   fetch(request(`${API_URL}/resetorangepi`, 'GET'))
     .then(res => res.json())
     .then(result => { 
+      console.log(result);
       if (result.success=="true") {
         setTimeout(() => this.checkStatus, 60);
       } else{
