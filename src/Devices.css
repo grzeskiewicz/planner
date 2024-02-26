@@ -12,3 +12,31 @@ flex-flow:row nowrap;
     display: flex;
     flex-flow:column;
 }
+
+
+@media screen and (max-width: 400px)  {
+.Device{
+    flex-flow:column;
+    flex:0 100%;
+}
+
+.Devices{
+    flex:0 100%;
+}
+
+.DeviceInfo{
+    flex:0 30%;
+}
+
+.runValveForm{
+    flex:0 70%;
+    justify-content:stretch;
+}
+
+.runValveForm >*{
+    flex:0 10%;
+    text-align: center;
+}
+
+
+}
