@@ -10,8 +10,11 @@ class Device extends React.Component {
       super(props);
       this.state = {
         status: 'checking',
+        progress:0,
+        reset:0
       }
       this.checkStatus=this.checkStatus.bind(this);
+      this.showProgress=this.showProgress.bind(this);
 }
 
 componentDidMount(){
@@ -21,16 +24,23 @@ componentDidMount(){
 async checkStatus(){
     this.setState({status:await pingCheck(RACK_URL,this.props.port)});
 }
+showProgress(i){
+this.setState({progress: 2*i});
+}
 
 resetDevice(){
+  this.setState({reset:1,status:'reseting'});
   fetch(request(`${API_URL}/resetorangepi`, 'GET'))
     .then(res => res.json())
     .then(result => { 
       console.log(result);
-      if (result.success=="true") {
-        setTimeout(() => this.checkStatus, 60);
+      if (result.success) {
+        for (i=0;i<100;i++){
+          setTimeout(() => this.showProgress(i), 1000);
+        }
+        setTimeout(() => this.checkStatus, 100*1000);
       } else{
-alert("Nie można zresetować OrangePI");
+      alert("Nie można zresetować OrangePI");
       }
     }).catch(error => Promise.reject(new Error(error))); 
   }
@@ -44,6 +54,7 @@ render(){
   return (
 <div className='Device'>
    <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active"? <button onClick={()=>this.resetDevice()}>Reset</button>:''}
+   {this.state.reset===1? <p>{this.state.progress}%</p>:''}
 </div>);}
 }
 
