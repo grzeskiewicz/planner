@@ -35,7 +35,7 @@ resetDevice(){
     .then(result => { 
       console.log(result);
       if (result.success) {
-        for (i=0;i<100;i++){
+        for (let i=0;i<100;i++){
           setTimeout(() => this.showProgress(i), 1000);
         }
         setTimeout(() => this.checkStatus, 100*1000);
