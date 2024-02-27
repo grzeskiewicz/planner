@@ -12,25 +12,32 @@ class Device extends React.Component {
         reset:0,
         valve:1,
         duration:10,
-        isDisabled:false
+        isDisabled:false,
+        info:''
       }
+      this.checkPIStatus=this.checkPIStatus.bind(this);
       this.checkStatus=this.checkStatus.bind(this);
       this.resetDevice=this.resetDevice.bind(this);
 
       this.runValve=this.runValve.bind(this);
       this.handleValve=this.handleValve.bind(this);
       this.handleDuration=this.handleDuration.bind(this);
+      this.getSocketInfo=this.getSocketInfo.bind(this);
 }
 
 
 componentDidMount(){
-    this.checkStatus();
+   this.props.name==="ORANGEPI" ? this.checkPIStatus():this.checkStatus();
+   this.getSocketInfo();
 }
 
-async checkStatus(){
+async checkPIStatus(){
     this.setState({status:await pingCheck(RACK_URL,this.props.port)});
 }
 
+async checkStatus(){
+  this.setState({status:await pingCheck(this.props.socketIP,this.props.port)});
+}
 
 resetDevice(){
   this.setState({reset:1,status:'reseting'});
@@ -46,7 +53,7 @@ resetDevice(){
         i++;
         if (i===100) {
           clearInterval(interval);
-          this.checkStatus();
+          this.checkPIStatus();
           this.setState({reset:0});
         }
       }, 1000);
@@ -54,6 +61,37 @@ resetDevice(){
       alert("Nie można zresetować OrangePI");
       }
     }).catch(error => Promise.reject(new Error(error))); 
+  }
+
+  turnSocketON(){
+    fetch(request(`${API_URL}/turnon`, "POST", {ip:this.props.socketIP}))
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+
+    })
+    .catch((error) => Promise.reject(new Error(error)));
+  }
+
+  turnSocketOFF(){
+    fetch(request(`${API_URL}/turnoff`, "POST", {ip:this.props.socketIP}))
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result);
+      // this.getSocketInfo();
+    })
+    .catch((error) => Promise.reject(new Error(error)));
+  }
+
+
+  getSocketInfo(){
+    fetch(request(`${API_URL}/getsocketinfo`, "POST", {ip:this.props.socketIP}))
+    .then((res) => res.json())
+    .then((result) => {
+      console.log(result.data.Status.Power);
+this.setState({info:result.data.Status});
+    })
+    .catch((error) => Promise.reject(new Error(error)));   
   }
 
 
@@ -103,10 +141,14 @@ render(){
   return (
 <div className='Device'>
   <div className='DeviceInfo'>
-   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active"? <button onClick={()=>this.resetDevice()}>Reset</button>:''}
+   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active" && this.props.name==="ORANGEPI" ? <button onClick={()=>this.resetDevice()}>Reset</button>:''}
    {this.state.reset===1? <p>{this.state.progress}%</p>:''}
+   <p>SOCKET POWER STATUS: {this.state.info!=='' && this.state.info.Power===1 ? "ON":"OFF" }</p>
+   <button onClick={this.turnSocketOFF}>OFF</button>
+   <button onClick={this.turnSocketON}>ON</button>
    </div>
-   {this.state.status==="active" ? 
+
+   {this.state.status=== "active" && this.props.name==="ORANGEPI" ? 
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
   <p>Elektrozawór:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>

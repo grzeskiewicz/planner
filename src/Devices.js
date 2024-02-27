@@ -25,7 +25,8 @@ componentDidMount(){
 render(){
   return (
 <div className='Devices'>
-<Device name='ORANGE PI' port='3051' socketPort='3069' socketIP='192.168.2.10'></Device>
+<Device name='ORANGEPI' port='3051' socketPort='3069' socketIP='192.168.2.10'></Device>
+<Device name='LAMPS' port='80' socketPort='3069' socketIP='192.168.2.12'></Device>
   <div>
   </div>
 </div>);}
