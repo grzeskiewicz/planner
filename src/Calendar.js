@@ -28,7 +28,7 @@ class Calendar extends React.Component {
     super(props);
     this.handleDaySelection = this.handleDaySelection.bind(this);
     this.changeMonth=this.changeMonth.bind(this);
-    this.state = { dayClicked: '', selectedMonth: new Date().getMonth(), selectedYear: new Date().getFullYear() ,clicks:Number(0), cropDateFrom :moment().subtract(15, 'days'), cropDateTo: moment(),};
+    this.state = { dayClicked: '', selectedMonth: new Date().getMonth(), selectedYear: new Date().getFullYear() ,clicks:Number(0), cropDateFrom :moment(), cropDateTo: moment().add(15, 'days')};
   }
 
 
@@ -94,19 +94,20 @@ class Calendar extends React.Component {
    if(this.props.calendarType==="showCrops") {
     if (this.state.clicks===0){
       console.log(0);
+      this.props.handleDaySelection(date,this.state.clicks,moment(date),'');
       this.setState({cropDateFrom: moment(date),clicks:1}); return;
     } else if (this.state.clicks===1)  {
       console.log(1);
+      this.props.handleDaySelection(date,this.state.clicks,this.state.cropDateFrom,moment(date));
       this.setState({cropDateTo:moment(date),clicks:0});
       return;
     } //else if (this.state.clicks===2) {console.log(2);this.setState({clicks:0});return;}
    } else {
+    this.props.handleDaySelection(date,this.state.clicks,this.state.cropDateFrom,this.state.cropDateTo);
     this.setState({ dayClicked: date });
-
    }
     //this.setState({cropDateFrom: moment(date),clicks:1}); return;
 
-    this.props.handleDaySelection(date);
   }
 
   changeMonth(event,val) {
@@ -150,9 +151,9 @@ if (selectedMonth===11) {
         : false;
 let showCropsClassname;      
     if (calendarType==="showCrops") {
-      console.log("TEST KLASY")
+    //  console.log("TEST KLASY")
       showCropsClassname=moment(day.date).set('hours',0).isSameOrBefore(moment(this.state.cropDateTo).set('hours',0)) && moment(day.date).set('hours',0).isSameOrAfter(moment(this.state.cropDateFrom).set('hours',0)) ? "InRange":''; 
-      console.log(showCropsClassname)
+      //console.log(showCropsClassname)
     }
 
         let className =

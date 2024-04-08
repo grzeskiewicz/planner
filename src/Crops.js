@@ -23,10 +23,11 @@ class Crops extends React.Component {
         showHarvestSim:true,
         showCalendar:false,
         showCalendarRange:false,
-        cropDateFrom :moment().subtract(15, 'days'),
+        cropDateFrom :moment(),
         cropDateTo: moment().add(15, 'days'),
         clicks:Number(0),
-        showACF:false
+        showACF:false,
+        showAllCrops:false
       }
       this.handleMicrogreens = this.handleMicrogreens.bind(this);
       this.handleShelf = this.handleShelf.bind(this);
@@ -45,8 +46,8 @@ class Crops extends React.Component {
       this.toggleCalendarRange=this.toggleCalendarRange.bind(this);
       this.renderRangeCropsTable=this.renderRangeCropsTable.bind(this);
       this.hideCalendarRange=this.hideCalendarRange.bind(this);
-      this.handleDateFrom=this.handleDateFrom.bind(this);
-      this.handleDateTo=this.handleDateTo.bind(this);
+     // this.handleDateFrom=this.handleDateFrom.bind(this);
+     // this.handleDateTo=this.handleDateTo.bind(this);
   }
 
 
@@ -96,7 +97,7 @@ toggleSimulation(){
   this.setState({showHarvestSim:!this.state.showHarvestSim,harvest:'',start:''});
 }
 makeSimulation(microgreen){
-  console.log(microgreen)
+ // console.log(microgreen)
   if (this.state.harvest!=='') {
  const lightExposureStart=moment(this.state.harvest).subtract(microgreen.light, "days");
  const blackoutStart=moment(lightExposureStart).subtract(microgreen.blackout, "days");
@@ -133,7 +134,7 @@ calcDatesCrop(crops){
  }
 
  setSelectedCrop(id){
-  console.log(id);
+  //console.log(id);
   this.setState({selectedCrop:id});
  }
 
@@ -155,14 +156,19 @@ renderRangeCropsTable(){
   const from=this.state.cropDateFrom;
   const to=this.state.cropDateTo;
   console.log(from,to);
-  const rangeDateCrops=this.props.crops.filter((x)=> 
-  //moment(x.start).isSameOrBefore(moment(to)) && moment(x.start).isSameOrAfter(moment(from)));
-(moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from))) ||
+  const cropsDates=JSON.parse(JSON.stringify(this.props.crops));
+  this.calcDatesCrop(cropsDates);
+  console.log(cropsDates);
+  const rangeDateCrops=cropsDates.filter((x)=> 
+  (moment(x.harvest).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)))
+ || (moment(x.start).isSameOrAfter(moment(from)) && moment(x.start).isSameOrBefore(moment(to))));
+/*(moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from))) ||
  ( moment(x.start).isSameOrBefore(moment(to)) && moment(x.harvest).isSameOrAfter(moment(to))) ||
-  (moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to))));
+  (moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to))));*/
 console.log(rangeDateCrops);
-  this.calcDatesCrop(rangeDateCrops);
   return rangeDateCrops.map((crop, index) => {
+  //  console.log(moment(crop.harvest),moment(crop.start));
+  //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
     const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
     const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
 return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} shelfData={shelfData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
@@ -172,7 +178,6 @@ return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} mi
 
 
 renderAllCropsTable(){
-  //filter here?
   this.calcDatesCrop(this.props.crops);
   return this.props.crops.map((crop, index) => {
     const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
@@ -186,18 +191,18 @@ handleDaySelection(date){
   this.state.showHarvestSim ?this.setState({harvest:date,showCalendar:false}):this.setState({start:date,showCalendar:false});
 }
 
-handleRangeSelection(date){
-
-  if (this.state.clicks===0){
+handleRangeSelection(date,clicks,from,to){
+console.log(date)
+  if (clicks===0){
     console.log(0);
-    this.setState({cropDateFrom: moment(date),clicks:1}); return;
-  } else if (this.state.clicks===1)  {
+    this.setState({cropDateFrom: from,cropDateTo:''}); return;
+  } else if (clicks===1)  {
     console.log(1);
-    this.setState({cropDateTo:moment(date),clicks:0});
+    this.setState({cropDateTo:to});
     this.renderRangeCropsTable();
     this.hideCalendarRange();
     return;
-  } else if (this.state.clicks===2) {console.log(2);this.setState({clicks:0});return;}
+  }
 }
 
 toggleCalendar(){
@@ -212,14 +217,14 @@ toggleCalendarRange(e){
 hideCalendarRange(){
 this.setState({showCalendarRange: false});
 }
-
+/*
 handleDateFrom(e){
-//this.setState({cropDateFrom: moment(e.target.value)})
+this.setState({cropDateFrom: moment(e.target.value)})
 }
 
 handleDateTo(e){
-  //this.setState({cropDateTo: moment(e.target.value)})
-}
+  this.setState({cropDateTo: moment(e.target.value)})
+}*/
 
 
 addCrops(event){
@@ -235,7 +240,7 @@ notes:this.state.notes
 fetch(request(`${API_URL}/addcrops`, "POST", crop))
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
+    //  console.log(result);
       if (result.success) {
         this.props.refreshCrops();
       } else {
@@ -249,6 +254,7 @@ fetch(request(`${API_URL}/addcrops`, "POST", crop))
 render(){
   let cropsTable;
   if (this.props.crops!=='') cropsTable=this.renderRangeCropsTable();
+  const allCrops=this.renderAllCropsTable();
 const  mappedMicrogreens= this.renderMicrogreensSelection();
  const mappedShelves= this.renderShelvesSelection();
  const selectedMicrogreens=Number(this.state.microgreensID)!==99 ? this.props.microgreens.find((x)=> x.id===Number(this.state.microgreensID)): '' ;
@@ -281,7 +287,7 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
        <button type='submit'>DODAJ</button>
  {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) :'' }
 </form>;
-    console.log(this.state);
+   // console.log(this.state);
 
   return (
     <div className='Crops'>
@@ -289,9 +295,10 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
 {isMobile ?<div className="acfWrapper"><button onClick={()=>this.setState({showACF:!this.state.showACF})}>DODAJ ZASIEW</button>{this.state.showACF ?<div className="acf">{addCropForm}</div>:''}</div>:<div>{addCropForm}</div>}
     </div>
     <div id="crop-list">
+    {this.state.showAllCrops ? <div id="allCrops">{allCrops}</div>:<button onClick={()=>this.setState({showAllCrops:true})}>Wszystkie rekordy</button>}
       <div id="cropDateRange">
-        <div><p>Od</p><input type="text" placeholder={this.state.cropDateFrom}  value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} onChange={this.handleDateFrom}  required></input></div>
-        <div><p>Do</p><input type="text" placeholder={this.state.cropDateTo}  value={moment(this.state.cropDateTo).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange} onChange={this.handleDateTo}  required></input></div>
+        <div><p>Od</p><input type="text"   value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange}></input></div>
+        <div><p>Do</p><input type="text"   value={moment(this.state.cropDateTo).format('DD.MM.YYYY')}  onClick={this.toggleCalendarRange}></input></div>
       </div>
       {this.state.showCalendarRange ?  <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection}/> : null}
     <table>
