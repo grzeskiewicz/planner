@@ -7,116 +7,133 @@ import Devices from './Devices';
 import { API_URL, request } from './APIConnection';
 import MonthView from './MonthView';
 import DayView from './DayView';
-import {isMobile} from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 
 //TODO: poprawic renderowanie selectów, weekView, monthView, 
 class App extends React.Component {
   constructor(props) {
-      super(props);
-      this.state = {
-        microgreens:'', 
-        crops:'',
-        shelves:'',
-        selectedDay:false,
-        markedCrop:''
-      }
-      this.showMicrogreensTab=this.showMicrogreensTab.bind(this);
-      this.showAddCropTab=this.showAddCropTab.bind(this);
-      this.showWeekTab=this.showWeekTab.bind(this);
-      this.showMonthTab=this.showMonthTab.bind(this);
-      this.showDevicesTab=this.showDevicesTab.bind(this);
-      this.setSelectedDay=this.setSelectedDay.bind(this);
-      this.getCrops=this.getCrops.bind(this);
-      this.getMicrogreens=this.getMicrogreens.bind(this);
-      this.setSelectedCrop=this.setSelectedCrop.bind(this);
+    super(props);
+    this.state = {
+      microgreens: '',
+      crops: '',
+      selectedDay: false,
+      markedCrop: '',
+      trays: ''
+    }
+    this.showMicrogreensTab = this.showMicrogreensTab.bind(this);
+    this.showAddCropTab = this.showAddCropTab.bind(this);
+    this.showWeekTab = this.showWeekTab.bind(this);
+    this.showMonthTab = this.showMonthTab.bind(this);
+    this.showDevicesTab = this.showDevicesTab.bind(this);
+    this.setSelectedDay = this.setSelectedDay.bind(this);
+    this.getCrops = this.getCrops.bind(this);
+    this.getMicrogreens = this.getMicrogreens.bind(this);
+    this.setSelectedCrop = this.setSelectedCrop.bind(this);
+    this.getTrayDateCrops = this.getTrayDateCrops.bind(this);
+    this.getTrays = this.getTrays.bind(this);
   }
 
-  componentDidMount(){
-    this.getMicrogreens().then((microgreens=>{
-this.getShelves().then((shelves)=>{
-  this.getCrops().then((crops)=>{
-this.setState({shelves:shelves}); 
-})
-})
+  componentDidMount() {
+    this.getMicrogreens().then((microgreens => {
+      this.getCrops().then((crops) => {
+        this.getTrays().then((trays) => {
+          this.getTrayDateCrops().then((crops) => {
+            console.log("Dane pobrane z bazy");
+          });
+        })
+      })
     }));
   }
 
 
-  getMicrogreens(){
-     return fetch(request(`${API_URL}/microgreens`, 'GET'))
-    .then(res => res.json())
-    .then(result => { 
-      this.setState({microgreens:result});
-      return result;}).catch(error => Promise.reject(new Error(error))); 
+  getMicrogreens() {
+    return fetch(request(`${API_URL}/microgreens`, 'GET'))
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ microgreens: result });
+        return result;
+      }).catch(error => Promise.reject(new Error(error)));
   }
-  
-  getShelves(){
-  return fetch(request(`${API_URL}/shelves`, 'GET'))
-    .then(res => res.json())
-    .then(result =>result).catch(error => Promise.reject(new Error(error))); 
+
+  getTrays() {
+    return fetch(request(`${API_URL}/trays`, 'GET'))
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ trays: result });
+        return result;
+      });
   }
 
   getCrops() {
-  return fetch(request(`${API_URL}/crops`, 'GET'))
+    return fetch(request(`${API_URL}/crops`, 'GET'))
       .then(res => res.json())
       .then(result => {
-        this.setState({crops:result});
+        this.setState({ crops: result });
         return result;
-    
-    }); 
+      });
   }
-showMicrogreensTab(){
-this.setState({tab:3});
-}
 
-showAddCropTab(){
-  this.setState({tab:0});
-}
+  getTrayDateCrops() {
+    return fetch(request(`${API_URL}/traydatecrops`, 'GET'))
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ traydatecrops: result });
+        return result;
 
-showWeekTab(){
-  this.setState({tab:1});
-}
+      });
+  }
+  showMicrogreensTab() {
+    this.setState({ tab: 3 });
+  }
 
-showMonthTab(){
-  this.setState({tab:2});
-}
+  showAddCropTab() {
+    this.setState({ tab: 0 });
+  }
 
-showDevicesTab(){
-  this.setState({tab:4});
-}
+  showWeekTab() {
+    this.setState({ tab: 1 });
+  }
 
-setSelectedDay(day){
-  console.log(day);
-  this.setState({selectedDay:day});
-}
+  showMonthTab() {
+    this.setState({ tab: 2 });
+  }
 
-setSelectedCrop(crop){
-  this.setState({markedCrop:crop,tab:0});
-}
+  showDevicesTab() {
+    this.setState({ tab: 4 });
+  }
 
-render(){
-  return (
-    <div className="App">
-      <div id="menu">
-<div id="add-crops-tab" onClick={this.showAddCropTab}><p>ZASIEWY</p></div>
-<div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]':'Widok [TYDZIEŃ]'}</p></div>
-<div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile?'[MSC]':'WIDOK [MIESIĄC]'}</p></div>
-<div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
-<div id="microgreens-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
+  setSelectedDay(day) {
+    console.log(day);
+    this.setState({ selectedDay: day });
+  }
+
+  setSelectedCrop(crop) {
+    this.setState({ markedCrop: crop, tab: 0 });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <div id="menu">
+          <div id="add-crops-tab" onClick={this.showAddCropTab}><p>ZASIEWY</p></div>
+          <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'Widok [TYDZIEŃ]'}</p></div>
+          <div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile ? '[MSC]' : 'WIDOK [MIESIĄC]'}</p></div>
+          <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
+          <div id="microgreens-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
+        </div>
+        <div id="board">
+          {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop}></Crops> : null}
+          {this.state.crops !== '' && this.state.tab === 1 ? <WeekView trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
+          {this.state.crops !== '' && this.state.tab === 2 ? <MonthView tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
+          {this.state.microgreens !== '' && this.state.tab === 3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
+          {this.state.tab === 4 ? <Devices></Devices> : null}
+
+          {this.state.crops !== '' && this.state.selectedDay ? <DayView tdc={this.state.traydatecrops} selectedDay={this.state.selectedDay} setSelectedDay={this.setSelectedDay} crops={this.state.crops} microgreens={this.state.microgreens}></DayView> : ''}
+        </div>
       </div>
-      <div id="board">
-{this.state.microgreens !=='' && this.state.tab===0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} shelves={this.state.shelves} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop}></Crops>: null}
-{this.state.crops !=='' && this.state.tab===1 ? <WeekView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView>:null}
-{this.state.crops !=='' && this.state.tab===2? <MonthView shelves={this.state.shelves} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView>:null}
-{this.state.microgreens !=='' && this.state.tab===3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
-{this.state.tab===4 ? <Devices></Devices> : null}
-
-{this.state.crops !=='' && this.state.selectedDay ? <DayView selectedDay={this.state.selectedDay} setSelectedDay={this.setSelectedDay} crops={this.state.crops} microgreens={this.state.microgreens}></DayView>:''}
-</div>
-    </div>
-  );
-}
+    );
+  }
 }
 
 export default App;

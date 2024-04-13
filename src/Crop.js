@@ -186,6 +186,7 @@ class Crop extends React.Component {
 
     //console.log(crop);
     //console.log(microgreenData);
+//        <td>{shelfData.rack_name + shelfData.level}</td>
 
     return (
       <tr className={"cropEntry " + (isMarked ? "marked" : "")} key={this.props.index}>
@@ -195,7 +196,6 @@ class Crop extends React.Component {
         <td>{isMobile? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")}</td>
         <td>{isMobile? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")}</td>
         <td>{isMobile? moment(crop.harvest).format("DD.MM"): moment(crop.harvest).format("DD.MM.YYYY")}</td>
-        <td>{shelfData.rack_name + shelfData.level}</td>
         <td>{crop.trays}</td>
         <td className="cropNotes">
           {this.state.editNotesEnabled &&

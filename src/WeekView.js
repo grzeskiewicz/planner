@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import './WeekView.css';
 import { calcDatesCrop, renderByShelves, renderByMicrogreens } from './ViewCommon';
-
+//tdc - traydatecrop
 class WeekView extends React.Component {
   constructor(props) {
     super(props);
@@ -11,13 +11,19 @@ class WeekView extends React.Component {
       weekNow: moment().weeks(),
       toggleVal: true,
       checkedItems: this.setChecked(),
+      weekTDC: ''
     }
     this.minusWeek = this.minusWeek.bind(this);
     this.plusWeek = this.plusWeek.bind(this);
     this.weekCrops = this.weekCrops.bind(this);
+    this.weekTDC = this.weekTDC.bind(this);
     this.showDayView = this.showDayView.bind(this);
     this.toggleView = this.toggleView.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+  }
+
+  componentDidMount() {
+    this.weekTDC(this.props.tdc);
   }
 
 
@@ -32,6 +38,53 @@ class WeekView extends React.Component {
     }
     return weekCrops;
   }
+
+  weekTDC(tdc) { //crops which are during selected week
+    const weekNowMon = moment().week(this.state.weekNow).weekday(1).startOf('day');
+    const weekNowSun = moment().week(this.state.weekNow).weekday(7).endOf('day');
+    const weekTDC = [];
+    for (const entry of tdc) {
+      if (moment(entry.date).isBetween(weekNowMon, weekNowSun, undefined, '[]')) {
+        let entryCp = moment(entry.date);
+        entry.date = entryCp.format('DD.MM.YYYY');
+        weekTDC.push(entry);
+      }
+    }
+    const grpWeekTDC = this.groupByDay(weekTDC);
+    const grpByFNDTrays = this.groupByFNDTrays(grpWeekTDC);
+
+    this.setState({ weekTDC: grpWeekTDC });
+  }
+
+  groupByDay(tdc) { //grupowanie po 'date', dodanie oznaczenia FND Trays (elektrozawory)
+    const trays = this.props.trays;
+    const grp = [];
+
+    for (const entry of tdc) {
+      const trayData = trays.find((x) => x.id === entry.tray_id);
+      entry.fndtray_id = trayData.fndtray_id;
+      if (!grp[entry.date]) grp[entry.date] = [];
+      grp[entry.date].push(entry);
+    }
+    // console.log(grp);
+    return grp;
+  }
+
+  groupByFNDTrays(grpDay) {
+    const mapArr = [];
+
+    for (const [day, arr] of Object.entries(grpDay)) {
+      const grp = [];
+      for (const entry of arr) {
+        if (!grp[entry.fndtray_id]) grp[entry.fndtray_id] = [];
+        grp[entry.fndtray_id].push(entry);
+      }
+      mapArr.push(grp);
+    }
+    console.log(mapArr);
+    return mapArr;
+  }
+
 
   minusWeek() {
     this.setState({ weekNow: this.state.weekNow - 1 })
@@ -79,10 +132,11 @@ class WeekView extends React.Component {
   render() {
     const weekNow = moment().week(this.state.weekNow);
     calcDatesCrop(this.props.crops, this.props.microgreens);
-    const weekCrops = this.weekCrops(this.props.crops);
-
-    const week = renderByMicrogreens(weekCrops, this.props.microgreens, this.props.shelves, 7, null, weekNow, this.state.checkedItems, this.props.setSelectedCrop);
-    const weekShelves = renderByShelves(weekCrops, this.props.microgreens, this.props.shelves, 7, null, weekNow, this.state.checkedItems, this.props.setSelectedCrop);
+    // console.log(this.props.tdc);
+    /* const weekCrops = this.weekCrops(this.props.crops);
+ 
+     const week = renderByMicrogreens(weekCrops, this.props.microgreens, this.props.shelves, 7, null, weekNow, this.state.checkedItems, this.props.setSelectedCrop);
+     const weekShelves = renderByShelves(weekCrops, this.props.microgreens, this.props.shelves, 7, null, weekNow, this.state.checkedItems, this.props.setSelectedCrop); */
 
     const [mon, tue, wed, thu, fri, sat, sun] = [JSON.parse(JSON.stringify(weekNow.weekday(1))), JSON.parse(JSON.stringify(weekNow.weekday(2))), JSON.parse(JSON.stringify(weekNow.weekday(3))),
     JSON.parse(JSON.stringify(weekNow.weekday(4))), JSON.parse(JSON.stringify(weekNow.weekday(5))),
@@ -118,7 +172,7 @@ class WeekView extends React.Component {
           <div style={{ 'flexBasis': parseFloat(100 / 7).toFixed(2) + "%" }} onClick={() => this.showDayView(sun)}>{moment(sun).format('DD.MM')}</div>
         </div>
 
-        {this.state.toggleVal ? <div className='viewWrapper'>{weekShelves}</div> : <div className='viewWrapper'>{week}</div>}
+        {this.state.toggleVal ? <div className='viewWrapper'>weekShelves</div> : <div className='viewWrapper'>week</div>}
 
       </div>
     );

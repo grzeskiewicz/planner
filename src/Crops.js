@@ -134,7 +134,6 @@ calcDatesCrop(crops){
  }
 
  setSelectedCrop(id){
-  //console.log(id);
   this.setState({selectedCrop:id});
  }
 
@@ -147,31 +146,31 @@ renderCropsTable(){
   this.calcDatesCrop(cropsLast2Weeks);
   return cropsLast2Weeks.map((crop, index) => {
     const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
-    const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
-return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} shelfData={shelfData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
+    //const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
+return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData}  setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
 });
 }
 
 renderRangeCropsTable(){
   const from=this.state.cropDateFrom;
   const to=this.state.cropDateTo;
-  console.log(from,to);
+ // console.log(from,to);
   const cropsDates=JSON.parse(JSON.stringify(this.props.crops));
   this.calcDatesCrop(cropsDates);
-  console.log(cropsDates);
+  //console.log(cropsDates);
   const rangeDateCrops=cropsDates.filter((x)=> 
   (moment(x.harvest).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)))
  || (moment(x.start).isSameOrAfter(moment(from)) && moment(x.start).isSameOrBefore(moment(to))));
 /*(moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from))) ||
  ( moment(x.start).isSameOrBefore(moment(to)) && moment(x.harvest).isSameOrAfter(moment(to))) ||
   (moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to))));*/
-console.log(rangeDateCrops);
+//console.log(rangeDateCrops);
   return rangeDateCrops.map((crop, index) => {
   //  console.log(moment(crop.harvest),moment(crop.start));
   //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
     const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
-    const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
-return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} shelfData={shelfData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
+  //  const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
+return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
 });
 }
 
@@ -181,8 +180,8 @@ renderAllCropsTable(){
   this.calcDatesCrop(this.props.crops);
   return this.props.crops.map((crop, index) => {
     const microgreenData=this.props.microgreens.find((x)=> x.id===crop.microgreen_id);
-    const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
-return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} shelfData={shelfData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
+   // const shelfData=this.props.shelves.find((x)=> x.id===crop.shelf_id);
+return <Crop refreshCrops={this.props.refreshCrops} index={index} crop={crop} microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop} markedCrop={this.props.markedCrop}></Crop>
 });
 }
 
@@ -233,7 +232,6 @@ const crop={
 start:this.state.start!=='' ? moment(this.state.start).format('YYYY-MM-DD'):'',
 harvest:this.state.harvest !=='' ? moment(this.state.harvest).format('YYYY-MM-DD'):'',
 microgreenID:this.state.microgreensID,
-shelfID:this.state.shelfID,
 trays:this.state.trays,
 notes:this.state.notes
 }  
@@ -252,11 +250,16 @@ fetch(request(`${API_URL}/addcrops`, "POST", crop))
 //{this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
 
 render(){
+let tdc=this.props.tdc;
+console.log(tdc);
   let cropsTable;
   if (this.props.crops!=='') cropsTable=this.renderRangeCropsTable();
   const allCrops=this.renderAllCropsTable();
 const  mappedMicrogreens= this.renderMicrogreensSelection();
- const mappedShelves= this.renderShelvesSelection();
+ //const mappedShelves= this.renderShelvesSelection();
+ /*         <select id="shelf-selection" name="shelf-selection" onChange={this.handleShelf} value={this.state.shelfID}>
+           {mappedShelves}
+         </select>*/
  const selectedMicrogreens=Number(this.state.microgreensID)!==99 ? this.props.microgreens.find((x)=> x.id===Number(this.state.microgreensID)): '' ;
  const addCropForm=<form className="" onSubmit={this.addCrops}>
  <div><input type="radio" id="harvest-option" checked={this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label for="harvest-option">DATA ZBIORU</label></div> 
@@ -268,9 +271,6 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
      {this.state.showCalendar ?  <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection}/> : null}
      <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
        {mappedMicrogreens}
-         </select>
-         <select id="shelf-selection" name="shelf-selection" onChange={this.handleShelf} value={this.state.shelfID}>
-           {mappedShelves}
          </select>
          <select value={this.state.trays} onChange={this.handleTrays} required>
          <option value="99">ILE TAC?</option>
@@ -303,7 +303,7 @@ const  mappedMicrogreens= this.renderMicrogreensSelection();
       {this.state.showCalendarRange ?  <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection}/> : null}
     <table>
 <thead>
-<tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Półka</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+<tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
 </td><td><FontAwesomeIcon icon={faCheckToSlot} size="lg"/></td></tr>
 </thead>
       <tbody>

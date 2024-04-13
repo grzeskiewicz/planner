@@ -150,6 +150,22 @@ export function renderByShelves(crops, microgreens, shelves, days, monthNow, wee
 }
 
 
+export function renderByFND(crops, microgreens, shelves, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
+  const rows = [];
+  for (const shelf of shelves) {
+    const cropsGrouped = crops.filter((x) => x.shelf_id === shelf.id);
+    if (cropsGrouped.length > 0) {
+      const row = renderRowShelves(cropsGrouped, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop);
+      rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
+    } else if (cropsGrouped.length === 0) {
+      const row = renderEmptyRow(days);
+      rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
+    }
+  }
+  return rows;
+}
+
+
 
 export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, weekNow, setSelectedCrop) {
   const row = [];
@@ -176,7 +192,7 @@ export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, 
       stage = whichStage(copy.weekday(i), crop);
     }
     if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false
-      const shelf = shelves.find((x) => x.id === crop.shelf_id);
+      //const shelf = shelves.find((x) => x.id === crop.shelf_id);
 
 
       row.push(<Tooltip title={cropInfoRender(crop, microgreen)}><div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': 100 / days * grp.length + "%" }}>{grpRender}</div></Tooltip>);
