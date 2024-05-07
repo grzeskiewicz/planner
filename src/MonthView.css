@@ -9,6 +9,8 @@
 #MonthView .row, #MonthView .head{
         display: flex;
         flex-flow:row nowrap;
+        justify-content: space-evenly;
+        cursor: default;
     }
 
     #MonthView .head div:hover{
@@ -22,8 +24,18 @@ flex-grow:1;
 flex-basis:0;
 text-align: center;
     }
-    
 
+    
+    #MonthView .shelf{
+      display: flex;
+      flex-flow:row nowrap;
+      border:1px solid gray;
+  
+  }
+  #MonthView .FNDTray{
+  flex-basis:50%;
+  border:1px solid black;
+  }
     #MonthView .row div {
         cursor: default;
     }

@@ -19,7 +19,8 @@ class App extends React.Component {
       crops: '',
       selectedDay: false,
       markedCrop: '',
-      trays: ''
+      trays: '',
+      isReady: false
     }
     this.showMicrogreensTab = this.showMicrogreensTab.bind(this);
     this.showAddCropTab = this.showAddCropTab.bind(this);
@@ -35,12 +36,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    
     this.getMicrogreens().then((microgreens => {
       this.getCrops().then((crops) => {
         this.getTrays().then((trays) => {
-          this.getTrayDateCrops().then((crops) => {
-            console.log("Dane pobrane z bazy");
-          });
+          this.getFNDTrays().then((fndtrays) => {
+            this.getTrayDateCrops().then((crops) => {
+              console.log("DANE POBRANE Z DB");
+              this.setState({ isReady: true })
+            });
+          })
         })
       })
     }));
@@ -53,7 +58,8 @@ class App extends React.Component {
       .then(result => {
         this.setState({ microgreens: result });
         return result;
-      }).catch(error => Promise.reject(new Error(error)));
+      });
+  //   }).catch(error => Promise.reject(new Error(error)));
   }
 
   getTrays() {
@@ -61,6 +67,15 @@ class App extends React.Component {
       .then(res => res.json())
       .then(result => {
         this.setState({ trays: result });
+        return result;
+      });
+  }
+
+  getFNDTrays() {
+    return fetch(request(`${API_URL}/fndtrays`, 'GET'))
+      .then(res => res.json())
+      .then(result => {
+        this.setState({ FNDTrays: result });
         return result;
       });
   }
@@ -80,7 +95,6 @@ class App extends React.Component {
       .then(result => {
         this.setState({ traydatecrops: result });
         return result;
-
       });
   }
   showMicrogreensTab() {
@@ -113,8 +127,10 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <div className="App">
+    const isReady = this.state.isReady;
+
+    if (isReady) {
+      return <div className="App">
         <div id="menu">
           <div id="add-crops-tab" onClick={this.showAddCropTab}><p>ZASIEWY</p></div>
           <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'Widok [TYDZIEŃ]'}</p></div>
@@ -123,17 +139,21 @@ class App extends React.Component {
           <div id="microgreens-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
         </div>
         <div id="board">
-          {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop}></Crops> : null}
-          {this.state.crops !== '' && this.state.tab === 1 ? <WeekView trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
-          {this.state.crops !== '' && this.state.tab === 2 ? <MonthView tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
+          {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></Crops> : null}
+          {this.state.crops !== '' && this.state.tab === 1 ? <WeekView className="main" trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
+          {this.state.crops !== '' && this.state.tab === 2 ? <MonthView fndtrays={this.state.FNDTrays} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
           {this.state.microgreens !== '' && this.state.tab === 3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
           {this.state.tab === 4 ? <Devices></Devices> : null}
 
           {this.state.crops !== '' && this.state.selectedDay ? <DayView tdc={this.state.traydatecrops} selectedDay={this.state.selectedDay} setSelectedDay={this.setSelectedDay} crops={this.state.crops} microgreens={this.state.microgreens}></DayView> : ''}
         </div>
       </div>
-    );
+    } else {
+      return <div id="LoaderContainer"><div id="Loader"></div></div>
+    }
+
   }
 }
+
 
 export default App;

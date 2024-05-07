@@ -1,24 +1,82 @@
-import moment from 'moment';
-import { Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { tooltipClasses } from '@mui/material/Tooltip';
-import React from 'react';
+import moment from "moment";
+import { Tooltip } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { tooltipClasses } from "@mui/material/Tooltip";
+import React from "react";
+
+
+export function groupByDay(tdc, trays) {
+  //grupowanie po 'date', dodanie oznaczenia FND Trays (elektrozawory)
+  const grp = [];
+
+  for (const entry of tdc) {
+    const trayData = trays.find((x) => x.id === entry.tray_id);
+    entry.fndtray_id = trayData.fndtray_id;
+    if (!grp[entry.date]) grp[entry.date] = [];
+    grp[entry.date].push(entry);
+  }
+  return grp;
+}
+
+export function groupByFNDTrays(grpDay) {
+  const mapArr = [];
+
+  for (const [day, arr] of Object.entries(grpDay)) {
+    const grp = [];
+    for (const entry of arr) {
+      if (!grp[entry.fndtray_id]) grp[entry.fndtray_id] = [];
+      grp[entry.fndtray_id].push(entry);
+    }
+    // const weekDay = moment(day).isoWeekday();
+    // if (!mapArr[weekDay]) mapArr[weekDay] = [];
+    // mapArr[weekDay].push(grp);
+    mapArr.push(grp);
+  }
+  return mapArr;
+}
+
+export function groupByShelves(grpDay) {
+  //shelfX, X-poziom od dołu
+  let shelf1 = [],
+    shelf2 = [],
+    shelf3 = [],
+    shelf4 = [];
+  if (grpDay !== null && grpDay !== undefined) {
+    for (const [valve, arr] of Object.entries(grpDay)) {
+      if (Number(valve) === 1 || Number(valve) == 2) shelf4.push(arr);
+      if (Number(valve) === 3 || Number(valve) == 4) shelf3.push(arr);
+      if (Number(valve) === 5 || Number(valve) == 6) shelf2.push(arr);
+      if (Number(valve) == 7 || Number(valve) == 8) shelf1.push(arr);
+    }
+    return [shelf4, shelf3, shelf2, shelf1];
+  }
+}
+
+
 
 export function whichStage(day, crop) {
+  //console.log(crop)
   const start = moment(crop.start);
   const blackoutStart = moment(crop.blackoutStart);
   const lightExposureStart = moment(crop.lightExposureStart);
   const harvest = moment(crop.harvest);
   let stage = false;
   //is given day on one of the stages:
-  if (day.isSame(start, 'day')) stage = "S";
-  if (day.isBetween(start.endOf('day'), blackoutStart.startOf('day'))) stage = "WG";
-  if (day.isBetween(blackoutStart.startOf('day'), lightExposureStart.startOf('day'))) stage = "BL";
-  if (day.isBetween(lightExposureStart.startOf('day'), harvest.startOf('day'))) stage = "LE"
-  if (day.isSame(harvest, 'day')) stage = "H";
+  if (day.isSame(start, "day")) stage = "S";
+  if (day.isBetween(start.endOf("day"), blackoutStart.startOf("day")))
+    stage = "WG";
+  if (
+    day.isBetween(
+      blackoutStart.startOf("day"),
+      lightExposureStart.startOf("day")
+    )
+  )
+    stage = "BL";
+  if (day.isBetween(lightExposureStart.startOf("day"), harvest.startOf("day")))
+    stage = "LE";
+  if (day.isSame(harvest, "day")) stage = "H";
   return stage;
 }
-
 
 export function calcDatesCrop(crops, microgreens) {
   for (const crop of crops) {
@@ -32,28 +90,49 @@ export function calcDatesCrop(crops, microgreens) {
   }
 }
 
-
 export function whichStageShelves(day, crop) {
   const lightExposureStart = moment(crop.lightExposureStart);
   const harvest = moment(crop.harvest);
   let stage = false;
-  if (day.isBetween(lightExposureStart.startOf('day'), harvest.startOf('day'))) stage = "LE"
-  if (day.isSame(harvest, 'day')) stage = "H";
+  if (day.isBetween(lightExposureStart.startOf("day"), harvest.startOf("day")))
+    stage = "LE";
+  if (day.isSame(harvest, "day")) stage = "H";
   return stage;
 }
 
-
-function cropInfoRender(cropInfo, microgreen) {
-  return <div className='cropInfo'>
-    <p>KONTRAHENT INFO</p>
-    <p>ID:{cropInfo.id}</p>
-    <p>{microgreen.name_pl}</p>
-    <p>S:  {moment(cropInfo.start).format('DD.MM hh:mm')} ({moment(cropInfo.start).format('dddd').substring(0, 3).toUpperCase()})</p>
-    <p>B:  {moment(cropInfo.blackoutStart).format('DD.MM hh:mm')} ({moment(cropInfo.blackoutStart).format('dddd').substring(0, 3).toUpperCase()})</p>
-    <p>L:  {moment(cropInfo.lightExposureStart).format('DD.MM hh:mm')} ({moment(cropInfo.lightExposureStart).format('dddd').substring(0, 3).toUpperCase()})</p>
-    <p>H:  {moment(cropInfo.harvest).format('DD.MM hh:mm')} ({moment(cropInfo.harvest).format('dddd').substring(0, 3).toUpperCase()})</p>
-    <p className='notes'>{cropInfo.notes}</p>
-  </div>;
+export function cropInfoRender(cropInfo, microgreen) {
+  return (
+    <div className="cropInfo">
+      <p>KONTRAHENT INFO</p>
+      <p>ID:{cropInfo.id}</p>
+      <p>{microgreen.name_pl}</p>
+      <p>
+        S: {moment(cropInfo.start).format("DD.MM hh:mm")} (
+        {moment(cropInfo.start).format("dddd").substring(0, 3).toUpperCase()})
+      </p>
+      <p>
+        B: {moment(cropInfo.blackoutStart).format("DD.MM hh:mm")} (
+        {moment(cropInfo.blackoutStart)
+          .format("dddd")
+          .substring(0, 3)
+          .toUpperCase()}
+        )
+      </p>
+      <p>
+        L: {moment(cropInfo.lightExposureStart).format("DD.MM hh:mm")} (
+        {moment(cropInfo.lightExposureStart)
+          .format("dddd")
+          .substring(0, 3)
+          .toUpperCase()}
+        )
+      </p>
+      <p>
+        H: {moment(cropInfo.harvest).format("DD.MM hh:mm")} (
+        {moment(cropInfo.harvest).format("dddd").substring(0, 3).toUpperCase()})
+      </p>
+      <p className="notes">{cropInfo.notes}</p>
+    </div>
+  );
 }
 
 /*const HtmlTooltip = styled(({ className, ...props }) => (
@@ -72,102 +151,168 @@ function cropInfoRender(cropInfo, microgreen) {
 export function renderEmptyRow(days) {
   const row = [];
   for (let i = 1; i <= days; i++) {
-    row.push(<div style={{ 'flexBasis': parseFloat(100 / days).toFixed(2) + "%" }} className='dayRecord' key={i}><div>&nbsp;</div></div>);
+    row.push(
+      <div
+        style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }}
+        className="dayRecord"
+        key={i}
+      >
+        <div>&nbsp;</div>
+      </div>
+    );
   }
   return row;
 }
 
-
-export function renderRowShelves(crops, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop) { //crops shown on one shelf
-
-  const row = [];
-  const cropGroups = [];
-
-  const sortedByDateCrops = crops.sort((a, b) => Date(a.harvest) - Date(b.harvest) > 0);//neeeded?
-  for (const crop of sortedByDateCrops) {
-    const grp = [];
-    for (let i = 1; i <= days; i++) {
-      let stage;
-      if (weekNow === null) {
-        stage = whichStageShelves(monthNow.set('date', i), crop);
-      } else if (monthNow === null) {
-        const copy = moment(weekNow);
-        stage = whichStageShelves(copy.weekday(i), crop);
-      }
-      if (stage !== undefined && stage !== false) grp.push({ stage: stage, day: i });
+/*
+function groupByShelves(grpDay) {
+  //shelfX, X-poziom od dołu
+  let shelf1 = [],
+    shelf2 = [],
+    shelf3 = [],
+    shelf4 = [];
+  if (grpDay !== null && grpDay !== undefined) {
+    for (const [valve, arr] of Object.entries(grpDay)) {
+      if (Number(valve) === 1 || Number(valve) == 2) shelf4.push(arr);
+      if (Number(valve) === 3 || Number(valve) == 4) shelf3.push(arr);
+      if (Number(valve) === 5 || Number(valve) == 6) shelf2.push(arr);
+      if (Number(valve) == 7 || Number(valve) == 8) shelf1.push(arr);
     }
-    cropGroups.push({ cropDays: grp, crop: crop });
+    return [shelf4, shelf3, shelf2, shelf1];
   }
-  let cropNow;
-  for (let i = 1; i <= days; i++) {
-    for (const crpDays of cropGroups) {
-      if (crpDays.cropDays.length && crpDays.cropDays[0].day === i) cropNow = crpDays//if checked day is the same as first day of crop
-    }
+*/
 
-    if (cropNow) {
-      const cropNowCopyDays = JSON.parse(JSON.stringify(cropNow.cropDays));
-      cropNowCopyDays.shift();
-      const check = cropNowCopyDays.find((x) => x.day === i);
-      if (cropNow.cropDays[0].day === i) {
-        const microgreen = microgreens.find((x) => x.id === cropNow.crop.microgreen_id);
-        const grpRender = cropNow.cropDays.map((x, index) => <div className='dayRecordGrp' style={{ 'flexBasis': 100 / cropNow.cropDays.length + "%" }} key={index}><div></div></div>);
-        const cropInfo = cropNow.crop;
+/*
+function createRack(grpByShelves) {
+  const rack = (
+    <div className="rack">
+      {createShelf(grpByShelves, 0)}
+      {createShelf(grpByShelves, 1)}
+      {createShelf(grpByShelves, 2)}
+      {createShelf(grpByShelves, 3)}
+    </div>
+  );
+  return rack;
+}
 
-
-
-
-        const isChecked = checkedItems.get(microgreen.name_pl);
-
-        row.push(<Tooltip title={cropInfoRender(cropInfo, microgreen)}><div onClick={() => setSelectedCrop(cropInfo.id)} key={i} 
-        className={isChecked ? 'cropGrp row' : 'cropGrp row hidden'} style={{ backgroundImage: `linear-gradient(to right,white,30%, ${microgreen.color})`, 'flexBasis': 100 / days * cropNow.cropDays.length + "%" }}>{grpRender}</div></Tooltip>);
-      } else if (check) {
-        continue;
-      } else {
-        row.push(<div className='dayRecord' key={i}><div>&nbsp;</div></div>);
-      }
-    } else {
-      row.push(<div className='dayRecord' key={i}><div>&nbsp;</div></div>);
-    }
-  }
+function createShelf(grpByShelves, i) {
+  const row = (
+    <div className="row">
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[0][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[0][i][1]} pos="P"></FNDTray>
+      </div>
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[1][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[1][i][1]} pos="P"></FNDTray>
+      </div>
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[2][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[2][i][1]} pos="P"></FNDTray>
+      </div>
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[3][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[3][i][1]} pos="P"></FNDTray>
+      </div>
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[4][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[4][i][1]} pos="P"></FNDTray>
+      </div>
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[5][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[5][i][1]} pos="P"></FNDTray>
+      </div>
+      <div
+        className="shelf"
+        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
+      >
+        <FNDTray tray={grpByShelves[6][i][0]} pos="L"></FNDTray>
+        <FNDTray tray={grpByShelves[6][i][1]} pos="P"></FNDTray>
+      </div>
+    </div>
+  );
   return row;
+}  */
+
+
+/*
+function createRack2(grpByShelves, days) {
+  const rack = (
+    <div className="rack">
+      {createShelf2(grpByShelves, days, 0)}
+      {createShelf2(grpByShelves, days, 1)}
+      {createShelf2(grpByShelves, days, 2)}
+      {createShelf2(grpByShelves, days, 3)}
+    </div>
+  );
+  return rack;
 }
 
-
-
-export function renderByShelves(crops, microgreens, shelves, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
-  const rows = [];
-  for (const shelf of shelves) {
-    const cropsGrouped = crops.filter((x) => x.shelf_id === shelf.id);
-    if (cropsGrouped.length > 0) {
-      const row = renderRowShelves(cropsGrouped, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop);
-      rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
-    } else if (cropsGrouped.length === 0) {
-      const row = renderEmptyRow(days);
-      rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
+function createShelf2(grpByShelves, days, n) {
+  let row = [];
+  if (grpByShelves) {
+    for (let i = 0; i < days; i++) {
+      row.push(<div className="shelf" style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }}>
+        <FNDTray range="month" tray={grpByShelves[i][n][0]} pos="L"></FNDTray>
+        <FNDTray range="month" tray={grpByShelves[i][n][1]} pos="P"></FNDTray>
+      </div>)
     }
+    return <div className="row">{row}</div>;
+  } else { return <div className="row">{row}</div> }
+}*/
+
+/*export function renderByFND(grpByFNDT,days) {
+  const arr = [];
+
+  for (let i = 0; i < days; i++) {
+    const grpByShelves = groupByShelves(grpByFNDT[i]);
+    if (grpByShelves !== undefined) arr.push(grpByShelves);
   }
-  return rows;
-}
+  if (arr.length > 0) {
+    const rack = createRack(arr);
+    return rack;
+  } else return;
+}*/
+/*
+export function renderByFND2(grpByFNDT, days) {
+  //console.log(grpByFNDT);
+  const arr = [];
 
-
-export function renderByFND(crops, microgreens, shelves, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
-  const rows = [];
-  for (const shelf of shelves) {
-    const cropsGrouped = crops.filter((x) => x.shelf_id === shelf.id);
-    if (cropsGrouped.length > 0) {
-      const row = renderRowShelves(cropsGrouped, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop);
-      rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
-    } else if (cropsGrouped.length === 0) {
-      const row = renderEmptyRow(days);
-      rows.push(<fieldset className='row' key={shelf.id}><legend>{shelf.rack_name}{shelf.level}</legend>{row}</fieldset>);
-    }
+  for (let i = 0; i < days; i++) {
+    const grpByShelves = groupByShelves(grpByFNDT[i]);
+    if (grpByShelves !== undefined) arr.push(grpByShelves);
   }
-  return rows;
-}
+  if (arr.length > 0) {
+    const rack = createRack2(arr, days);
+    return rack;
+  } else {
+    // console.log(arr);
+  };
+}*/
 
 
 
-export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, weekNow, setSelectedCrop) {
+
+
+export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop) {
   const row = [];
   const grp = [];
   let firstDayWithStage;
@@ -182,7 +327,7 @@ export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, 
     if (stage !== undefined && stage !== false) grp.push({ stage: stage, day: i });
     if (grp.length === 1) firstDayWithStage = i;
   }
-  const grpRender = grp.map((x, index) => <div className='dayRecordGrp' style={{ backgroundImage: x.stage !== false && x.stage !== undefined ? `linear-gradient(to right,white,30%, ${microgreen.color})` : '', 'flexBasis': 100 / grp.length + "%" }} key={index}><div></div></div>);
+  const grpRender = grp.map((x, index) => <div className='dayRecordGrp' style={{ 'flexBasis': 100 / grp.length + "%" }} key={index}>&nbsp;</div>);
   for (let i = 1; i <= days; i++) {
     let stage;
     if (weekNow === null) {
@@ -191,34 +336,40 @@ export function renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, 
       const copy = moment(weekNow);
       stage = whichStage(copy.weekday(i), crop);
     }
-    if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false
-      //const shelf = shelves.find((x) => x.id === crop.shelf_id);
-
-
+    if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false 
       row.push(<Tooltip title={cropInfoRender(crop, microgreen)}><div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': 100 / days * grp.length + "%" }}>{grpRender}</div></Tooltip>);
     } else if (firstDayWithStage !== i && stage !== undefined && stage !== false) {
       continue;
     } else {
+      row.push(
+        <div
+          style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }}
+          className="dayRecord"
+          key={i}
+        >
+          <div>&nbsp;</div>
+        </div>
+      );
     }
   }
 
   return row;
 }
 
-export function renderByMicrogreens(crops, microgreens, shelves, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
+export function renderByMicrogreens(crops, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
   const groupedRows = [];
   for (const microgreen of microgreens) {
     const cropsGrouped = crops.filter((x) => x.microgreen_id === microgreen.id);
     if (cropsGrouped.length > 0) {
       const rows = [];
       for (const crop of cropsGrouped) {
-        const row = renderRowMicrogreens(crop, microgreen, shelves, days, monthNow, weekNow, setSelectedCrop);
+        const row = renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop);
         rows.push(<div className='row' key={crop.id}>{row}</div>);
       }
       const isChecked = checkedItems.get(microgreen.name_pl);
-      groupedRows.push(<fieldset className={isChecked ? 'group' : 'group hidden'} key={microgreen.id}><legend>{microgreen.name_pl}</legend>{rows}</fieldset>);
+      groupedRows.push(<fieldset className={isChecked ? '' : 'hidden'} key={microgreen.id}><legend>{microgreen.name_pl}</legend>{rows}</fieldset>);
     } else {
-      groupedRows.push(<fieldset className='group' key={microgreen.id}><legend>{microgreen.name_pl}</legend><div className='row'>{renderEmptyRow(days)}</div></fieldset>);
+      groupedRows.push(<fieldset className='' key={microgreen.id}><legend>{microgreen.name_pl}</legend><div className='row'>{renderEmptyRow(days)}</div></fieldset>);
     }
   }
   return groupedRows;

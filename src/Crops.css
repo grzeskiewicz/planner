@@ -2,11 +2,12 @@
     display: flex;
     flex-flow:row nowrap;
     flex:0 100%;
-    justify-content: space-between;
   }
 
   #crop-list{
     flex:0 78%;
+    border: 1px dotted gray;
+    padding: 0.5rem;
   }
 
 .Crops table{
@@ -25,6 +26,7 @@
     display: flex;
     flex-flow:row nowrap;
     flex:0 10%;
+    margin-right: 2rem;
 }
 
 
@@ -95,6 +97,11 @@ border:none;
   display: flex;
   flex-flow:row nowrap;
   justify-content: space-between;
+}
+
+#cropDateRange{
+  display: flex;
+  flex-flow:row nowrap;
 }
 
 #cropDateRange > div{

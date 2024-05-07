@@ -26,9 +26,22 @@ border: 1px solid black;
     text-align: center;
 }
 
-#WeekView .cropGrp {
+#WeekView .shelf{
+    display: flex;
+    flex-flow:row nowrap;
+    border:1px solid gray;
 
 }
+#WeekView .FNDTray{
+flex-basis:50%;
+border:1px solid black;
+}
+
+.FNDTray.blocked{
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 
 .dayRecord{
     border: 1px solid black;
@@ -61,6 +74,61 @@ border:none;
     padding: 0;
     margin: 0;
     font-weight: 700;
+}
+
+.scheduleCrop .rack{
+    height: 50%;
+    display: flex;
+    flex-flow:column;
+}
+
+.scheduleCrop .rack .row{
+    flex-grow:1;
+}
+
+#WeekView.scheduleCrop{
+  height: 70%;;
+}
+
+
+
+.FNDTray{
+display: flex;
+flex-flow: row nowrap;
+justify-content: stretch;
+}
+
+.viewWrapper{
+    flex:0 80%;
+}
+
+.tray{
+    border:1px solid black;
+    flex-grow:1;
+}
+
+.tray .edit{
+
+}
+
+.tray:hover{
+    background-color: lightslategray;
+    cursor: pointer;
+}
+
+#saveScheduleDiv{
+    display: flex;
+    flex-flow:row nowrap;
+    justify-content: center;
+}
+
+#saveScheduleDiv button {
+    flex:0 20%;
+}
+
+
+.schedule .filter{
+display: none;
 }
 
 @media screen and (max-width: 400px)  {
