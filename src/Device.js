@@ -128,7 +128,7 @@ render(){
   return (
 <div className='Device'>
   <div className='DeviceInfo'>
-   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active" && this.props.name==="ORANGEPI" ? <button onClick={()=>this.resetDevice()}>Reset</button>:''}
+   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active" && this.props.name==="ORANGEPI" ? <button onClick={()=>this.resetDevice()}>RESET</button>:''}
    {this.state.reset===1? <p>{this.state.progress}%</p>:''}
    <p>SOCKET POWER STATUS: {this.state.info!=='' && this.state.info.Power===1 ? "ON":"OFF" }</p>
    <button onClick={this.turnSocketOFF}>OFF</button>

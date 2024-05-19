@@ -10,6 +10,11 @@
     padding: 0.5rem;
   }
 
+  #crop-list thead tr{
+border-bottom:3px solid black;
+  }
+
+
 .Crops table{
   flex:0 80%;
 }
@@ -49,12 +54,10 @@
   cursor: default;
 }
 
-.cropEntry:hover{
+.cropEntry:hover, .cropEntry.selected{
   border: 3px solid green;
 } 
-.cropEntry.marked{
-  border:2px solid green;
-}
+
 
 .cropNotes{
   width:100%;
@@ -102,6 +105,7 @@ border:none;
 #cropDateRange{
   display: flex;
   flex-flow:row nowrap;
+  margin-bottom: 1rem;
 }
 
 #cropDateRange > div{
@@ -170,7 +174,7 @@ border:none;
     height:10%;
   }
 
-  .acfWrapper > div, {
+  .acfWrapper > div{
     flex:0 100%;
   }
 
@@ -190,7 +194,9 @@ border:none;
     display: flex;
 flex-flow:row wrap;
 width: 100vw;
+border:1px solid green;
   }
+
 
   #crop-list thead tr td{
     flex:1;

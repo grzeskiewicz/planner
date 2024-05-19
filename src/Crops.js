@@ -5,12 +5,13 @@ import moment from 'moment';
 import { API_URL, request } from "./APIConnection";
 import Crop from './Crop';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarCheck, faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faCalendarCheck, faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
 import { isMobile } from 'react-device-detect';
 import WeekView from './WeekView';
 
 import { groupByDay } from './ViewCommon';
-const WATERING_API = 'http://192.168.2.6:3051';
+//const WATERING_API = 'http://192.168.2.6:3051';
+const WATERING_API = 'http://localhost:3051';
 
 
 class Crops extends React.Component {
@@ -32,7 +33,8 @@ class Crops extends React.Component {
       showACF: false,
       showAllCrops: false,
       showWeekView: false,
-      scheduledTDC: []
+      scheduledTDC: [],
+      selectedCrop:null
     }
     this.handleMicrogreens = this.handleMicrogreens.bind(this);
     this.handleTrays = this.handleTrays.bind(this);
@@ -53,6 +55,7 @@ class Crops extends React.Component {
     this.showWeekView = this.showWeekView.bind(this);
     this.saveScheduleTDC = this.saveScheduleTDC.bind(this);
     this.scheduleWatering = this.scheduleWatering.bind(this);
+    this.deleteCrop=this.deleteCrop.bind(this);
   }
 
 
@@ -175,14 +178,16 @@ class Crops extends React.Component {
       //  console.log(moment(crop.harvest),moment(crop.start));
       //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
-      return <Crop setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
+      return <Crop deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
         microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
         markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}
       ></Crop>
     });
   }
 
-
+  deleteCrop(){
+   this.setState({showWeekView:false,selectedCrop:undefined});
+  }
 
   renderAllCropsTable() {
     const cropsDates = JSON.parse(JSON.stringify(this.props.crops));
@@ -234,7 +239,7 @@ class Crops extends React.Component {
       // start: this.state.start !== '' ? moment(this.state.start).format('YYYY-MM-DD') : '',
       // harvest: this.state.harvest !== '' ? moment(this.state.harvest).format('YYYY-MM-DD') : '',
       microgreenID: this.state.microgreensID,
-      trays: this.state.trays,
+     // trays: this.state.trays,
       notes: this.state.notes
     }
     fetch(request(`${API_URL}/addcrops`, "POST", crop))
@@ -251,7 +256,10 @@ class Crops extends React.Component {
 
 
   saveScheduleTDC(crop, tdcs, harvest) {
-    fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest }))
+    const microgreens=this.props.microgreens;
+    const microgreenData=microgreens.find((x)=>x.id===this.state.selectedCrop.microgreen_id);
+    console.log(tdcs);
+    fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest,light:microgreenData.light }))
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
@@ -336,6 +344,21 @@ class Crops extends React.Component {
     return weekTDC;
   }
 
+  /*
+
+        <select value={this.state.trays} onChange={this.handleTrays}>
+        <option value="99">ILE TAC?</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+      </select>
+
+      */
 
   //{this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
 
@@ -349,17 +372,6 @@ class Crops extends React.Component {
     const addCropForm = <form className="" onSubmit={this.addCrops}>
       <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
         {mappedMicrogreens}
-      </select>
-      <select value={this.state.trays} onChange={this.handleTrays} required>
-        <option value="99">ILE TAC?</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
       </select>
       <textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
       <button type='submit'>DODAJ</button>
@@ -390,7 +402,8 @@ class Crops extends React.Component {
           {this.state.showCalendarRange ? <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
           <table>
             <thead>
-              <tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+              <tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td>
+              <td><FontAwesomeIcon icon={faTrashAlt} size="lg"/></td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
               </td><td><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></td></tr>
             </thead>
             <tbody>
@@ -400,7 +413,7 @@ class Crops extends React.Component {
           {this.state.showWeekView ? <WeekView refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
-              <button onClick={() => this.setState({ showAllCrops: false })}>Ukryj</button>
+              <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button>
               <table>
                 <thead>
                   <tr key={this.props.index}><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />

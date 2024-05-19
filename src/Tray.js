@@ -14,20 +14,23 @@ class Tray extends React.Component {
   }
 
   handleTray() {
-    if (this.props.trayData.crop_id === null) {
+    this.props.handleScheduleTDC(this.props.trayData);
+    console.log(this.props.trayData)
+   /* if (this.props.trayData.crop_id === null) {
       this.props.handleScheduleTDC(this.props.trayData);
     }
     else {
-      console.log("ZAJĘTE!!!");
       this.props.handleScheduleTDC(this.props.trayData);
-
-    }
+    }*/
   }
   render() {    
+  //  console.log(this.props.trayData)
     const crops = this.props.crops;
     const trayData = this.props.trayData;
     const selectedCrop = this.props.selectedCrop;
     let trayCrop, microgreenData;
+    //console.log(trayData)
+
     if (trayData!==undefined && trayData.crop_id !== null) {
       trayCrop = crops.find((x) => x.id === trayData.crop_id);
       microgreenData = this.props.microgreens.find((x) => x.id === trayCrop.microgreen_id);

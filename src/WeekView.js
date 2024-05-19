@@ -37,9 +37,25 @@ class WeekView extends React.Component {
 
   fillScheduledTDC() {
     if (this.props.className === "scheduleCrop") {
-      const weekTDC = this.weekTDC(this.state.tdc);
-      const scheduledTDC = weekTDC.filter((x) => x.crop_id === this.props.selectedCrop.id);
-      this.setState({ scheduledTDC: scheduledTDC });
+      const crop=this.props.selectedCrop;
+      const microgreenData=this.props.microgreens.find((x)=>x.id===crop.microgreen_id);
+      const light=microgreenData.light;
+      if (crop.harvest){
+      const tdc =  JSON.parse(JSON.stringify(this.state.tdc));
+      const start = moment(crop.lightExposureStart);
+      const finish = moment(crop.harvest);
+
+      const scheduledTDC = tdc.filter((x) => moment(x.date).isBetween(start, finish, undefined, "[]"));
+    //  console.log(scheduledTDC);
+      this.setState({ scheduledTDC: scheduledTDC }); 
+      } else {
+        const tdc =  JSON.parse(JSON.stringify(this.state.tdc));
+        const start =moment().week(this.state.weekNow-1).startOf("week");
+        const finish = moment().week(this.state.weekNow).endOf("week").add(light,"days");
+        console.log(start.format('YYYY-MM-DD'),finish.format('YYYY-MM-DD'));
+        const scheduledTDC = tdc.filter((x) => moment(x.date).isBetween(start, finish, undefined, "[]"));      
+        this.setState({ scheduledTDC: scheduledTDC });
+      }
     }
   }
 
@@ -57,10 +73,12 @@ class WeekView extends React.Component {
 
   createShelf(grpByShelves, i) {
     //const weekTDC=this.weekTDC(JSON.parse(JSON.stringify(this.props.tdc)));
-    const isScheduled = this.props.selectedCrop !== undefined ? JSON.parse(JSON.stringify(this.props.tdc)).filter((x) => x.crop_id === this.props.selectedCrop.id) : '';
+   // const isScheduled = this.props.selectedCrop !== undefined ? JSON.parse(JSON.stringify(this.props.tdc)).filter((x) => x.crop_id === this.props.selectedCrop.id) : '';
     //console.log(isScheduled);
-    const blockDate2 = isScheduled && isScheduled.length > 0 ? isScheduled.reduce((min, entry) => moment(min.date).isBefore(moment(entry.date)) ? min : entry) : '';
-    const blockDate = this.state.blockDate !== undefined ? this.state.blockDate : blockDate2.date;
+    const isScheduled= (this.props.className==="scheduleCrop" && this.props.selectedCrop.harvest) ? true: false;
+    const blockDate2 = isScheduled ? this.props.selectedCrop.lightExposureStart:undefined;
+    const blockDate = this.state.blockDate !== undefined ? this.state.blockDate : blockDate2;
+    //console.log(this.props.selectedCrop,blockDate)
     //const blockDate=this.state.blockDate;
     // console.log(blockDate,this.state.blockDate)
     const row = (
@@ -159,6 +177,23 @@ class WeekView extends React.Component {
     return weekTDC;
   }
 
+  tdcDateRange(tdc,start,finish){
+      const startDate = moment(start).startOf("day");
+      const finishdate = moment(finish).endOf("day");
+      const TDC = [];
+      for (const entry of tdc) {
+        if (
+          moment(entry.date).isBetween(startDate, finishdate, undefined, "[]")
+        ) {
+          let entryCp = JSON.parse(JSON.stringify(entry));
+          let entryDate = moment(entryCp.date);
+          entryCp.date = entryDate.format("DD.MM.YYYY");
+          TDC.push(entry);
+        }
+      }
+      return TDC;
+  }
+
 
   minusWeek() {
     this.setState({ weekNow: this.state.weekNow - 1 });
@@ -209,26 +244,85 @@ class WeekView extends React.Component {
     });
   }
 
+
+  /* mergeArrays(arr1, arr2) {
+    return arr1.reduce((acc, b) => {
+      console.log(acc);
+      const idx = acc.findIndex(item => item.id === b.id); //look for the acc has the same id while iterating array1
+      if (idx > -1) { // if found need to merge with value of array2
+        acc[idx] = Object.assign(b, acc[idx]);
+        return acc;
+      }
+      return [...acc, b]; //if we don't find anything so "b" is an unique entry
+    }, arr2); //inital values of reduce is from array2
+  }*/
+
+
+  mergeTDC(sch,tdc){
+    for (let i=0;i<tdc.length;i++){
+     const corr= sch.find((x)=> x.id===tdc[i].id);
+   if (corr!==undefined) tdc[i]=corr;
+    }
+        return tdc;
+      }
+
+
   handleScheduleTDC(tray) { //ODZNACZANIE TRAYA
-    if (this.props.className === "scheduleCrop") {
-      const selectedCrop = this.props.selectedCrop;
-      const microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id);
-      //const tdc = JSON.parse(JSON.stringify(this.state.tdcOriginal));
-      const tdc = this.state.tdc;
+        if (this.props.className === "scheduleCrop") {
+          const tdc=JSON.parse(JSON.stringify(this.state.tdc));
+          const selectedCrop = this.props.selectedCrop;
+          const microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id)
 
-      const start = moment(tray.date).startOf("day");
-      const finish = moment(tray.date).add(microgreenData.light, "days").endOf("day"); // CROP HARVEST
+          let scheduledTDC = JSON.parse(JSON.stringify(this.state.scheduledTDC));
 
-      const tdcRange = tdc.filter((x) => moment(x.date).isBetween(start, finish, undefined, "[]"));
-      const tdcTray = tdcRange.filter((x) => x.tray_id === tray.tray_id);
-      const isCrop = tdcTray.filter((x) => x.crop_id !== null);
-      let scheduledTDC = JSON.parse(JSON.stringify(this.state.scheduledTDC));;
-      if (isCrop.length === 0) {
+          let blockDate= selectedCrop.harvest !==null? selectedCrop.lightExposureStart: tray.date;
+          blockDate=JSON.parse(JSON.stringify(blockDate));
+          const lightExposureStart=moment(blockDate);
+          const harvestTmp=lightExposureStart.clone();
+          const harvest=harvestTmp.add(microgreenData.light-1,"days");
+
+
+          scheduledTDC=scheduledTDC.filter((x) => moment(x.date).isBetween(lightExposureStart,harvest, undefined, "[]"));     
+
+          const traySchedule=scheduledTDC.filter((x)=>x.tray_id===tray.tray_id);
+      
+ const isTaken=traySchedule.find((x)=>x.crop_id!==null);
+          if (isTaken===undefined){ 
+
+const wasOcc=tray.crop_id!==null;
+
+
+if (wasOcc){
+  for (const entry of scheduledTDC) {
+    if (entry.tray_id===tray.tray_id) {
+      entry.status = "0";
+      entry.crop_id = null;
+    }
+    }
+  } else { 
+  for (const entry of scheduledTDC) {
+    if (entry.tray_id===tray.tray_id) {
+    entry.status = "1";
+    entry.crop_id = selectedCrop.id;
+    }
+  }
+}
+const mergedTDC=this.mergeTDC(scheduledTDC,tdc);
+this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
+
+//this.setState({ scheduledTDC: scheduledTDC, blockDate: blockDate.date });//BLOCK DATE
+
+    //  const isCrop = tdcTray.filter((x) => x.crop_id !== null);
+    //  let scheduledTDC = JSON.parse(JSON.stringify(this.state.scheduledTDC));;
+
+
+    /*  if (isCrop.length === 0) {
         for (const entry of tdcTray) {
           const elem = tdc.find((x) => x.id === entry.id);
           elem.status = "1";
           elem.crop_id = selectedCrop.id;
-          scheduledTDC.push(elem);
+          const isThere=scheduledTDC.find((x)=>x.id===elem.id);
+       if (isThere){} else {scheduledTDC.push(elem);}
         }
         //  console.log(scheduledTDC)
         const blockDate = scheduledTDC.reduce((min, entry) => moment(min.date).isBefore(moment(entry.date)) ? min : entry);
@@ -240,7 +334,9 @@ class WeekView extends React.Component {
             const elem = tdc.find((x) => x.id === entry.id);
             elem.status = "0";
             elem.crop_id = null;
-            scheduledTDC.push(elem);
+            const isThere=scheduledTDC.find((x)=>x.id===elem.id);
+           // scheduledTDC.push(elem);
+            if (isThere){} else {scheduledTDC.push(elem);}
             //  scheduledTDC = scheduledTDC.filter((x) => x.id !== elem.id);
           }
           if (isLast) {
@@ -250,21 +346,40 @@ class WeekView extends React.Component {
             this.setState({ scheduledTDC: scheduledTDC });
           }
         }
+      }*/
+    } else {
+      alert("Zajete");
+      if (selectedCrop.id===tray.crop_id){
+        //TODO: odznaczanie trayów
+        //TODO2: działania przy ostatnim trayu przed savem?
       }
     }
   }
+  }
 
   saveScheduleTDC() {
-    const harvest = this.state.scheduledTDC.reduce((max, entry) => moment(max.date).isAfter(moment(entry.date)) ? max : entry);
-    //const tdcs = this.state.scheduledTDC.map((x) => x.id);
-
-    const tdcs = this.state.scheduledTDC;
-    console.log(tdcs)
-    this.props.saveScheduleTDC(this.props.selectedCrop.id, tdcs, harvest.date);
+    const crop=this.props.selectedCrop;
+    const microgreenData=this.props.microgreens.find((x)=>x.id===crop.microgreen_id);
+    const light=microgreenData.light;
+    const blockDate=moment(this.state.blockDate);
+    console.log(blockDate);
+    
+    let tdcs = JSON.parse(JSON.stringify(this.state.scheduledTDC));
+    const stop=blockDate.clone().add(light-1,"days");
+    const harvest=moment(blockDate).add(light,"days");
+    console.log(stop.format('YYYY-MM-DD'),harvest.format('YYYY-MM-DD'));
+    tdcs=tdcs.filter((x) => moment(x.date).isBetween(moment(blockDate), stop, undefined, "[]"));  
+console.log(tdcs)
+this.props.saveScheduleTDC(this.props.selectedCrop.id, tdcs, harvest.format('YYYY-MM-DD'));
+   // this.setState({blockDate:undefined});
   }
 
   render() {
-    const weekTDC = this.weekTDC(this.state.tdc);
+    const start=moment().week(this.state.weekNow).weekday(1);
+    const finish=moment().week(this.state.weekNow).weekday(7);
+    
+   //const weekTDC = this.weekTDC(this.state.tdc);
+    const weekTDC=this.tdcDateRange(this.state.tdc,start,finish);
     const grpWeekTDCByDay = groupByDay(weekTDC,this.props.trays);
     const grpByFNDTrays = groupByFNDTrays(grpWeekTDCByDay, this.props.microgreens);
 

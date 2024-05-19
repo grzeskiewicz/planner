@@ -322,37 +322,41 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
       stage = whichStage(monthNow.set('date', i), crop);
     } else if (monthNow === null) {
       const copy = moment(weekNow);
-      stage = whichStage(copy.weekday(i), crop);
+      stage = whichStage(copy.isoWeekday(i), crop);
     }
-    if (stage !== undefined && stage !== false) grp.push({ stage: stage, day: i });
-    if (grp.length === 1) firstDayWithStage = i;
+    if (stage !== undefined && stage !== false && grp.length===0) {
+      grp.push({ stage: stage, day: i }); firstDayWithStage = i;
+    } else if (stage !== undefined && stage !== false && grp.length>0) {
+      grp.push({ stage: stage, day: i }); 
+    }
   }
-  const grpRender = grp.map((x, index) => <div className='dayRecordGrp' style={{ 'flexBasis': 100 / grp.length + "%" }} key={index}>&nbsp;</div>);
+
+  const grpRender = grp.map((x, index) => <div className='dayRecordGrp' style={{ 'flexBasis': parseFloat(100 / grp.length).toFixed(2) + "%" }} key={index}>&nbsp;</div>);
+  
   for (let i = 1; i <= days; i++) {
     let stage;
     if (weekNow === null) {
       stage = whichStage(monthNow.set('date', i), crop);
     } else if (monthNow === null) {
       const copy = moment(weekNow);
-      stage = whichStage(copy.weekday(i), crop);
+      stage = whichStage(copy.isoWeekday(i), crop);
     }
+
     if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false 
-      row.push(<Tooltip title={cropInfoRender(crop, microgreen)}><div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': 100 / days * grp.length + "%" }}>{grpRender}</div></Tooltip>);
+      row.push(<Tooltip title={cropInfoRender(crop, microgreen)}>
+        <div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' 
+         style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': parseFloat(100 / days * grp.length).toFixed(2) + "%" }}>{grpRender}</div>
+        </Tooltip>);
     } else if (firstDayWithStage !== i && stage !== undefined && stage !== false) {
       continue;
     } else {
       row.push(
-        <div
-          style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }}
-          className="dayRecord"
-          key={i}
-        >
+        <div style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }} className="dayRecord" key={i}>
           <div>&nbsp;</div>
         </div>
       );
     }
   }
-
   return row;
 }
 

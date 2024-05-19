@@ -8,7 +8,7 @@ import { isMobile } from 'react-device-detect';
 
 
 
-const WATERING_API = 'http://192.168.2.6:3051';
+const WATERING_API = 'http://localhost:3051';
 
 class Crop extends React.Component {
   constructor(props) {
@@ -52,65 +52,7 @@ class Crop extends React.Component {
   }
 
 
-  scheduleWatering(crop) {
-    const level = this.props.shelfData.level;
-    let valve;
-    let duration;
-    switch (level) {
-      case 1:
-        valve = 1;
-        duration = 20;
-        break;
-      case 2:
-        valve = 2;
-        duration = 25;
-        break;
-      case 3:
-        valve = 3;
-        duration = 30;
-        break;
-      case 4:
-        valve = 4;
-        duration = 35;
-        break;
-    }
 
-    const stop = moment(crop.harvest).subtract(1, "days").format("YYYY-MM-DD");
-    const job = {
-      crop: crop.id,
-      valve: valve,
-      start: crop.lightExposureStart,
-      stop: stop,
-      duration: duration,
-    };
-
-    if (window.confirm("Czy zaplanować nawadnianie?")) {
-      console.log("Planowanie nawadniania...");
-      fetch(request(`${WATERING_API}/schedule`, "POST", job)) //SENDING JOB TO WATERING CONTROLLER
-        .then((res) => res.json())
-        .then((result) => {
-          console.log(result);
-          if (result.success) {
-            fetch(request(`${API_URL}/schedulewatering`, "POST", { crop: crop.id })) //update status in db
-              .then((res2) => res2.json())
-              .then((result2) => {
-                console.log(result2);
-                if (result.success) {
-                  this.props.refreshCrops();
-                } else {
-                  alert("SQL Erro - błędne wartości!");
-                }
-              })
-              .catch((error) => Promise.reject(new Error(error)));
-
-          } else {
-            alert("SQL Erro - błędne wartości!");
-          }
-        })
-        .catch((error) => Promise.reject(new Error(error)));
-    } else {
-    }
-  }
 
   deleteCrop(crop) {
     console.log(crop.id);
@@ -120,11 +62,11 @@ class Crop extends React.Component {
         .then((result) => {
           console.log(result);
           if (result.success) {
+            this.props.deleteCrop();
             this.props.refreshCrops();
             fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
               .then((res2) => res2.json())
               .then((result2) => {
-                console.log(result2)
               }).catch((error) => Promise.reject(new Error(error)));
           } else {
             alert("SQL Erro - błędne wartości!");
@@ -164,7 +106,6 @@ class Crop extends React.Component {
 
   enter(e) {
     if (e.key === "Enter") {
-      //alert("PEDAU");
     }
   }
 
@@ -177,23 +118,31 @@ class Crop extends React.Component {
 
   scheduleCrop(crop) {
     this.props.showWeekView(crop);
-    //this.setState({showWeekView:!this.state.showWeekView});
   }
   //<textarea disabled={this.state.editNotesEnabled} onChange={this.editNotes} className='cropNotes'>  </textarea>
   //        <td>{shelfData.rack_name + shelfData.level}</td>
   //        {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleWatering(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg"/></td>}
 
+
+  /*
+   {this.state.editNotesEnabled && Number(crop.id) === Number(this.props.selectedCrop) ?
+          <tr className='rowNotesEdit'><td>
+            <textarea onKeyDown={this.enter} rows="8" onChange={this.editNotes} type="text" value={this.state.notes}></textarea>
+            <FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg" /></td></tr> : ''}
+        {this.state.showWeekView ? '' : ''}
+  */
+
   render() {
-    const microgreenData = this.props.microgreenData;
     const crop = this.props.crop;
-    const isMarked = Number(this.props.markedCrop) === Number(crop.id) ? true : false;
+    const isSelected=this.props.selectedCrop && this.props.selectedCrop.id===crop.id;
+    const microgreenData = this.props.microgreenData;
     const start = crop.harvest !== null ? (isMobile ? moment(crop.start).format("DD.MM") : moment(crop.start).format("DD.MM.YYYY")) : "-";
     const blackoutStart = crop.harvest !== null ? (isMobile ? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")) : "-";
     const lightExposureStart = crop.harvest !== null ? (isMobile ? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")) : "-";
     const harvest = crop.harvest !== null ? (isMobile ? moment(crop.harvest).format("DD.MM") : moment(crop.harvest).format("DD.MM.YYYY")) : "-";
     return (
 
-      <tr className={"cropEntry " + (isMarked ? "marked" : "")} key={this.props.index}>
+      <tr className={"cropEntry " + (isSelected ? "selected" : "")} key={this.props.index}>
         <td className="color" style={{ backgroundColor: this.props.microgreenData.color }}>{" "}</td>
         <td>{microgreenData.name_pl}</td>
         <td>{start}</td>
@@ -219,11 +168,7 @@ class Crop extends React.Component {
         </td>
         {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></td>}
         {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
-        {this.state.editNotesEnabled && Number(crop.id) === Number(this.props.selectedCrop) ?
-          <tr className='rowNotesEdit'><td>
-            <textarea onKeyDown={this.enter} rows="8" onChange={this.editNotes} type="text" value={this.state.notes}></textarea>
-            <FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg" /></td></tr> : ''}
-        {this.state.showWeekView ? '' : ''}
+     
       </tr>
     );
   }

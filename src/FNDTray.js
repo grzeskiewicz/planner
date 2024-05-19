@@ -1,6 +1,7 @@
 import "./Crops.css";
 import React from "react";
 import Tray from "./Tray";
+import moment from "moment";
 
 
 class FNDTray extends React.Component {
@@ -14,14 +15,11 @@ class FNDTray extends React.Component {
     this.props.handleScheduleTDC(tray);
   }
 
-/*  isScheduled(){
-    const selectedCrop=this.props.selectedCrop;
-  }*/
-
   render() {
     const trays = this.props.tray;
     const blockDate = this.props.blockDate;
-    const isBlocked = blockDate !== undefined  && blockDate !=='' && blockDate !== trays[0].date;
+    //console.log(blockDate)
+    const isBlocked = blockDate !== undefined  && blockDate !=='' && moment(blockDate).format('YYYY-MM-DD') !== moment(trays[0].date).format('YYYY-MM-DD');
     if (this.props.range === "week") {
       return <div className={"FNDTray " + (isBlocked ? 'blocked' : '')}>
         <Tray crops={this.props.crops} trayData={trays[0]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>

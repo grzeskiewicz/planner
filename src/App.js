@@ -41,7 +41,8 @@ class App extends React.Component {
       this.getCrops().then((crops) => {
         this.getTrays().then((trays) => {
           this.getFNDTrays().then((fndtrays) => {
-            this.getTrayDateCrops().then((crops) => {
+            this.getTrayDateCrops().then((tdc) => {
+             // console.log(tdc)
               console.log("DANE POBRANE Z DB");
               this.setState({ isReady: true })
             });
@@ -133,7 +134,7 @@ class App extends React.Component {
       return <div className="App">
         <div id="menu">
           <div id="add-crops-tab" onClick={this.showAddCropTab}><p>ZASIEWY</p></div>
-          <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'Widok [TYDZIEŃ]'}</p></div>
+          <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'WIDOK [TYDZIEŃ]'}</p></div>
           <div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile ? '[MSC]' : 'WIDOK [MIESIĄC]'}</p></div>
           <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
           <div id="microgreens-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>

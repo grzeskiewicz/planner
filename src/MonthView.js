@@ -64,7 +64,7 @@ class MonthView extends React.Component {
     const monthNow = moment().month(this.state.monthNow);
     const days = monthNow.daysInMonth();
     const month = [];
-    for (let i = 0; i < days; i++) {
+    for (let i = 1; i <= days; i++) {
       month.push(moment(monthNow).set('date', i));
     }
     return month.map((day, index) => {
@@ -119,7 +119,6 @@ class MonthView extends React.Component {
 
 
   createShelf2(grpByShelves, days, n) {
-    console.log(grpByShelves)
     const fndtrays=this.props.fndtrays;
     let row = [];
     if (grpByShelves) {
