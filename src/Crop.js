@@ -163,11 +163,11 @@ class Crop extends React.Component {
             </div>
           )}
         </td>
-        <td onClick={() => this.deleteCrop(crop)}>
+        <td className="iconTD" onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </td>
-        {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></td>}
-        {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
+        {crop.scheduled === 1 ? <td>&#10004;</td> : <td className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></td>}
+        {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
      
       </tr>
     );

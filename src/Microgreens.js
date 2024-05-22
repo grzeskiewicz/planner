@@ -153,8 +153,8 @@ class Microgreens extends React.Component {
         {isMobile ? <div className="amfWrapper"><button onClick={() => this.setState({ showAMF: !this.state.showAMF })}>{this.state.showAMF ? "ANULUJ" : "DODAJ MICROGREENS"}</button>{this.state.showAMF ? <div>{addMicrogreensForm}</div> : ''}</div> : <div>{addMicrogreensForm }</div>}
       </div>
 
-      {!isMobile ? <div>{microgreensListTable}</div> : ''}
-      {isMobile && !this.state.showAMF? <div>{microgreensListTable}</div>:''}
+      {!isMobile ? microgreensListTable: ''}
+      {isMobile && !this.state.showAMF? microgreensListTable:''}
     </div>;
   }
 }

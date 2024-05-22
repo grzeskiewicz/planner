@@ -2,15 +2,19 @@
     display: flex;
     flex-flow:row nowrap;
     flex:0 100%;
-    justify-content: space-between;
   }
 
   #microgreens-list{
-    flex:0 78%;
+    flex:0 70%;
   }
 
   .Microgreens table{
     width:100%;
+  }
+
+  .Microgreens table thead tr td {
+    text-transform: uppercase;
+    cursor: pointer;
   }
 
   #microgreens-color-picker{
@@ -21,18 +25,21 @@
     display: flex;
     flex-flow:row nowrap;
     flex:0 10%;
+    margin-right: 2rem;
 }
 
 #addMicrogreens form{
     display: flex;
-    flex-flow:column nowrap;    
-    flex:0 100%;
+    flex-flow:column nowrap;  
+    height:100%; 
 }
 
   #addMicrogreens form  input{
     margin-bottom:1rem;
+    text-transform: uppercase;
+    flex:0 5%;
   }
-  
+ 
   #addMicrogreens button{
     flex:0 7%;
   }
@@ -51,7 +58,7 @@
   
   .MicrogreenEntry td{
    /* width:100%;*/
-    padding: 0;
+    padding: 0.5rem;
   }
 
   .MicrogreenEntry td input {

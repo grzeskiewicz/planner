@@ -17,6 +17,15 @@ button {
   border: 1px solid white;
   margin-bottom: 1rem;
   margin-top:1rem;
+  cursor: pointer;
+}
+
+legend{
+  font-size: 0.8rem;
+}
+
+button:hover{
+  border:2px solid green;
 }
 
 table {

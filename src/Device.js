@@ -40,6 +40,8 @@ async checkStatus(){
 }
 
 resetDevice(){
+  if (window.confirm('Reset OrangePI?')) {
+
   this.setState({reset:1,status:'reseting'});
   fetch(request(`${API_URL}/resetorangepi`, 'GET'))
     .then(res => res.json())
@@ -62,8 +64,10 @@ resetDevice(){
       }
     }).catch(error => Promise.reject(new Error(error))); 
   }
+  }
 
   turnSocketON(){
+    if (window.confirm('Włączyć gniazdo?')) {
     fetch(request(`${API_URL}/turnon`, "POST", {ip:this.props.socketIP}))
     .then((res) => res.json())
     .then((result) => {
@@ -72,8 +76,10 @@ resetDevice(){
     })
     .catch((error) => Promise.reject(new Error(error)));
   }
+  }
 
   turnSocketOFF(){
+    if (window.confirm('Wyłączyć gniazdo?')) {
     fetch(request(`${API_URL}/turnoff`, "POST", {ip:this.props.socketIP}))
     .then((res) => res.json())
     .then((result) => {
@@ -81,6 +87,7 @@ resetDevice(){
       // this.getSocketInfo();
     })
     .catch((error) => Promise.reject(new Error(error)));
+  }
   }
 
 
@@ -127,13 +134,14 @@ render(){
     //const port=this.props.socketPort!=='' ? this.props.socketPort : this.props.port;
   return (
 <div className='Device'>
-  <div className='DeviceInfo'>
-   <p>{this.props.name}</p><p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active" && this.props.name==="ORANGEPI" ? <button onClick={()=>this.resetDevice()}>RESET</button>:''}
+  <fieldset className='DeviceInfo'>
+    <legend>{this.props.name}</legend>
+  <p>PORT: {this.props.port}</p><p>Status: {this.state.status}</p>{this.state.status!=="active" && this.props.name==="ORANGEPI" ? <button onClick={()=>this.resetDevice()}>RESET</button>:''}
    {this.state.reset===1? <p>{this.state.progress}%</p>:''}
    <p>SOCKET POWER STATUS: {this.state.info!=='' && this.state.info.Power===1 ? "ON":"OFF" }</p>
    <button onClick={this.turnSocketOFF}>OFF</button>
    <button onClick={this.turnSocketON}>ON</button>
-   </div>
+   </fieldset>
 
    {this.state.status=== "active" && this.props.name==="ORANGEPI" ? 
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>

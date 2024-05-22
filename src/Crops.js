@@ -265,7 +265,8 @@ class Crops extends React.Component {
         console.log(result);
         if (result.success) {
           this.props.refreshTDC();
-          alert("Taca zaplanowana")
+          this.props.refreshCrops();
+          alert("Zasiew zaktualizowany.")
         } else {
           alert("SQL Erro - błędne wartości!")
         }
@@ -299,11 +300,13 @@ class Crops extends React.Component {
   }
 
   scheduleWatering() {
+    if (window.confirm('Czy jesteś pewien, że chcesz zaplanować nawadnianie (reset obecnego harmonogramu)?')) {
+
     const tdc = this.props.tdc;
     const weekTDC = this.weekTDC(tdc);
     const grp = groupByDay(weekTDC, this.props.trays);
     const schedule = this.groupByFNDTrays(grp);
-    console.log(schedule);
+
     fetch(request(`${WATERING_API}/schedule`, "POST", { schedule: schedule }))
       .then((res) => res.json())
       .then((result) => {
@@ -316,6 +319,9 @@ class Crops extends React.Component {
         }
       })
       .catch((error) => Promise.reject(new Error(error)));
+    } else{
+
+    }
   }
 
 
@@ -376,7 +382,7 @@ class Crops extends React.Component {
       <textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
       <button type='submit'>DODAJ</button>
       <fieldset id="cropSim">
-        <legend>Symulacja</legend>
+        <legend>SYMULACJA</legend>
         <div><input type="radio" id="harvest-option" checked={this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label>DATA ZBIORU</label></div>
         <div><input type="radio" id="start-option" checked={!this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label>DATA ZASIEWU</label></div>
         {this.state.showHarvestSim ?
@@ -394,11 +400,16 @@ class Crops extends React.Component {
           {isMobile ? <div className="acfWrapper"><button onClick={() => this.setState({ showACF: !this.state.showACF })}>DODAJ ZASIEW</button>{this.state.showACF ? <div className="acf">{addCropForm}</div> : ''}</div> : <div>{addCropForm}</div>}
         </div>
         <div id="crop-list">
-          <div><button onClick={this.scheduleWatering}>SCHEDULER</button></div>
-          <div id="cropDateRange">
-            <div><p>OD</p><input type="text" onChange={() => { }} value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')} onClick={this.toggleCalendarRange}></input></div>
-            <div><p>DO</p><input type="text" onChange={() => { }} value={moment(this.state.cropDateTo).format('DD.MM.YYYY')} onClick={this.toggleCalendarRange}></input></div>
-          </div>
+          <div id="schedulerDiv"><button onClick={this.scheduleWatering}>SCHEDULER</button></div>
+         <div id="cropDateRange">
+          <fieldset>
+        <legend>ZAKRES</legend>
+            <input type="text" onChange={() => {}} value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')} onClick={this.toggleCalendarRange}></input>
+            <span> - </span>
+            <input type="text" onChange={() => {}} value={moment(this.state.cropDateTo).format('DD.MM.YYYY')} onClick={this.toggleCalendarRange}></input>
+            </fieldset>
+            {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> :<button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
+            </div>
           {this.state.showCalendarRange ? <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
           <table>
             <thead>
@@ -413,7 +424,6 @@ class Crops extends React.Component {
           {this.state.showWeekView ? <WeekView refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
-              <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button>
               <table>
                 <thead>
                   <tr key={this.props.index}><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
@@ -422,8 +432,7 @@ class Crops extends React.Component {
                 <tbody>
                   {allCrops}
                 </tbody>
-              </table></div> :
-            <button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
+              </table></div> :null}
         </div>
       </div>
     );

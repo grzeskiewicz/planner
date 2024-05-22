@@ -7,13 +7,17 @@
   #crop-list{
     flex:0 78%;
     border: 1px dotted gray;
-    padding: 0.5rem;
   }
 
   #crop-list thead tr{
 border-bottom:3px solid black;
+cursor:default;
   }
+  #crop-list thead tr td {
+    cursor:default;
+    text-transform: uppercase;
 
+  }
 
 .Crops table{
   flex:0 80%;
@@ -55,17 +59,22 @@ border-bottom:3px solid black;
 }
 
 .cropEntry:hover, .cropEntry.selected{
-  border: 3px solid green;
+  border: 5px solid red;
 } 
 
+
+.iconTD{
+  cursor: pointer;
+}
+.iconTD:hover{
+ background-color:  #04AA6D;
+}
 
 .cropNotes{
   width:100%;
   cursor: pointer;
   padding: 0;
 }
-
-
 
 
 .cropNotesEnabled textarea{
@@ -95,6 +104,10 @@ border:none;
   width:100%;
 }
 
+#schedulerDiv button {
+margin-top:0;
+margin-left:0;
+}
 
 .simulation div {
   display: flex;
@@ -106,11 +119,27 @@ border:none;
   display: flex;
   flex-flow:row nowrap;
   margin-bottom: 1rem;
+  justify-content: space-between;
 }
+
 
 #cropDateRange > div{
   display: flex;
   flex-flow:row nowrap;
+  justify-content: space-between;
+  font-size:1rem;
+  margin-right: 0.5rem;
+  flex:0 15%;
+}
+
+#cropDateRange button{
+  margin:0;
+}
+
+#cropDateRange input {
+  cursor: pointer;
+  text-align: center;
+  font-size:1rem;
 }
 
 @media screen and (max-width: 400px)  {
