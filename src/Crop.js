@@ -30,13 +30,13 @@ class Crop extends React.Component {
     fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop_id: crop.id }))
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+       // console.log(result);
         if (result.success) {
           this.props.refreshCrops();
           fetch(request(`${API_URL}/completewatering`, "POST", { crop_id: crop.id }))
             .then((res2) => res2.json())
             .then((result2) => {
-              console.log(result2);
+           //   console.log(result2);
               if (result.success) {
                 this.props.refreshCrops();
               } else {
@@ -55,7 +55,7 @@ class Crop extends React.Component {
 
 
   deleteCrop(crop) {
-    console.log(crop.id);
+  //  console.log(crop.id);
     if (window.confirm("Czy usunąć zasiew?")) {
       fetch(request(`${API_URL}/deletecrop`, "POST", { crop_id: Number(crop.id) }))
         .then((res) => res.json())

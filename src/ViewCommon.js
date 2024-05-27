@@ -27,9 +27,7 @@ export function groupByFNDTrays(grpDay) {
       if (!grp[entry.fndtray_id]) grp[entry.fndtray_id] = [];
       grp[entry.fndtray_id].push(entry);
     }
-    // const weekDay = moment(day).isoWeekday();
-    // if (!mapArr[weekDay]) mapArr[weekDay] = [];
-    // mapArr[weekDay].push(grp);
+    
     mapArr.push(grp);
   }
   return mapArr;
@@ -55,13 +53,13 @@ export function groupByShelves(grpDay) {
 
 
 export function whichStage(day, crop) {
-  //console.log(crop)
+
   const start = moment(crop.start);
   const blackoutStart = moment(crop.blackoutStart);
   const lightExposureStart = moment(crop.lightExposureStart);
   const harvest = moment(crop.harvest);
   let stage = false;
-  //is given day on one of the stages:
+ 
   if (day.isSame(start, "day")) stage = "S";
   if (day.isBetween(start.endOf("day"), blackoutStart.startOf("day")))
     stage = "WG";
@@ -75,6 +73,7 @@ export function whichStage(day, crop) {
   if (day.isBetween(lightExposureStart.startOf("day"), harvest.startOf("day")))
     stage = "LE";
   if (day.isSame(harvest, "day")) stage = "H";
+  
   return stage;
 }
 
@@ -164,152 +163,6 @@ export function renderEmptyRow(days) {
   return row;
 }
 
-/*
-function groupByShelves(grpDay) {
-  //shelfX, X-poziom od dołu
-  let shelf1 = [],
-    shelf2 = [],
-    shelf3 = [],
-    shelf4 = [];
-  if (grpDay !== null && grpDay !== undefined) {
-    for (const [valve, arr] of Object.entries(grpDay)) {
-      if (Number(valve) === 1 || Number(valve) == 2) shelf4.push(arr);
-      if (Number(valve) === 3 || Number(valve) == 4) shelf3.push(arr);
-      if (Number(valve) === 5 || Number(valve) == 6) shelf2.push(arr);
-      if (Number(valve) == 7 || Number(valve) == 8) shelf1.push(arr);
-    }
-    return [shelf4, shelf3, shelf2, shelf1];
-  }
-*/
-
-/*
-function createRack(grpByShelves) {
-  const rack = (
-    <div className="rack">
-      {createShelf(grpByShelves, 0)}
-      {createShelf(grpByShelves, 1)}
-      {createShelf(grpByShelves, 2)}
-      {createShelf(grpByShelves, 3)}
-    </div>
-  );
-  return rack;
-}
-
-function createShelf(grpByShelves, i) {
-  const row = (
-    <div className="row">
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[0][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[0][i][1]} pos="P"></FNDTray>
-      </div>
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[1][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[1][i][1]} pos="P"></FNDTray>
-      </div>
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[2][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[2][i][1]} pos="P"></FNDTray>
-      </div>
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[3][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[3][i][1]} pos="P"></FNDTray>
-      </div>
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[4][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[4][i][1]} pos="P"></FNDTray>
-      </div>
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[5][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[5][i][1]} pos="P"></FNDTray>
-      </div>
-      <div
-        className="shelf"
-        style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}
-      >
-        <FNDTray tray={grpByShelves[6][i][0]} pos="L"></FNDTray>
-        <FNDTray tray={grpByShelves[6][i][1]} pos="P"></FNDTray>
-      </div>
-    </div>
-  );
-  return row;
-}  */
-
-
-/*
-function createRack2(grpByShelves, days) {
-  const rack = (
-    <div className="rack">
-      {createShelf2(grpByShelves, days, 0)}
-      {createShelf2(grpByShelves, days, 1)}
-      {createShelf2(grpByShelves, days, 2)}
-      {createShelf2(grpByShelves, days, 3)}
-    </div>
-  );
-  return rack;
-}
-
-function createShelf2(grpByShelves, days, n) {
-  let row = [];
-  if (grpByShelves) {
-    for (let i = 0; i < days; i++) {
-      row.push(<div className="shelf" style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }}>
-        <FNDTray range="month" tray={grpByShelves[i][n][0]} pos="L"></FNDTray>
-        <FNDTray range="month" tray={grpByShelves[i][n][1]} pos="P"></FNDTray>
-      </div>)
-    }
-    return <div className="row">{row}</div>;
-  } else { return <div className="row">{row}</div> }
-}*/
-
-/*export function renderByFND(grpByFNDT,days) {
-  const arr = [];
-
-  for (let i = 0; i < days; i++) {
-    const grpByShelves = groupByShelves(grpByFNDT[i]);
-    if (grpByShelves !== undefined) arr.push(grpByShelves);
-  }
-  if (arr.length > 0) {
-    const rack = createRack(arr);
-    return rack;
-  } else return;
-}*/
-/*
-export function renderByFND2(grpByFNDT, days) {
-  //console.log(grpByFNDT);
-  const arr = [];
-
-  for (let i = 0; i < days; i++) {
-    const grpByShelves = groupByShelves(grpByFNDT[i]);
-    if (grpByShelves !== undefined) arr.push(grpByShelves);
-  }
-  if (arr.length > 0) {
-    const rack = createRack2(arr, days);
-    return rack;
-  } else {
-    // console.log(arr);
-  };
-}*/
-
-
-
 
 
 export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop) {
@@ -321,8 +174,14 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
     if (weekNow === null) {
       stage = whichStage(monthNow.set('date', i), crop);
     } else if (monthNow === null) {
-      const copy = moment(weekNow);
+
+
+      const copy =moment().week(weekNow).set({hour:12,minutes:0});
       stage = whichStage(copy.isoWeekday(i), crop);
+    //  console.log(stage)
+     // console.log(i,copy.isoWeekday(i).format('YYYY-MM-DD'))
+
+
     }
     if (stage !== undefined && stage !== false && grp.length===0) {
       grp.push({ stage: stage, day: i }); firstDayWithStage = i;
@@ -338,8 +197,9 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
     if (weekNow === null) {
       stage = whichStage(monthNow.set('date', i), crop);
     } else if (monthNow === null) {
-      const copy = moment(weekNow);
+      const copy =moment().week(weekNow).set({hour:12,minutes:0});
       stage = whichStage(copy.isoWeekday(i), crop);
+    //  console.log(i,copy.isoWeekday(i).format('YYYY-MM-DD'))
     }
 
     if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false 
@@ -361,12 +221,14 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
 }
 
 export function renderByMicrogreens(crops, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
+ // console.log(crops,microgreens,weekNow.week());
   const groupedRows = [];
   for (const microgreen of microgreens) {
     const cropsGrouped = crops.filter((x) => x.microgreen_id === microgreen.id);
     if (cropsGrouped.length > 0) {
       const rows = [];
       for (const crop of cropsGrouped) {
+       // console.log(weekNow)
         const row = renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop);
         rows.push(<div className='row' key={crop.id}>{row}</div>);
       }

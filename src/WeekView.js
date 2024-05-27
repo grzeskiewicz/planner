@@ -11,7 +11,7 @@ class WeekView extends React.Component {
     super(props);
 
     this.state = {
-      weekNow: moment().weeks(),
+      weekNow: moment().isoWeek(),
       toggleVal: true,
       checkedItems: this.setChecked(),
       tdc: JSON.parse(JSON.stringify(this.props.tdc)),
@@ -48,13 +48,13 @@ class WeekView extends React.Component {
       const finish = moment(crop.harvest);
 
       const scheduledTDC = tdc.filter((x) => moment(x.date).isBetween(start, finish, undefined, "[]"));
-    //  console.log(scheduledTDC);
       this.setState({ scheduledTDC: scheduledTDC }); 
+
       } else {
         const tdc =  JSON.parse(JSON.stringify(this.state.tdc));
         const start =moment().week(this.state.weekNow-1).startOf("week");
-        const finish = moment().week(this.state.weekNow).endOf("week").add(light,"days");
-        console.log(start.format('YYYY-MM-DD'),finish.format('YYYY-MM-DD'));
+        const finish = moment().week(this.state.weekNow).endOf("week").add(2*light,"days");
+       
         const scheduledTDC = tdc.filter((x) => moment(x.date).isBetween(start, finish, undefined, "[]"));      
         this.setState({ scheduledTDC: scheduledTDC });
       }
@@ -151,7 +151,6 @@ class WeekView extends React.Component {
 
   weekTDC(tdc) {
     //crops which are during selected week
-    // console.log(this.state.weekNow);
     const weekNowMon = moment()
       .week(this.state.weekNow)
       .weekday(1)
@@ -257,21 +256,14 @@ class WeekView extends React.Component {
           const tdc=JSON.parse(JSON.stringify(this.state.tdc));
           const selectedCrop = this.props.selectedCrop;
           const microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id)
-
           let scheduledTDC = JSON.parse(JSON.stringify(this.state.scheduledTDC));
 
-          let blockDate= selectedCrop.harvest !==null? selectedCrop.lightExposureStart: tray.date;
-          blockDate=JSON.parse(JSON.stringify(blockDate));
-          const lightExposureStart=moment(blockDate).startOf('day');
-          const harvestTmp=lightExposureStart.clone();
-          const harvest=harvestTmp.add(microgreenData.light-1,"days");
+          let blockDate= selectedCrop.harvest !==null? moment(selectedCrop.lightExposureStart).set({hours:12,minutes:0}): moment(tray.date).set({hours:12,minutes:0});
+          const stop=blockDate.clone().add(microgreenData.light-1,"days");
 
-
-          scheduledTDC=scheduledTDC.filter((x) => moment(x.date).isBetween(lightExposureStart,harvest, undefined, "[]"));     
+          scheduledTDC=scheduledTDC.filter((x) => moment(x.date).isBetween(blockDate.startOf('day'),stop.endOf('day'), undefined, "[]"));     
 
           const traySchedule=scheduledTDC.filter((x)=>x.tray_id===tray.tray_id);
-          console.log("blockdate","LE","H","H TEMP");
-          console.log(blockDate,lightExposureStart,harvest,harvestTmp);
       
  const isTaken=traySchedule.find((x)=>x.crop_id!==null);
           if (isTaken===undefined){ 
@@ -299,8 +291,9 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
     } else {
       let lightExposureStart;
       if (selectedCrop.id===tray.crop_id){
-        const isLast = scheduledTDC.filter((x) => x.crop_id === selectedCrop.id).length === microgreenData.light;
-        if (isLast) lightExposureStart=blockDate; blockDate=undefined; 
+       
+       const isLast=scheduledTDC.filter((x) => x.crop_id === selectedCrop.id);
+        if (isLast) lightExposureStart=blockDate.clone(); blockDate=undefined; 
         for (const entry of scheduledTDC) {
           if (entry.tray_id===tray.tray_id) {
             entry.status = "0";
@@ -308,9 +301,6 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
           }
           }
           const mergedTDC=this.mergeTDC(scheduledTDC,tdc);
-          
-          console.log("blockdate","LE","H","H TEMP");
-          console.log(blockDate,lightExposureStart,harvest,harvestTmp);
 
           this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,lightExposureStart:lightExposureStart});
       }
@@ -322,48 +312,46 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
     const crop=this.props.selectedCrop;
     const microgreenData=this.props.microgreens.find((x)=>x.id===crop.microgreen_id);
     const light=microgreenData.light;
-    const blockDate=this.state.blockDate===undefined ? moment(this.state.lightExposureStart).startOf('day') : moment(this.state.blockDate).startOf('day');
-    console.log("BLOCK SAVE",blockDate);
+    const blockDate=this.state.blockDate===undefined ? moment(this.state.lightExposureStart).set({hours:12,minutes:0}) : moment(this.state.blockDate).set({hours:12,minutes:0});
     
     let tdcs = JSON.parse(JSON.stringify(this.state.scheduledTDC)); //scheduleTDC
-    const stop=blockDate.clone().add(light-1,"days").endOf('day');
-    const harvest=moment(blockDate).add(light,"days").endOf('day');
-    console.log("SAVE",blockDate,stop,harvest)
-    tdcs=tdcs.filter((x) => moment(x.date).isBetween(moment(blockDate), stop, undefined, "[]")); 
+    const stop=blockDate.clone().add(light-1,"days");
+    const harvest=stop.clone().add(1,"days");
+    //console.log("SAVE",blockDate.format('YYYY-MM-DD'),stop.format('YYYY-MM-DD'))
+    tdcs=tdcs.filter((x) => moment(x.date).isBetween(moment(blockDate).startOf('day'), stop.endOf('day'), undefined, "[]")); 
 
     const isLast=tdcs.filter((x) => x.crop_id === crop.id).length === 0;
     if (isLast) {
       this.props.saveScheduleTDC(this.props.selectedCrop.id, tdcs,null);
     } else {
-      this.props.saveScheduleTDC(this.props.selectedCrop.id, tdcs, harvest.format('YYYY-MM-DD'));
-
+      this.props.saveScheduleTDC(this.props.selectedCrop.id, tdcs, harvest.format('YYYY-MM-DD HH:mm'));
     }
-
   }
 
   render() {
+    const microgreens=this.props.microgreens;
     const start=moment().week(this.state.weekNow).weekday(1).startOf('day');
-    const finish=moment().week(this.state.weekNow).weekday(7).endOf('day');
+    const finish=moment().week(this.state.weekNow).weekday(7).add(10,"days").endOf('day');
     
     const weekTDC=this.tdcDateRange(this.state.tdc,start,finish);
     const grpWeekTDCByDay = groupByDay(weekTDC,this.props.trays);
-    const grpByFNDTrays = groupByFNDTrays(grpWeekTDCByDay, this.props.microgreens);
+    const grpByFNDTrays = groupByFNDTrays(grpWeekTDCByDay, microgreens);
 
     const byShelves = this.renderByFND(grpByFNDTrays, 7);
-    const weekNow = moment().week(this.state.weekNow);
-    calcDatesCrop(this.props.crops, this.props.microgreens);
+    let weekNow= this.state.weekNow;
+    calcDatesCrop(this.props.crops, microgreens);
     const weekCrops = this.weekCrops(this.props.crops);
 
     const byMicrogreens = renderByMicrogreens(
       weekCrops,
-      this.props.microgreens,
+      microgreens,
       7,
       null,
       weekNow,
       this.state.checkedItems,
       this.props.setSelectedCrop
     );
-
+weekNow=moment().week(this.state.weekNow);
     const [mon, tue, wed, thu, fri, sat, sun] = [
       JSON.parse(JSON.stringify(weekNow.weekday(1))),
       JSON.parse(JSON.stringify(weekNow.weekday(2))),
@@ -390,7 +378,7 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
           ) : (
             <div></div>
           )}
-          <div>{this.state.weekNow - 1}</div>
+          <div>{this.state.weekNow}</div>
           {this.state.weekNow <= 52 ? (
             <div onClick={this.plusWeek} className="next">{">>"}</div>
           ) : (

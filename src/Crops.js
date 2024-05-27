@@ -206,12 +206,12 @@ class Crops extends React.Component {
   }
 
   handleRangeSelection(date, clicks, from, to) {
-    console.log(date)
+   // console.log(date)
     if (clicks === 0) {
-      console.log(0);
+     // console.log(0);
       this.setState({ cropDateFrom: from, cropDateTo: '' }); return;
     } else if (clicks === 1) {
-      console.log(1);
+    //  console.log(1);
       this.setState({ cropDateTo: to });
       this.renderRangeCropsTable();
       this.hideCalendarRange();
@@ -258,7 +258,7 @@ class Crops extends React.Component {
   saveScheduleTDC(crop, tdcs, harvest) {
     const microgreens=this.props.microgreens;
     const microgreenData=microgreens.find((x)=>x.id===this.state.selectedCrop.microgreen_id);
-    console.log(tdcs);
+   // console.log(harvest);
     fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest,light:microgreenData.light }))
       .then((res) => res.json())
       .then((result) => {
@@ -394,6 +394,7 @@ class Crops extends React.Component {
       {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) : ''}
     </form>;
 
+
     return (
       <div className='Crops'>
         <div id="addCrops">
@@ -411,6 +412,7 @@ class Crops extends React.Component {
             {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> :<button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
             </div>
           {this.state.showCalendarRange ? <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
+         {cropsTable.length >0 ? 
           <table>
             <thead>
               <tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td>
@@ -420,7 +422,7 @@ class Crops extends React.Component {
             <tbody>
               {cropsTable}
             </tbody>
-          </table>
+          </table>:''}
           {this.state.showWeekView ? <WeekView refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
