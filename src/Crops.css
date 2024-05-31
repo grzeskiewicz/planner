@@ -4,30 +4,35 @@
     flex:0 100%;
   }
 
-  #crop-list{
-    flex:0 78%;
+  #cropList{
+    flex:0 100%;
     border: 1px dotted gray;
+    cursor:default;
+
   }
 
-  #crop-list thead tr{
-border-bottom:3px solid black;
-cursor:default;
-  }
-  #crop-list thead tr td {
+
+ #cropsTable .head{
     cursor:default;
     text-transform: uppercase;
-
+    display: flex;
+    flex-flow:row nowrap;
   }
+  
 
-.Crops table{
+  #cropsTable .head > * {
+    flex:1;
+    border: 1px solid black;
+text-align: center;  
+}
+
+#cropsTable .head .cropType{
+  flex:2;
+}
+
+#cropsTable{
   flex:0 80%;
 }
-
-.Crops table tr td {
-  white-space: nowrap;
-  resize:none;
-}
-
 .color{
   width:5%;
 }
@@ -56,6 +61,19 @@ cursor:default;
 }
 .cropEntry{
   cursor: default;
+  display: flex;
+  flex-flow:row nowrap;
+}
+.cropEntry .cropType {
+flex:2;
+}
+.cropEntry > * {
+  flex:1;
+  border: 1px solid black;
+display: flex;
+flex-flow:row;
+justify-content: center;
+align-items: center;
 }
 
 .cropEntry:hover, .cropEntry.selected{
@@ -150,22 +168,6 @@ margin-left:0;
     font-size: 0.6rem;
   }
 
-  .Crops table {
-    width:100%;
-    border-collapse: collapse;
-    text-align: center;
-    table-layout: fixed;
-  }
-
-  .Crops table  td {
-    padding:0;
-    font-size:0.5rem;
-    line-height: 0.6rem;
-
-  }
-  .Crops table  tr {
-    line-height: 0.6rem;
-  }
 
   .cropNotesDisabled textarea {
     font-size:0.5rem;
@@ -218,19 +220,7 @@ margin-left:0;
   #crop-list{
     flex:0 90%;
   }
-
-  #crop-list thead tr{
-    display: flex;
-flex-flow:row wrap;
-width: 100vw;
-border:1px solid green;
-  }
-
-
-  #crop-list thead tr td{
-    flex:1;
-  }
-
+  
   .cropNotes {
     width:auto;
   }
@@ -243,6 +233,8 @@ width:90vw;
 display: flex;
 flex-flow:row wrap;
 width: 100vw;
+border:1px solid green;
+
   }
 
   .cropEntry td{
@@ -251,10 +243,7 @@ width: 100vw;
 
   .rowNotesEdit{
     flex:0 100%;
- }
- .rowNotesEdit td {
-width:100vw;
-}
+  }
 
  .rowNotesEdit textarea {
   width: 90%;

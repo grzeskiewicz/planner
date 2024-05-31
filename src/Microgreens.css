@@ -5,17 +5,50 @@
   }
 
   #microgreens-list{
+    display: flex;
+    flex-flow:column nowrap;
     flex:0 70%;
   }
 
-  .Microgreens table{
-    width:100%;
-  }
-
-  .Microgreens table thead tr td {
+  .Microgreens .head{
     text-transform: uppercase;
     cursor: pointer;
+    display: flex;
+    flex-flow:row nowrap;
+    border-bottom:6px double black;
   }
+
+  .Microgreens .head div {
+    flex:1;
+    text-align: center;
+  }
+
+  .Microgreens .body{
+    display: flex;
+    flex-flow:column nowrap;
+  }
+
+
+  .MicrogreenEntry{
+    cursor: pointer;
+    display: flex;
+    flex-flow:row nowrap;
+    border-bottom:1px solid black;
+    flex:0 100%;
+  }
+
+  .MicrogreenEntry div{
+    flex:1;
+    text-align: center;
+  }
+  
+    .MicrogreenEntry:hover{
+      border:3px solid green;
+    }
+  
+    .MicrogreenEntry.edit{
+      border:3px solid green;
+    }
 
   #microgreens-color-picker{
     width:100%;
@@ -44,26 +77,17 @@
     flex:0 7%;
   }
 
-.MicrogreenEntry{
-  cursor: pointer;
-}
 
-  .MicrogreenEntry:hover{
-    border:3px solid green;
-  }
 
-  .MicrogreenEntry.edit{
-    border:3px solid green;
-  }
+  /*
   
   .MicrogreenEntry td{
-   /* width:100%;*/
     padding: 0.5rem;
   }
 
   .MicrogreenEntry td input {
     width:100%;
-  }
+  } */
 
   @media screen and (max-width: 400px)  {
     .Microgreens{

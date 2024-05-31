@@ -37,11 +37,24 @@ flex-basis:50%;
 border:1px solid black;
 }
 
+#WeekView .rack{
+    flex:0 30%;
+}
+
 .FNDTray.blocked{
     pointer-events: none;
     opacity: 0.4;
 }
 
+
+#WeekView .tray{
+
+}
+
+.tray.blocked{
+    pointer-events: none;
+    opacity: 0.4;
+}
 
 .dayRecord{
     border: 1px solid black;

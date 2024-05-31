@@ -42,7 +42,7 @@ text-align: center;
 .filter{
     display: flex;
     flex-flow:row nowrap;
-    gap: 0.5rem;
+    justify-content: space-between;
 }
 
 .filter div > * {
@@ -51,6 +51,7 @@ text-align: center;
 .filter div{
     display: flex;
     flex-flow:row nowrap;
+    padding: 0.4rem;
 
 }
 .control-row > *{

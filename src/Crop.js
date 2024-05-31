@@ -120,37 +120,47 @@ class Crop extends React.Component {
     this.props.showWeekView(crop);
   }
   //<textarea disabled={this.state.editNotesEnabled} onChange={this.editNotes} className='cropNotes'>  </textarea>
-  //        <td>{shelfData.rack_name + shelfData.level}</td>
-  //        {crop.scheduled === 1 ? <td>&#10004;</td> : <td onClick={() => this.scheduleWatering(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg"/></td>}
+  //        <div>{shelfData.rack_name + shelfData.level}</div>
+  //        {crop.scheduled === 1 ? <div>&#10004;</div> : <td onClick={() => this.scheduleWatering(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg"/></div>}
 
 
   /*
    {this.state.editNotesEnabled && Number(crop.id) === Number(this.props.selectedCrop) ?
-          <tr className='rowNotesEdit'><td>
+          <tr className='rowNotesEdit'><div>
             <textarea onKeyDown={this.enter} rows="8" onChange={this.editNotes} type="text" value={this.state.notes}></textarea>
-            <FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg" /></td></tr> : ''}
+            <FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg" /></div></tr> : ''}
         {this.state.showWeekView ? '' : ''}
   */
 
   render() {
     const crop = this.props.crop;
+    let trays=crop.trays;
     const isSelected=this.props.selectedCrop && this.props.selectedCrop.id===crop.id;
     const microgreenData = this.props.microgreenData;
-    const start = crop.harvest !== null ? (isMobile ? moment(crop.start).format("DD.MM") : moment(crop.start).format("DD.MM.YYYY")) : "-";
-    const blackoutStart = crop.harvest !== null ? (isMobile ? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")) : "-";
-    const lightExposureStart = crop.harvest !== null ? (isMobile ? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")) : "-";
-    const harvest = crop.harvest !== null ? (isMobile ? moment(crop.harvest).format("DD.MM") : moment(crop.harvest).format("DD.MM.YYYY")) : "-";
+    let start = crop.harvest !== null ? (isMobile ? moment(crop.start).format("DD.MM") : moment(crop.start).format("DD.MM.YYYY")) : "-";
+    let blackoutStart = crop.harvest !== null ? (isMobile ? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")) : "-";
+    let lightExposureStart = crop.harvest !== null ? (isMobile ? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")) : "-";
+    let harvest = crop.harvest !== null ? (isMobile ? moment(crop.harvest).format("DD.MM") : moment(crop.harvest).format("DD.MM.YYYY")) : "-";
+
+    if (this.props.addCrop && this.props.sim!==null && this.props.sim.harvest!==null) {
+      const sim=this.props.sim;
+      start=isMobile ? moment(sim.start).format("DD.MM") : moment(sim.start).format("DD.MM.YYYY");
+      blackoutStart=isMobile ? moment(sim.blackout).format("DD.MM") : moment(sim.blackout).format("DD.MM.YYYY");
+      lightExposureStart=isMobile ? moment(sim.light).format("DD.MM") : moment(sim.light).format("DD.MM.YYYY");
+      harvest=isMobile ? moment(sim.harvest).format("DD.MM") : moment(sim.harvest).format("DD.MM.YYYY");
+      trays=sim.trays;
+    }
     return (
 
-      <tr className={"cropEntry " + (isSelected ? "selected" : "")} key={this.props.index}>
-        <td className="color" style={{ backgroundColor: this.props.microgreenData.color }}>{" "}</td>
-        <td>{microgreenData.name_pl}</td>
-        <td>{start}</td>
-        <td>{blackoutStart}</td>
-        <td>{lightExposureStart}</td>
-        <td>{harvest}</td>
-        <td>{crop.trays}</td>
-        <td className="cropNotes">
+      <div className={"cropEntry " + (isSelected ? "selected" : "")} key={this.props.index}>
+        <div className="color" style={{ backgroundColor: this.props.microgreenData.color }}>{" "}</div>
+        <div className="cropType">{microgreenData.name_pl}</div>
+        <div>{start}</div>
+        <div>{blackoutStart}</div>
+        <div>{lightExposureStart}</div>
+        <div>{harvest}</div>
+        <div>{trays}</div>
+        <div className="cropNotes">
           {this.state.editNotesEnabled &&
             Number(crop.id) === Number(this.props.selectedCrop) ? (
             <div className="cropNotesEnabled">
@@ -162,14 +172,14 @@ class Crop extends React.Component {
               {isMobile ? 'Notatki' : <textarea rows="2" onClick={this.triggerEditNotes} type="text" value={this.state.notes} onChange={() => { }}></textarea>}
             </div>
           )}
-        </td>
-        <td className="iconTD" onClick={() => this.deleteCrop(crop)}>
+        </div>
+        <div className="iconTD" onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
-        </td>
-        {crop.scheduled === 1 ? <td>&#10004;</td> : <td className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></td>}
-        {crop.completed === 1 ? <td>&#10004;</td> : crop.scheduled === 1 ? <td className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</td> : <td>-</td>}
+        </div>
+       { this.props.addCrop===false ? crop.scheduled === 1 ? <div>&#10004;</div> : <div className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></div>:null}
+        {crop.completed === 1 ? <div>&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> :  this.props.addCrop===true ? null:<div>-</div>}
      
-      </tr>
+      </div>
     );
   }
 }

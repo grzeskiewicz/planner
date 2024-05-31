@@ -4,10 +4,10 @@ import Calendar from './Calendar';
 import moment from 'moment';
 import { API_URL, request } from "./APIConnection";
 import Crop from './Crop';
+import WeekView from './WeekView';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCalendarCheck, faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
 import { isMobile } from 'react-device-detect';
-import WeekView from './WeekView';
 
 import { groupByDay } from './ViewCommon';
 //const WATERING_API = 'http://192.168.2.6:3051';
@@ -178,7 +178,7 @@ class Crops extends React.Component {
       //  console.log(moment(crop.harvest),moment(crop.start));
       //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
-      return <Crop deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
+      return <Crop addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
         microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
         markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}
       ></Crop>
@@ -246,6 +246,7 @@ class Crops extends React.Component {
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
+          console.log(result);
           this.props.refreshCrops();
         } else {
           alert("SQL Erro - błędne wartości!")
@@ -393,14 +394,13 @@ class Crops extends React.Component {
       </fieldset>
       {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) : ''}
     </form>;
-
+   //     <div id="addCrops">
+   //     {isMobile ? <div className="acfWrapper"><button onClick={() => this.setState({ showACF: !this.state.showACF })}>DODAJ ZASIEW</button>{this.state.showACF ? <div className="acf">{addCropForm}</div> : ''}</div> : <div>{addCropForm}</div>}
+   //   </div>
 
     return (
       <div className='Crops'>
-        <div id="addCrops">
-          {isMobile ? <div className="acfWrapper"><button onClick={() => this.setState({ showACF: !this.state.showACF })}>DODAJ ZASIEW</button>{this.state.showACF ? <div className="acf">{addCropForm}</div> : ''}</div> : <div>{addCropForm}</div>}
-        </div>
-        <div id="crop-list">
+        <div id="cropList">
           <div id="schedulerDiv"><button onClick={this.scheduleWatering}>SCHEDULER</button></div>
          <div id="cropDateRange">
           <fieldset>
@@ -413,28 +413,27 @@ class Crops extends React.Component {
             </div>
           {this.state.showCalendarRange ? <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
          {cropsTable.length >0 ? 
-          <table>
-            <thead>
-              <tr><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td>
-              <td><FontAwesomeIcon icon={faTrashAlt} size="lg"/></td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-              </td><td><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></td></tr>
-            </thead>
-            <tbody>
+          <div id="cropsTable">
+            <div className='head'>
+              <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div>
+              <div><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+              </div><div><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
+            </div>
+            <div className='body'>
               {cropsTable}
-            </tbody>
-          </table>:''}
-          {this.state.showWeekView ? <WeekView refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
+            </div>
+          </div>:''}
+          {this.state.showWeekView ? <WeekView addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
-              <table>
-                <thead>
-                  <tr key={this.props.index}><td></td><td>Rodzaj</td><td>Start</td><td>Blackout</td><td>Światło</td><td>Zbiór</td><td>Tace</td><td>Notatki</td><td>X</td><td><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-                  </td><td><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></td></tr>
-                </thead>
-                <tbody>
+                <div className='head'>
+                  <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div><div>X</div><div><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+                  </div><div><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
+                </div>
+                <div className='body'>
                   {allCrops}
-                </tbody>
-              </table></div> :null}
+                </div>
+              </div> :null}
         </div>
       </div>
     );

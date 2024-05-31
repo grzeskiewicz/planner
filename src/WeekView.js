@@ -228,13 +228,13 @@ class WeekView extends React.Component {
     return this.props.microgreens.map((microgreen, index) => {
       return (
         <div style={{ backgroundColor: microgreen.color }}>
-          <input
+         {this.state.toggleVal ? '' : 
+         <input
             key={microgreen.id}
             checked={this.state.checkedItems.get(microgreen.name_pl)}
             onChange={this.handleCheck}
             type="checkbox"
-            name={microgreen.name_pl}
-          />
+            name={microgreen.name_pl}/>}
           <p>{microgreen.name_pl}</p>
         </div>
       );
@@ -255,7 +255,8 @@ class WeekView extends React.Component {
         if (this.props.className === "scheduleCrop") {
           const tdc=JSON.parse(JSON.stringify(this.state.tdc));
           const selectedCrop = this.props.selectedCrop;
-          const microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id)
+          const microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id);
+          console.log(microgreenData);
           let scheduledTDC = JSON.parse(JSON.stringify(this.state.scheduledTDC));
 
           let blockDate= selectedCrop.harvest !==null? moment(selectedCrop.lightExposureStart).set({hours:12,minutes:0}): moment(tray.date).set({hours:12,minutes:0});
@@ -286,14 +287,32 @@ if (wasOcc){
 }
 
 const mergedTDC=this.mergeTDC(scheduledTDC,tdc);
+const harvestSim=blockDate.clone().add(microgreenData.light,"days");
+const lightStartSim=blockDate.clone();
+const blackoutSim=lightStartSim.clone().subtract(microgreenData.blackout,"days");
+const startSim=blackoutSim.clone().subtract(microgreenData.weight,"days");
+
+const fillTrays=mergedTDC.filter((x) => x.status === "1" && x.crop_id===selectedCrop.id);
+const fillTraysIDs = fillTrays.map((x) => x.id);
+
+const trays=fillTraysIDs.length/microgreenData.light;
+
+const sim={
+  start:startSim,
+  blackout:blackoutSim,
+  light:lightStartSim,
+  harvest:harvestSim,
+  trays:trays
+}
+
+if (this.props.addCrop) this.props.updateSim(sim); 
 
 this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
     } else {
       let lightExposureStart;
       if (selectedCrop.id===tray.crop_id){
        
-       const isLast=scheduledTDC.filter((x) => x.crop_id === selectedCrop.id);
-        if (isLast) lightExposureStart=blockDate.clone(); blockDate=undefined; 
+       //const isLast=scheduledTDC.filter((x) => x.crop_id === selectedCrop.id).length===0;
         for (const entry of scheduledTDC) {
           if (entry.tray_id===tray.tray_id) {
             entry.status = "0";
@@ -301,8 +320,27 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
           }
           }
           const mergedTDC=this.mergeTDC(scheduledTDC,tdc);
+          const isLast=mergedTDC.filter((x) => x.crop_id === selectedCrop.id).length===0;
+          //if (isLast) lightExposureStart=blockDate.clone(); blockDate=undefined; 
+          if (isLast) blockDate=undefined; 
+          const fillTrays=mergedTDC.filter((x) => x.status === "1" && x.crop_id===selectedCrop.id);
+const fillTraysIDs = fillTrays.map((x) => x.id);
 
-          this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,lightExposureStart:lightExposureStart});
+const trays=fillTraysIDs.length/microgreenData.light;
+          const harvestSim=!isLast? blockDate.clone().add(microgreenData.light,"days"):null;
+          const lightStartSim=!isLast?  blockDate.clone():null;
+          const blackoutSim=!isLast? lightStartSim.clone().subtract(microgreenData.blackout,"days"):null;
+          const startSim=!isLast? blackoutSim.clone().subtract(microgreenData.weight,"days"):null;
+const sim={
+start:startSim,
+blackout:blackoutSim,
+light:lightStartSim,
+harvest:harvestSim,
+trays:trays
+}
+
+if (this.props.addCrop) this.props.updateSim(sim); 
+this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,lightExposureStart:lightExposureStart});
       }
     }
   }

@@ -8,9 +8,9 @@ import { API_URL, request } from './APIConnection';
 import MonthView from './MonthView';
 import DayView from './DayView';
 import { isMobile } from 'react-device-detect';
+import AddCrop from './AddCrop';
 
 
-//TODO: poprawic renderowanie selectów, weekView, monthView, 
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +24,7 @@ class App extends React.Component {
     }
     this.showMicrogreensTab = this.showMicrogreensTab.bind(this);
     this.showAddCropTab = this.showAddCropTab.bind(this);
+    this.showCropsTab=this.showCropsTab.bind(this);
     this.showWeekTab = this.showWeekTab.bind(this);
     this.showMonthTab = this.showMonthTab.bind(this);
     this.showDevicesTab = this.showDevicesTab.bind(this);
@@ -98,28 +99,37 @@ class App extends React.Component {
         return result;
       });
   }
-  showMicrogreensTab() {
-    this.setState({ tab: 3 });
-  }
+  
 
-  showAddCropTab() {
+  showCropsTab() {
     this.setState({ tab: 0 });
   }
 
-  showWeekTab() {
+  showAddCropTab(){
     this.setState({ tab: 1 });
   }
 
-  showMonthTab() {
+  showWeekTab() {
     this.setState({ tab: 2 });
   }
 
-  showDevicesTab() {
+  showMonthTab() {
+    this.setState({ tab: 3 });
+  }
+
+  showMicrogreensTab() {
     this.setState({ tab: 4 });
   }
 
+  showDevicesTab() {
+    this.setState({ tab: 5 });
+  }
+
+ 
+
+  
+
   setSelectedDay(day) {
-    console.log(day);
     this.setState({ selectedDay: day });
   }
 
@@ -133,18 +143,22 @@ class App extends React.Component {
     if (isReady) {
       return <div className="App">
         <div id="menu">
-          <div id="add-crops-tab" onClick={this.showAddCropTab}><p>ZASIEWY</p></div>
+          <div id="add-crops-tab" onClick={this.showCropsTab}><p>ZASIEWY</p></div>
+          <div id="addcrop-tab" onClick={this.showAddCropTab}><p>+ ZASIEW</p></div>
           <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'WIDOK [TYDZIEŃ]'}</p></div>
           <div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile ? '[MSC]' : 'WIDOK [MIESIĄC]'}</p></div>
           <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
-          <div id="microgreens-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
+          <div id="devices-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
+
         </div>
         <div id="board">
           {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></Crops> : null}
-          {this.state.crops !== '' && this.state.tab === 1 ? <WeekView className="main" trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
-          {this.state.crops !== '' && this.state.tab === 2 ? <MonthView fndtrays={this.state.FNDTrays} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
-          {this.state.microgreens !== '' && this.state.tab === 3 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
-          {this.state.tab === 4 ? <Devices></Devices> : null}
+          {this.state.tab === 1 ? <AddCrop trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></AddCrop> : null}
+          {this.state.crops !== '' && this.state.tab === 2 ? <WeekView className="main" trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
+          {this.state.crops !== '' && this.state.tab === 3 ? <MonthView fndtrays={this.state.FNDTrays} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
+          {this.state.microgreens !== '' && this.state.tab === 4 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
+          {this.state.tab === 5 ? <Devices></Devices> : null}
+
 
           {this.state.crops !== '' && this.state.selectedDay ? <DayView tdc={this.state.traydatecrops} selectedDay={this.state.selectedDay} setSelectedDay={this.setSelectedDay} crops={this.state.crops} microgreens={this.state.microgreens}></DayView> : ''}
         </div>

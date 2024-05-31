@@ -24,12 +24,14 @@ class Tray extends React.Component {
     }*/
   }
   render() {    
-  //  console.log(this.props.trayData)
     const crops = this.props.crops;
     const trayData = this.props.trayData;
     const selectedCrop = this.props.selectedCrop;
     let trayCrop, microgreenData;
-    //console.log(trayData)
+    const isTraySameSelectedCrop=trayData.crop_id!==null && trayData.crop_id===this.props.selectedCrop ? true:false;
+
+    const isBlocked = this.props.isBlocked && !isTraySameSelectedCrop;
+
 
     if (trayData!==undefined && trayData.crop_id !== null) {
       trayCrop = crops.find((x) => x.id === trayData.crop_id);
@@ -38,9 +40,9 @@ class Tray extends React.Component {
       if (selectedCrop) microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id);
     }
     if (trayData!==undefined && trayData.crop_id !== null) {
-      return <Tooltip title={cropInfoRender(trayCrop, microgreenData)}><div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className="tray" onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div></Tooltip>;
+      return <Tooltip title={cropInfoRender(trayCrop, microgreenData)}><div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div></Tooltip>;
     } else {
-      return <div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className="tray" onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div>;
+      return <div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div>;
     }
 
   }

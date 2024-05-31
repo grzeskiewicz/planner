@@ -14,8 +14,7 @@ class Microgreens extends React.Component {
     this.handleBlackout = this.handleBlackout.bind(this);
     this.handleWeighting = this.handleWeighting.bind(this);
     this.handleExposure = this.handleExposure.bind(this);
-    this.handleTopWater = this.handleTopWater.bind(this);
-    this.handleBottomWater = this.handleBottomWater.bind(this);
+    this.handleWateringLevel = this.handleWateringLevel.bind(this);
     this.handleColor = this.handleColor.bind(this);
     this.addMicrogreens = this.addMicrogreens.bind(this);
     this.setSelectedMicrogreens = this.setSelectedMicrogreens.bind(this);
@@ -25,8 +24,7 @@ class Microgreens extends React.Component {
       nameEN: '',
       namePL: '',
       gramsTray: '',
-      topWater: '',
-      bottomWater: '',
+      wateringLevel:'',
       weight: '',
       blackout: '',
       light: '',
@@ -86,13 +84,10 @@ class Microgreens extends React.Component {
   handleGramsTray(event) {
     this.setState({ gramsTray: event.target.value });
   }
-  handleTopWater(event) {
-    this.setState({ topWater: event.target.value });
+  handleWateringLevel(event) {
+    this.setState({ wateringLevel: event.target.value });
   }
 
-  handleBottomWater(event) {
-    this.setState({ bottomWater: event.target.value });
-  }
 
   handleWeighting(event) {
     this.setState({ weight: event.target.value });
@@ -124,21 +119,18 @@ class Microgreens extends React.Component {
     let microgreensTable;
     if (this.props.microgreens !== '') microgreensTable = this.renderMicrogreensTable();
     const microgreensListTable = <div id="microgreens-list">
-      <table>
-        <thead>
-          <tr><td>Nazwa</td><td>Name</td><td>Taca[g]</td><td>{isMobile ? 'Opr.[ml]' : 'Opryskiwanie [ml]'}</td><td>{isMobile ? 'Nawodn.[ml]' : 'Nawodnienie [ml]'}</td><td>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</td><td>{isMobile ? 'Black.' : 'Blackout [dni]'}</td><td>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</td><td>Całość [dni]</td><td>Kolor</td></tr>
-        </thead>
-        <tbody>
+        <div className="head">
+         <div>Nazwa</div><div>Name</div><div>Taca[g]</div><div>{isMobile ? 'Nawodnienie' : 'Nawodnienie'}</div><div>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</div><div>{isMobile ? 'Black.' : 'Blackout [dni]'}</div><div>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</div><div>Całość [dni]</div><div>Kolor</div>
+        </div>
+        <div className="body">
           {microgreensTable}
-        </tbody>
-      </table>
+        </div>
     </div>;
     const addMicrogreensForm = <form className="" onSubmit={this.addMicrogreens}>
       <input placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
       <input placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
       <input placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Opr.[ml]' : 'Opryskiwanie [ml]'} value={this.state.topWater} onChange={this.handleTopWater} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Nawodn.[ml]' : 'Nawodnienie [ml]'} value={this.state.bottomWater} onChange={this.handleBottomWater} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input placeholder={isMobile ? 'Nawodnienie' : 'Nawodnienie'} value={this.state.watering_level} onChange={this.handleWateringLevel} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
@@ -146,7 +138,7 @@ class Microgreens extends React.Component {
       <button type='submit'>DODAJ</button>
       {this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
     </form>;
-    console.log(isMobile)
+   // console.log(isMobile)
 
     return <div className="Microgreens">
       <div id="addMicrogreens">
