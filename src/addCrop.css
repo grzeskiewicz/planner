@@ -44,7 +44,13 @@ text-align: center;
 }
 
 #addCropForm > *{
-    font-size: 1rem;
-font-weight: bold;
+    font-size: 1..2rem;
 }
 
+#cropSim legend{
+    font-size: 1.4rem;
+    font-weight: lighter;
+}
+#cropSim input{
+    font-size:1.2rem;
+}
