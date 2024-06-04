@@ -34,7 +34,8 @@ class Crops extends React.Component {
       showAllCrops: false,
       showWeekView: false,
       scheduledTDC: [],
-      selectedCrop:null
+      selectedCrop:null,
+      sim:null
     }
     this.handleMicrogreens = this.handleMicrogreens.bind(this);
     this.handleTrays = this.handleTrays.bind(this);
@@ -56,6 +57,8 @@ class Crops extends React.Component {
     this.saveScheduleTDC = this.saveScheduleTDC.bind(this);
     this.scheduleWatering = this.scheduleWatering.bind(this);
     this.deleteCrop=this.deleteCrop.bind(this);
+    this.updateSim=this.updateSim.bind(this);
+
   }
 
 
@@ -178,7 +181,9 @@ class Crops extends React.Component {
       //  console.log(moment(crop.harvest),moment(crop.start));
       //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
-      return <Crop addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
+     // const isSelected=this.state.selectedCrop && this.state.selectedCrop.id===crop.id;
+
+      return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
         microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
         markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}
       ></Crop>
@@ -325,6 +330,10 @@ class Crops extends React.Component {
     }
   }
 
+  updateSim(sim){
+    this.setState({sim:sim});
+    }
+    
 
   weekTDC(tdc) {
     const weekNow = moment().weeks();
@@ -423,7 +432,7 @@ class Crops extends React.Component {
               {cropsTable}
             </div>
           </div>:''}
-          {this.state.showWeekView ? <WeekView addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
+          {this.state.showWeekView ? <WeekView updateSim={this.updateSim} addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
                 <div className='head'>

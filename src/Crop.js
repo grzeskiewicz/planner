@@ -141,8 +141,9 @@ class Crop extends React.Component {
     let blackoutStart = crop.harvest !== null ? (isMobile ? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")) : "-";
     let lightExposureStart = crop.harvest !== null ? (isMobile ? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")) : "-";
     let harvest = crop.harvest !== null ? (isMobile ? moment(crop.harvest).format("DD.MM") : moment(crop.harvest).format("DD.MM.YYYY")) : "-";
+    //console.log(this.props);
 
-    if (this.props.addCrop && this.props.sim!==null && this.props.sim.harvest!==null) {
+    if (this.props.sim!==null && this.props.sim.harvest!==null) {
       const sim=this.props.sim;
       start=isMobile ? moment(sim.start).format("DD.MM") : moment(sim.start).format("DD.MM.YYYY");
       blackoutStart=isMobile ? moment(sim.blackout).format("DD.MM") : moment(sim.blackout).format("DD.MM.YYYY");
