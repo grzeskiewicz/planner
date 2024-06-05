@@ -168,7 +168,7 @@ render(){
           <input placeholder='DATA ZBIORU' value={this.state.harvest1 !== '' ? moment(this.state.harvest1).format('DD.MM.YYYY') : ''} onChange={this.handleHarvest} onClick={this.toggleCalendar} ></input> :
           <input placeholder='DATA ZASIEWU' value={this.state.start1 !== '' ? moment(this.state.start1).format('DD.MM.YYYY') : ''} onChange={this.handleStart} onClick={this.toggleCalendar}></input>}
 
-        {this.state.showCalendar ? <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection} /> : null}
+        {this.state.showCalendar ? <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection}/> : null}
         {Number(this.state.microgreensID) !== 99 ?  this.makeSimulation(microgreenDataSim) : ''}
       </fieldset> 
     </form>;

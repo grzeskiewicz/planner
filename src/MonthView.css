@@ -35,7 +35,9 @@ text-align: center;
   #MonthView .FNDTray{
   flex-basis:50%;
   border:1px solid black;
-  }
+  display: flex;
+  justify-content: center;
+}
     #MonthView .row div {
         cursor: default;
     }

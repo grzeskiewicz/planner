@@ -6,9 +6,6 @@ import moment from 'moment';
 //TODO: generacja następnego roku!
 
 
-
-
-
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
 let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
@@ -28,7 +25,7 @@ class Calendar extends React.Component {
     super(props);
     this.handleDaySelection = this.handleDaySelection.bind(this);
     this.changeMonth=this.changeMonth.bind(this);
-    this.state = { dayClicked: '', selectedMonth: new Date().getMonth(), selectedYear: new Date().getFullYear() ,clicks:Number(0), cropDateFrom :moment(), cropDateTo: moment().add(15, 'days')};
+    this.state = { dayClicked: '', selectedMonth: new Date().getMonth(), selectedYear: new Date().getFullYear() ,clicks:Number(0), cropDateFrom :moment(this.props.cropDateFrom).set({hour:0}), cropDateTo: moment(this.props.cropDateTo).set({hour:23}),};
   }
 
 
@@ -136,7 +133,7 @@ if (selectedMonth===11) {
     const calendarType=this.props.calendarType;
     const today = new Date();
     const d=new Date();
-    const weekAgo=d.setDate(d.getDate() - 7);
+    const weekAgo=d.setDate(d.getDate() - 14);
     const calendar = this.createCalendar(this.state.selectedYear, this.state.selectedMonth);
 
     const week = weekdays.map((day, index) => {
@@ -149,12 +146,12 @@ if (selectedMonth===11) {
         (((day.date < new Date(weekAgo).setHours(0, 0, 0, 0))  && day.date.getDate() !== new Date(weekAgo).getDate()) || 
         (day.date < new Date(weekAgo).setHours(0, 0, 0, 0) && day.date!==new Date(weekAgo).setHours(0, 0, 0, 0)) ? true: false)
         : false;
+
 let showCropsClassname;      
     if (calendarType==="showCrops") {
-    //  console.log("TEST KLASY")
       showCropsClassname=moment(day.date).set('hours',0).isSameOrBefore(moment(this.state.cropDateTo).set('hours',0)) && moment(day.date).set('hours',0).isSameOrAfter(moment(this.state.cropDateFrom).set('hours',0)) ? "InRange":''; 
-      //console.log(showCropsClassname)
     }
+
 
         let className =
        unactive ? "unactive": " " +

@@ -160,7 +160,7 @@ class Crop extends React.Component {
         <div>{blackoutStart}</div>
         <div>{lightExposureStart}</div>
         <div>{harvest}</div>
-        <div>{trays}</div>
+        <div className="trays">{trays}</div>
         <div className="cropNotes">
           {this.state.editNotesEnabled &&
             Number(crop.id) === Number(this.props.selectedCrop) ? (
@@ -178,7 +178,7 @@ class Crop extends React.Component {
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </div>
        { this.props.addCrop===false ? crop.scheduled === 1 ? <div>&#10004;</div> : <div className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></div>:null}
-        {crop.completed === 1 ? <div>&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> :  this.props.addCrop===true ? null:<div>-</div>}
+        {crop.completed === 1 ? <div>&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> :  this.props.addCrop===true ? null:<div className="iconTD">-</div>}
      
       </div>
     );

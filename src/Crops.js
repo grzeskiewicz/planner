@@ -214,7 +214,7 @@ class Crops extends React.Component {
    // console.log(date)
     if (clicks === 0) {
      // console.log(0);
-      this.setState({ cropDateFrom: from, cropDateTo: '' }); return;
+      this.setState({ cropDateFrom: from, cropDateTo: from }); return;
     } else if (clicks === 1) {
     //  console.log(1);
       this.setState({ cropDateTo: to });
@@ -420,13 +420,13 @@ class Crops extends React.Component {
             </fieldset>
             {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> :<button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
             </div>
-          {this.state.showCalendarRange ? <Calendar calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
+          {this.state.showCalendarRange ? <Calendar cropDateFrom={this.state.cropDateFrom} cropDateTo={this.state.cropDateTo} calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
          {cropsTable.length >0 ? 
           <div id="cropsTable">
             <div className='head'>
-              <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div>
-              <div><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-              </div><div><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
+              <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
+              <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+              </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
             </div>
             <div className='body'>
               {cropsTable}

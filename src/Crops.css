@@ -21,13 +21,17 @@
   
 
   #cropsTable .head > * {
-    flex:1;
+    flex:2;
     border: 1px solid black;
 text-align: center;  
 }
 
 #cropsTable .head .cropType{
-  flex:2;
+  flex:3;
+}
+
+#cropsTable .head .trays, #cropsTable .head .iconTD{
+  flex:1;
 }
 
 #cropsTable{
@@ -59,16 +63,23 @@ text-align: center;
 #addCrops form textarea {
   flex:0 30%;
 }
+
+
 .cropEntry{
   cursor: default;
   display: flex;
   flex-flow:row nowrap;
 }
+
 .cropEntry .cropType {
-flex:2;
+flex:3;
+}
+
+.cropEntry .iconTD, .cropEntry .trays{
+  flex:1;
 }
 .cropEntry > * {
-  flex:1;
+  flex:2;
   border: 1px solid black;
 display: flex;
 flex-flow:row;
