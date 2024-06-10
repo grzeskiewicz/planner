@@ -19,16 +19,18 @@ class Microgreens extends React.Component {
     this.addMicrogreens = this.addMicrogreens.bind(this);
     this.setSelectedMicrogreens = this.setSelectedMicrogreens.bind(this);
     this.editMicrogreens = this.editMicrogreens.bind(this);
+    this.handleGramsHarvest=this.handleGramsHarvest.bind(this);
 
     this.state = {
       nameEN: '',
       namePL: '',
       gramsTray: '',
+      gramsHarvest:'',
       wateringLevel:'',
       weight: '',
       blackout: '',
       light: '',
-      color: '',
+      color: '#000000',
       selectedMicrogreens: '',
       showAMF: false
     };
@@ -44,7 +46,10 @@ class Microgreens extends React.Component {
 
   addMicrogreens(event) {
     event.preventDefault();
-    const microgreensData = this.state;
+   const microgreensData = JSON.parse(JSON.stringify(this.state));
+   delete microgreensData.showAMF;
+   delete microgreensData.selectedMicrogreens;
+
     fetch(request(`${API_URL}/addmicrogreens`, "POST", microgreensData))
       .then((res) => res.json())
       .then((result) => {
@@ -84,6 +89,11 @@ class Microgreens extends React.Component {
   handleGramsTray(event) {
     this.setState({ gramsTray: event.target.value });
   }
+
+  handleGramsHarvest(event){
+    this.setState({ gramsHarvest: event.target.value });
+
+  }
   handleWateringLevel(event) {
     this.setState({ wateringLevel: event.target.value });
   }
@@ -120,7 +130,7 @@ class Microgreens extends React.Component {
     if (this.props.microgreens !== '') microgreensTable = this.renderMicrogreensTable();
     const microgreensListTable = <div id="microgreens-list">
         <div className="head">
-         <div>Nazwa</div><div>Name</div><div>Taca[g]</div><div>{isMobile ? 'Nawodnienie' : 'Nawodnienie'}</div><div>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</div><div>{isMobile ? 'Black.' : 'Blackout [dni]'}</div><div>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</div><div>Całość [dni]</div><div>Kolor</div>
+         <div>Nazwa</div><div>Name</div><div>Taca[g]</div><div>Zbiór taca[g]</div><div>{isMobile ? 'Nawodnienie' : 'Nawodnienie'}</div><div>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</div><div>{isMobile ? 'Black.' : 'Blackout [dni]'}</div><div>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</div><div>Całość [dni]</div><div>Kolor</div>
         </div>
         <div className="body">
           {microgreensTable}
@@ -130,7 +140,8 @@ class Microgreens extends React.Component {
       <input placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
       <input placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
       <input placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Nawodnienie' : 'Nawodnienie'} value={this.state.watering_level} onChange={this.handleWateringLevel} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input placeholder='Zbiór waga L taca [g]' value={this.state.gramsHarvest} onChange={this.handleGramsHarvest} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input placeholder={isMobile ? 'Nawodnienie' : 'Nawodnienie'} value={this.state.wateringLevel} onChange={this.handleWateringLevel} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>

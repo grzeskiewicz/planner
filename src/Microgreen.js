@@ -1,4 +1,3 @@
-import './Crops.css';
 import React from 'react';
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +15,7 @@ class Microgreen extends React.Component {
       name_pl: this.props.microgreen.name_pl,
       name_en: this.props.microgreen.name_en,
       grams_tray:this.props.microgreen.grams_tray,
+      grams_harvest:this.props.microgreen.grams_harvest,
       watering_level: this.props.microgreen.watering_level,
       weight: this.props.microgreen.weight,
       blackout: this.props.microgreen.blackout,
@@ -27,6 +27,7 @@ this.deleteMicrogreens=this.deleteMicrogreens.bind(this);
 this.handleNamePL=this.handleNamePL.bind(this);
 this.handleNameEN=this.handleNameEN.bind(this);
 this.handleGramsTray=this.handleGramsTray.bind(this);
+this.handleGramsHarvest=this.handleGramsHarvest.bind(this);
 this.handleWateringLevel=this.handleWateringLevel.bind(this);
 this.handleWeight=this.handleWeight.bind(this);
 this.handleBlackout=this.handleBlackout.bind(this);
@@ -76,6 +77,10 @@ handleNameEN(e){
 handleGramsTray(e){
   this.setState({grams_tray:e.target.value});
 }
+
+handleGramsHarvest(e){
+  this.setState({grams_harvest:e.target.value});
+}
 handleWateringLevel(e){
   this.setState({watering_level:e.target.value});
 }
@@ -122,6 +127,7 @@ const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
     <div>{ amISelectedToEdit ?<input   type="text" value={this.state.name_pl} onChange={this.handleNamePL}></input>:microgreen.name_pl}</div>
     <div>{amISelectedToEdit ? <input type="text" value={this.state.name_en} onChange={this.handleNameEN}></input>:microgreen.name_en}</div>
     <div>{ amISelectedToEdit? <input type="text" value={this.state.grams_tray} onChange={this.handleGramsTray}></input>:microgreen.grams_tray}</div>
+    <div>{ amISelectedToEdit? <input type="text" value={this.state.grams_harvest} onChange={this.handleGramsHarvest}></input>:microgreen.grams_harvest}</div>
     <div>{ amISelectedToEdit? <input type="text" value={this.state.top_water} onChange={this.handleWateringLevel}></input>:microgreen.watering_level}</div>
     <div>{ amISelectedToEdit? <input type="text" value={this.state.weight} onChange={this.handleWeight}></input>:microgreen.weight}</div>
     <div>{ amISelectedToEdit? <input type="text" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</div>

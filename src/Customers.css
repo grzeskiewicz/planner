@@ -1,16 +1,16 @@
-.Microgreens{
+.Customers{
     display: flex;
     flex-flow:row nowrap;
     flex:0 100%;
   }
 
-  #microgreens-list{
+  #Customers-list{
     display: flex;
     flex-flow:column nowrap;
     flex:0 70%;
   }
 
-  .Microgreens .head{
+  .Customers .head{
     text-transform: uppercase;
     cursor: pointer;
     display: flex;
@@ -18,18 +18,18 @@
     border-bottom:6px double black;
   }
 
-  .Microgreens .head div {
+  .Customers .head div {
     flex:1;
     text-align: center;
   }
 
-  .Microgreens .body{
+  .Customers .body{
     display: flex;
     flex-flow:column nowrap;
   }
 
 
-  .MicrogreenEntry{
+  .customerEntry{
     cursor: pointer;
     display: flex;
     flex-flow:row nowrap;
@@ -37,54 +37,53 @@
     flex:0 100%;
   }
 
-  .MicrogreenEntry div{
+  .customerEntry div{
     flex:1;
     text-align: center;
   }
   
-    .MicrogreenEntry:hover{
+    .customerEntry:hover{
       border:3px solid green;
     }
   
-    .MicrogreenEntry.edit{
+    .customerEntry.edit{
       border:3px solid green;
     }
+#customers-list{
+    flex:0 90%;
+}
 
-  #microgreens-color-picker{
-    width:100%;
-  }
-
-#addMicrogreens {
+#addCustomer {
     display: flex;
     flex-flow:row nowrap;
     flex:0 10%;
     margin-right: 2rem;
 }
 
-#addMicrogreens form{
+#addCustomer form{
     display: flex;
     flex-flow:column nowrap;  
     height:100%; 
 }
 
-  #addMicrogreens form  input{
+  #addCustomer form  input{
     margin-bottom:1rem;
     text-transform: uppercase;
     flex:0 5%;
   }
  
-  #addMicrogreens button{
+  #addCustomer button{
     flex:0 7%;
   }
 
   @media screen and (max-width: 400px)  {
-    .Microgreens{
+    .Customers{
       display: flex;
       flex-flow:column nowrap;
       justify-content: flex-start;
     }
 
-    #addMicrogreens form  input{
+    #addCustomer form  input{
    margin-bottom:4px; 
     }
 
@@ -98,11 +97,11 @@ height:30%;
     }
 
 
-    .Microgreens input {
+    .Customers input {
       font-size: 0.6rem;
     }
 
-    #microgreens-list {
+    #Customers-list {
       flex:0 90%;
     }
 
