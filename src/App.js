@@ -151,15 +151,15 @@ class App extends React.Component {
   }
 
   showDevicesTab() {
-    this.setState({ tab: 5 });
+    this.setState({ tab: 7 });
   }
 
   showCustomersTab() {
-    this.setState({ tab: 6 });
+    this.setState({ tab: 5 });
   }
  
   showOrdersTab() {
-    this.setState({ tab: 7 });
+    this.setState({ tab: 6 });
   }
 
   
@@ -183,22 +183,21 @@ class App extends React.Component {
           <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'WIDOK [TYDZIEŃ]'}</p></div>
           <div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile ? '[MSC]' : 'WIDOK [MIESIĄC]'}</p></div>
           <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
-          <div id="devices-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
           <div id="customers-tab" onClick={this.showCustomersTab}><p>KLIENCI</p></div>
           <div id="orders-tab" onClick={this.showOrdersTab}><p>ZAMÓWIENIA</p></div>
-
-
-
+          <div id="devices-tab" onClick={this.showDevicesTab}><p>URZĄDZENIA</p></div>
         </div>
+        
         <div id="board">
           {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></Crops> : null}
           {this.state.tab === 1 ? <AddCrop trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></AddCrop> : null}
           {this.state.crops !== '' && this.state.tab === 2 ? <WeekView className="main" trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
           {this.state.crops !== '' && this.state.tab === 3 ? <MonthView fndtrays={this.state.FNDTrays} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
           {this.state.microgreens !== '' && this.state.tab === 4 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
-          {this.state.tab === 5 ? <Devices></Devices> : null}
-          {this.state.tab === 6 ? <Customers customers={this.state.customers} refreshCustomers={this.getCustomers}></Customers>  : null}
-          {this.state.tab === 7 ? <Orders microgreens={this.state.microgreens} customers={this.state.customers} orders={this.state.orders} refreshOrders={this.getOrders}></Orders>  : null}
+          {this.state.tab === 5 ? <Customers customers={this.state.customers} refreshCustomers={this.getCustomers}></Customers>  : null}
+          {this.state.tab === 6 ? <Orders microgreens={this.state.microgreens} customers={this.state.customers} orders={this.state.orders} refreshOrders={this.getOrders}></Orders>  : null}
+          {this.state.tab === 7 ? <Devices></Devices> : null}
+
 
 
 

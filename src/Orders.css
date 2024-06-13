@@ -4,11 +4,60 @@
     flex:0 100%;
   }
 
-  #Orders-list{
+#ordersListWrapper{
     display: flex;
+    flex-flow:row nowrap;
+    flex:0 100%;
+
+}
+#ordersList{
+    display: flex;
+    flex:0 100%;
     flex-flow:column nowrap;
-    flex:0 70%;
-  }
+}
+
+.customerGroup{
+    border:1px solid lightslategray;
+display: flex;
+flex-flow:row wrap;
+flex:0 100%;
+}
+
+.customerGroupOrdersWrapper{
+    flex:0 30%;
+    display: flex;
+    flex-flow:column
+}
+
+.ordersSummary{
+    display: flex;
+    flex-flow:column;
+    justify-content: flex-end;
+}
+
+
+.ordersDayWrapper{
+    display: flex;
+    flex:0 94vh;
+}
+
+.ordersDay{
+    flex:0 100%;
+    display: flex;
+    flex-flow:row wrap;
+border:2px solid lightslategray;
+}
+
+.ordersDay > legend {
+    font-size:1.2rem;
+}
+
+.orderNotes{
+    border:1px solid lightslategray;
+    align-self: flex-end;
+    margin-top: auto;
+    width: 100%;
+}
 
   .Orders .head{
     text-transform: uppercase;
@@ -34,7 +83,6 @@
     display: flex;
     flex-flow:row nowrap;
     border-bottom:1px solid black;
-    flex:0 100%;
   }
 
   .orderEntry div{
@@ -49,9 +97,7 @@
     .orderEntry.edit{
       border:3px solid green;
     }
-#orders-list{
-    flex:0 90%;
-}
+
 
 #addOrder {
     display: flex;
@@ -101,9 +147,7 @@ height:30%;
       font-size: 0.6rem;
     }
 
-    #Orders-list {
-      flex:0 90%;
-    }
+
 
   
   }

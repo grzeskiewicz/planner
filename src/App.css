@@ -28,21 +28,6 @@ button:hover{
   border:2px solid green;
 }
 
-table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  text-align: center;
-  table-layout: fixed;
-}
-
-
-
-table td,
-table th {
-  border: 1px solid #333;
-  padding: 3px;
-  height:2vh;
-}
 #root{
   display: flex;
   justify-content: center;
@@ -62,8 +47,12 @@ table th {
 #menu{
 display: flex;
 flex-flow:row nowrap;
-justify-content: flex-start;
 flex:0 5%;
+}
+
+#devices-tab{
+align-self: flex-end;
+margin-left: auto
 }
 #menu div {
   flex:0 10%;
@@ -135,16 +124,6 @@ width:100vw;
 
 
 @media screen and (max-width: 400px)  {
-
-  table {
-    overflow-x: auto;
-    font-size:0.7rem;
-  }
-  td { 
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-    word-wrap: break-word;
-  }
 #menu{
   justify-content: space-evenly;
 }

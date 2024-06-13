@@ -116,7 +116,7 @@ this.deleteOrder=this.deleteOrder.bind(this);
     this.setState({orders:orders,microgreensID:99,weight:''});
   }
 
-  renderOrdersTable() {
+  renderOrdersTable() { //TODO rozdzielic na kilka funkcji
 const orders=this.props.orders;
 const microgreens=this.props.microgreens;
 
@@ -151,10 +151,11 @@ for (let [day, byDay] of Object.entries(grp)) {
           });
         
         }
-          if (mappedCustomersOrdersDay!==undefined) ordersDay.push(<fieldset><legend>Klient ID:{i}</legend>
+          if (mappedCustomersOrdersDay!==undefined) ordersDay.push(<fieldset className="customerGroup"><legend>Klient ID:{i}</legend>
+          <div className="customerGroupOrdersWrapper">
           <div className="head"><div>MICROGREENS</div><div>WAGA[G]</div></div>
           {mappedCustomersOrdersDay}
-          <fieldset><legend>Notatki</legend>{byDay[i][0].notes}</fieldset></fieldset>);
+          <fieldset className="orderNotes" ><legend>Notatki</legend>{byDay[i][0].notes}</fieldset></div></fieldset>);
     }
 
 
@@ -179,10 +180,10 @@ const summary=[];
         }
 
 
-ordersDayGrp.push(<fieldset><legend>{day}</legend>{ordersDay}<div className="head"><div>MICROGREENS</div><div>WAGA TOTAL</div><div>ILE TAC?</div></div><div className="ordersSummary">{summary}</div></fieldset>);
+ordersDayGrp.push(<div className="ordersDayWrapper"><fieldset className="ordersDay"><legend>{day}</legend>{ordersDay}<div className="ordersSummary"><div className="head"><div>MICROGREENS</div><div>WAGA TOTAL</div><div>ILE TAC?</div></div><div className="body">{summary}</div></div></fieldset></div>);
 
 }
-return <div>{ordersDayGrp}</div>
+return <div id="ordersList">{ordersDayGrp}</div>
   }
 
 
@@ -224,13 +225,8 @@ return <div>{ordersDayGrp}</div>
     const customers=this.props.customers;
     let ordersTable;
     if (this.props.orders.length >0) ordersTable = this.renderOrdersTable();
-    const ordersListTable = <div id="orders-list">
-        <div className="head">
-<div></div>
-        </div>
-        <div className="body">
+    const ordersListTable = <div id="ordersListWrapper">
           {ordersTable}
-        </div>
     </div>;
     const addOrderForm = <form className="" onSubmit={this.addOrder}>
             <select id="customer-selection" name="customer-selection" onChange={this.handleCustomerID} value={this.state.customerID}>
