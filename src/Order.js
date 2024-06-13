@@ -2,6 +2,7 @@ import React from 'react';
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import moment from 'moment';
 
 
 
@@ -29,14 +30,14 @@ this.enter=this.enter.bind(this);
 
 
 
-  deleteOrder(crop){
+  deleteOrder(order){
     if (window.confirm("Czy usunąć zamówienie?")) {
-      fetch(request(`${API_URL}/deletecrop`, "POST", {"crop_id": crop.id}))
+      fetch(request(`${API_URL}/deleteorder`, "POST", {"order_id": order.id}))
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
       if (result.success) {
-        this.props.refreshCrops();
+        this.props.refreshOrders();
       } else {
         alert("SQL Erro - błędne wartości!")
       }
@@ -71,20 +72,25 @@ saveOrder(){
 
 enter(e){
   if (e.key === 'Enter') {
-this.saveOrder();
+//this.saveOrder();
   }
 }
 
 
 render(){
 const order=this.props.order;
+const microgreens=this.props.microgreens;
+const customers=this.props.customers;
+const microgreenData=microgreens.find((x)=>x.id===order.microgreen_id);
+
 const isEditEnabled=this.state.editOrderEnabled;
 const selectedOrder=this.props.selectedOrder;
 const amISelectedToEdit=isEditEnabled && selectedOrder===order.id;
   return (
-    <div className={"OrderEntry " + (amISelectedToEdit ? "edit":"") } onClick={this.enableEdit} key={this.props.index} onKeyDown={this.enter}>
-    <div>{ amISelectedToEdit ?<input   type="text" value={this.state.name_pl} onChange={this.handleNamePL}></input>:order.name_pl}</div>
-   
+    <div className={"orderEntry " + (amISelectedToEdit ? "edit":"") } onClick={this.enableEdit} key={this.props.index} onKeyDown={this.enter}>
+    <div>{microgreenData.name_pl}</div>
+    <div>{order.weight}</div>
+
     { amISelectedToEdit ? <div onClick={this.saveOrder}><FontAwesomeIcon icon={faCheckCircle} size="lg"/></div>:null}
 </div>);}
 }
