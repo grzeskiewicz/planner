@@ -77,8 +77,17 @@ class MonthView extends React.Component {
   renderMicrogreensFilter() {
     return this.props.microgreens.map((microgreen, index) => {
       return <div style={{ backgroundColor: microgreen.color }}>
-        <input key={microgreen.id} checked={this.state.checkedItems.get(microgreen.name_pl)} onChange={this.handleCheck} type="checkbox" name={microgreen.name_pl} />
-        <p>{microgreen.name_pl}</p></div>
+        <div style={{ backgroundColor: microgreen.color }}>
+         {this.state.toggleVal ? '' : 
+         <input
+            key={microgreen.id}
+            checked={this.state.checkedItems.get(microgreen.name_pl)}
+            onChange={this.handleCheck}
+            type="checkbox"
+            name={microgreen.name_pl}/>}
+          <p>{microgreen.name_pl}</p>
+        </div>
+       </div>
     });
   }
 
