@@ -30,13 +30,11 @@ class Crop extends React.Component {
     fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop_id: crop.id }))
       .then((res) => res.json())
       .then((result) => {
-       // console.log(result);
         if (result.success) {
           this.props.refreshCrops();
           fetch(request(`${API_URL}/completewatering`, "POST", { crop_id: crop.id }))
             .then((res2) => res2.json())
             .then((result2) => {
-           //   console.log(result2);
               if (result.success) {
                 this.props.refreshCrops();
               } else {
@@ -55,12 +53,10 @@ class Crop extends React.Component {
 
 
   deleteCrop(crop) {
-  //  console.log(crop.id);
     if (window.confirm("Czy usunąć zasiew?")) {
       fetch(request(`${API_URL}/deletecrop`, "POST", { crop_id: Number(crop.id) }))
         .then((res) => res.json())
         .then((result) => {
-          console.log(result);
           if (result.success) {
             this.props.deleteCrop();
             this.props.refreshCrops();
@@ -88,11 +84,9 @@ class Crop extends React.Component {
       request(`${API_URL}/savenotes`, "POST", {
         crop_id: this.props.crop.id,
         notes: notes,
-      })
-    )
+      }))
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         if (result.success) {
           this.setState({ editNotesEnabled: false });
           // alert("Notatki edytowane")
@@ -141,7 +135,6 @@ class Crop extends React.Component {
     let blackoutStart = crop.harvest !== null ? (isMobile ? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")) : "-";
     let lightExposureStart = crop.harvest !== null ? (isMobile ? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")) : "-";
     let harvest = crop.harvest !== null ? (isMobile ? moment(crop.harvest).format("DD.MM") : moment(crop.harvest).format("DD.MM.YYYY")) : "-";
-    //console.log(this.props);
 
     if (this.props.sim!==null && this.props.sim.harvest!==null) {
       const sim=this.props.sim;

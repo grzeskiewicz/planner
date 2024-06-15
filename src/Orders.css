@@ -4,11 +4,40 @@
     flex:0 100%;
   }
 
+  #addEntryOrdersList{
+    display: flex;
+    flex-flow:column;
+  }
+
+  .orderInfo{
+    display: flex;
+    flex-flow:row nowrap;
+  }
+
+  #addEntryOrders{
+    display:flex;
+    flex-flow:column;
+  }
+  .addOrderEntry{
+display: flex;
+flex:0 100%;
+flex-flow:row nowrap;
+font-size:0.9rem;
+  }
+
+  .addOrderEntry .iconTD{
+        align-self: end;
+    margin-left: auto;
+  }
+
+  .addOrderEntry p{
+    padding: 0;
+  }
+
 #ordersListWrapper{
     display: flex;
     flex-flow:row nowrap;
-    flex:0 100%;
-
+    flex:0 85%;
 }
 #ordersList{
     display: flex;
@@ -19,20 +48,36 @@
 .customerGroup{
     border:1px solid lightslategray;
 display: flex;
-flex-flow:row wrap;
-flex:0 100%;
+flex-flow:column;
+flex:0 15%;
+max-height:50vh;
+}
+
+.customerGroup .iconTD {
+  display: flex;
+  flex-flow:row nowrap;
+  justify-content: flex-end;
+}
+
+.customerGroup:hover{
+    border:2px solid rgb(231, 79, 19);
 }
 
 .customerGroupOrdersWrapper{
-    flex:0 30%;
     display: flex;
-    flex-flow:column
+    flex-flow:column;
+    font-size:0.8rem;
+    flex:0 100%;
 }
 
 .ordersSummary{
     display: flex;
     flex-flow:column;
     justify-content: flex-end;
+    align-self: flex-end;
+    margin-left: auto;
+
+
 }
 
 
@@ -102,8 +147,11 @@ border:2px solid lightslategray;
 #addOrder {
     display: flex;
     flex-flow:row nowrap;
-    flex:0 10%;
-    margin-right: 2rem;
+    flex:0 15%;
+}
+
+#AOFWrapper{
+    flex:0 100%;
 }
 
 #addOrder form{
@@ -115,11 +163,15 @@ border:2px solid lightslategray;
   #addOrder form  input{
     margin-bottom:1rem;
     text-transform: uppercase;
-    flex:0 5%;
+    flex:0 5vh;
+    font-size: 0.8rem;
   }
  
   #addOrder button{
-    flex:0 7%;
+  }
+
+  #customer-selection{
+    flex:0 4vh;
   }
 
   @media screen and (max-width: 400px)  {

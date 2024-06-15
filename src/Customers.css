@@ -4,12 +4,15 @@
     flex:0 100%;
   }
 
-  #Customers-list{
+
+  /*
+  #customers-list{
     display: flex;
     flex-flow:column nowrap;
     flex:0 70%;
-  }
+  }*/
 
+  
   .Customers .head{
     text-transform: uppercase;
     cursor: pointer;
@@ -21,6 +24,7 @@
   .Customers .head div {
     flex:1;
     text-align: center;
+  border: 1px solid black;
   }
 
   .Customers .body{
@@ -28,6 +32,10 @@
     flex-flow:column nowrap;
   }
 
+  .customerEntryWrapper{
+display: flex;
+flex-flow:row wrap;
+  }
 
   .customerEntry{
     cursor: pointer;
@@ -37,20 +45,55 @@
     flex:0 100%;
   }
 
+  .editCustomer{
+    flex:0 30%;
+  }
+
+  .editCustomerField{
+    display: flex;
+    flex-flow:row nowrap;
+    flex:0 100%;
+    justify-content: space-between;
+  }
+
+  .editCustomerField p {
+flex:0 30%;
+  }
+
+  .editCustomerField input, .editCustomerField select {
+flex:0 65%;
+  }
+
+
+  .customerEntry input{
+    max-width:30%;
+  }
+
   .customerEntry div{
     flex:1;
     text-align: center;
+    display: flex;
+    border:1px solid black;
   }
   
     .customerEntry:hover{
       border:3px solid green;
     }
   
-    .customerEntry.edit{
-      border:3px solid green;
-    }
+
 #customers-list{
     flex:0 90%;
+    font-size:0.8rem;
+}
+
+.validationWrapper{
+  border:1px solid green;
+  margin-bottom:0.5rem;
+}
+
+.errorValidation{
+color:red;
+font-size:1rem;
 }
 
 #addCustomer {
@@ -66,14 +109,28 @@
     height:100%; 
 }
 
-  #addCustomer form  input{
+  #addCustomer form > *{
     margin-bottom:1rem;
     text-transform: uppercase;
     flex:0 5%;
+    height:100%;
+  }
+
+  #addCustomer form > div > input{
+    height:100%;
+    text-transform: uppercase;
   }
  
   #addCustomer button{
     flex:0 7%;
+  }
+
+  .valid{
+border:1px solid green;
+  }
+
+  .invalid{
+border:2px solid red;
   }
 
   @media screen and (max-width: 400px)  {

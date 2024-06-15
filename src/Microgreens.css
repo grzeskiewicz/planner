@@ -7,9 +7,18 @@
   #microgreens-list{
     display: flex;
     flex-flow:column nowrap;
-    flex:0 70%;
+    flex:0 90%;
+  }
+  
+ .MicrogreenEntry .save{
+    flex:2;
   }
 
+  .MicrogreenEntry .iconTD{
+    justify-content: center;
+
+  }
+    
   .Microgreens .head{
     text-transform: uppercase;
     cursor: pointer;
@@ -21,6 +30,7 @@
   .Microgreens .head div {
     flex:1;
     text-align: center;
+    border:1px solid black;
   }
 
   .Microgreens .body{
@@ -35,20 +45,25 @@
     flex-flow:row nowrap;
     border-bottom:1px solid black;
     flex:0 100%;
+    
   }
 
   .MicrogreenEntry div{
     flex:1;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    border:1px solid black;
   }
   
     .MicrogreenEntry:hover{
-      border:3px solid green;
+
     }
   
     .MicrogreenEntry.edit{
-      border:3px solid green;
+
     }
+
 
   #microgreens-color-picker{
     width:100%;
@@ -71,6 +86,12 @@
     margin-bottom:1rem;
     text-transform: uppercase;
     flex:0 5%;
+  }
+
+  .MicrogreenEntry input{
+    flex:1;
+    box-sizing:border-box;
+    width: 100% 
   }
  
   #addMicrogreens button{

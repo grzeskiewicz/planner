@@ -1,6 +1,5 @@
 import './Crops.css';
 import React from 'react';
-import Calendar from './Calendar';
 import moment from 'moment';
 import { API_URL, request } from "./APIConnection";
 import Crop from './Crop';
@@ -43,6 +42,8 @@ class Crops extends React.Component {
     this.handleHarvest = this.handleHarvest.bind(this);
     this.handleDaySelection = this.handleDaySelection.bind(this);
     this.handleRangeSelection = this.handleRangeSelection.bind(this);
+    this.handleCropDateFrom=this.handleCropDateFrom.bind(this);
+    this.handleCropDateTo=this.handleCropDateTo.bind(this);
     this.toggleCalendar = this.toggleCalendar.bind(this);
     this.renderMicrogreensSelection = this.renderMicrogreensSelection.bind(this);
     this.renderShelvesSelection = this.renderShelvesSelection.bind(this);
@@ -99,6 +100,14 @@ class Crops extends React.Component {
 
   handleStart(event) {
     this.setState({ start: event.target.value })
+  }
+
+  handleCropDateFrom(event){
+    this.setState({ cropDateFrom: moment(event.target.value)});
+  }
+
+  handleCropDateTo(event){
+    this.setState({ cropDateTo: moment(event.target.value)});
   }
 
   toggleSimulation() {
@@ -181,7 +190,6 @@ class Crops extends React.Component {
       //  console.log(moment(crop.harvest),moment(crop.start));
       //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
-     // const isSelected=this.state.selectedCrop && this.state.selectedCrop.id===crop.id;
 
       return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
         microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
@@ -199,9 +207,9 @@ class Crops extends React.Component {
     this.calcDatesCrop(cropsDates);
     return this.props.crops.map((crop, index) => {
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
-      return <Crop setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
-        microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
-        markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}></Crop>
+      return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
+      microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
+      markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}></Crop>
     });
   }
 
@@ -211,12 +219,9 @@ class Crops extends React.Component {
   }
 
   handleRangeSelection(date, clicks, from, to) {
-   // console.log(date)
     if (clicks === 0) {
-     // console.log(0);
       this.setState({ cropDateFrom: from, cropDateTo: from }); return;
     } else if (clicks === 1) {
-    //  console.log(1);
       this.setState({ cropDateTo: to });
       this.renderRangeCropsTable();
       this.hideCalendarRange();
@@ -251,7 +256,6 @@ class Crops extends React.Component {
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
-          console.log(result);
           this.props.refreshCrops();
         } else {
           alert("SQL Erro - błędne wartości!")
@@ -264,11 +268,10 @@ class Crops extends React.Component {
   saveScheduleTDC(crop, tdcs, harvest) {
     const microgreens=this.props.microgreens;
     const microgreenData=microgreens.find((x)=>x.id===this.state.selectedCrop.microgreen_id);
-   // console.log(harvest);
+
     fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest,light:microgreenData.light }))
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         if (result.success) {
           this.props.refreshTDC();
           this.props.refreshCrops();
@@ -360,52 +363,13 @@ class Crops extends React.Component {
     return weekTDC;
   }
 
-  /*
-
-        <select value={this.state.trays} onChange={this.handleTrays}>
-        <option value="99">ILE TAC?</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-      </select>
-
-      */
-
-  //{this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
 
   render() {
     let cropsTable;
     if (this.props.crops !== '') cropsTable = this.renderRangeCropsTable();
     const allCrops = this.renderAllCropsTable();
-    const mappedMicrogreens = this.renderMicrogreensSelection();
-
-    const selectedMicrogreens = Number(this.state.microgreensID) !== 99 ? this.props.microgreens.find((x) => x.id === Number(this.state.microgreensID)) : '';
-    const addCropForm = <form className="" onSubmit={this.addCrops}>
-      <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
-        {mappedMicrogreens}
-      </select>
-      <textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
-      <button type='submit'>DODAJ</button>
-      <fieldset id="cropSim">
-        <legend>SYMULACJA</legend>
-        <div><input type="radio" id="harvest-option" checked={this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label>DATA ZBIORU</label></div>
-        <div><input type="radio" id="start-option" checked={!this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label>DATA ZASIEWU</label></div>
-        {this.state.showHarvestSim ?
-          <input placeholder='DATA ZBIORU' value={this.state.harvest !== '' ? moment(this.state.harvest).format('DD.MM.YYYY') : ''} onChange={this.handleHarvest} onClick={this.toggleCalendar} ></input> :
-          <input placeholder='DATA ZASIEWU' value={this.state.start !== '' ? moment(this.state.start).format('DD.MM.YYYY') : ''} onChange={this.handleStart} onClick={this.toggleCalendar}></input>}
-
-        {this.state.showCalendar ? <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection} /> : null}
-      </fieldset>
-      {Number(this.state.microgreensID) !== 99 ? this.makeSimulation(selectedMicrogreens) : ''}
-    </form>;
-   //     <div id="addCrops">
-   //     {isMobile ? <div className="acfWrapper"><button onClick={() => this.setState({ showACF: !this.state.showACF })}>DODAJ ZASIEW</button>{this.state.showACF ? <div className="acf">{addCropForm}</div> : ''}</div> : <div>{addCropForm}</div>}
-   //   </div>
+   
+ 
 
     return (
       <div className='Crops'>
@@ -414,13 +378,12 @@ class Crops extends React.Component {
          <div id="cropDateRange">
           <fieldset>
         <legend>ZAKRES</legend>
-            <input type="text" onChange={() => {}} value={moment(this.state.cropDateFrom).format('DD.MM.YYYY')} onClick={this.toggleCalendarRange}></input>
+            <input type="date" onChange={this.handleCropDateFrom} value={this.state.cropDateFrom.format('YYYY-MM-DD')}></input>
             <span> - </span>
-            <input type="text" onChange={() => {}} value={moment(this.state.cropDateTo).format('DD.MM.YYYY')} onClick={this.toggleCalendarRange}></input>
+            <input type="date" onChange={this.handleCropDateTo} value={this.state.cropDateTo.format('YYYY-MM-DD')}></input>
             </fieldset>
             {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> :<button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
             </div>
-          {this.state.showCalendarRange ? <Calendar cropDateFrom={this.state.cropDateFrom} cropDateTo={this.state.cropDateTo} calendarType="showCrops" handleDaySelection={this.handleRangeSelection} /> : null}
          {cropsTable.length >0 ? 
           <div id="cropsTable">
             <div className='head'>
@@ -435,10 +398,11 @@ class Crops extends React.Component {
           {this.state.showWeekView ? <WeekView updateSim={this.updateSim} addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
-                <div className='head'>
-                  <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div><div>X</div><div><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-                  </div><div><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
-                </div>
+            <div className='head'>
+              <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
+              <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+              </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
+            </div>
                 <div className='body'>
                   {allCrops}
                 </div>

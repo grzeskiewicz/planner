@@ -30,6 +30,6 @@ export async function pingCheck(ip,port){
     return result.msg;
     }
   )
-  .catch((error) => Promise.reject(new Error(error)));
+  .catch((error) => error);
   return status;
 }

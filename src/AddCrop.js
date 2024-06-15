@@ -1,13 +1,9 @@
 import React from 'react';
 import {request,API_URL} from "./APIConnection";
-import Calendar from './Calendar';
 import moment from 'moment';
 import WeekView from './WeekView';
 import Crop from './Crop';
 import './addCrop.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCalendarCheck, faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
-
 
 class AddCrop extends React.Component {
   constructor(props) {
@@ -165,10 +161,9 @@ render(){
         <div><input type="radio" id="harvest-option" checked={this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label>DATA ZBIORU</label></div>
         <div><input type="radio" id="start-option" checked={!this.state.showHarvestSim} onChange={this.toggleSimulation} name="dateTypeSelect"></input><label>DATA ZASIEWU</label></div>
         {this.state.showHarvestSim ?
-          <input placeholder='DATA ZBIORU' value={this.state.harvest1 !== '' ? moment(this.state.harvest1).format('DD.MM.YYYY') : ''} onChange={this.handleHarvest} onClick={this.toggleCalendar} ></input> :
-          <input placeholder='DATA ZASIEWU' value={this.state.start1 !== '' ? moment(this.state.start1).format('DD.MM.YYYY') : ''} onChange={this.handleStart} onClick={this.toggleCalendar}></input>}
+          <input type="date" value={this.state.harvest1 !== '' ? moment(this.state.harvest1).format('YYYY-MM-DD'): ''} onChange={this.handleHarvest}></input> :
+          <input type="date" value={this.state.start1 !== '' ? moment(this.state.start1).format('YYYY-MM-DD') : ''} onChange={this.handleStart}></input>}
 
-        {this.state.showCalendar ? <Calendar calendarType="addCrop" handleDaySelection={this.handleDaySelection}/> : null}
         {Number(this.state.microgreensID) !== 99 ?  this.makeSimulation(microgreenDataSim) : ''}
       </fieldset> 
     </form>;

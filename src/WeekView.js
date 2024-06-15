@@ -11,7 +11,7 @@ class WeekView extends React.Component {
     super(props);
 
     this.state = {
-      weekNow: moment().isoWeek(),
+      weekNow: this.props.className==="month" ? this.props.weekNow : moment().isoWeek(),
       toggleVal: true,
       checkedItems: this.setChecked(),
       tdc: JSON.parse(JSON.stringify(this.props.tdc)),
@@ -52,8 +52,8 @@ class WeekView extends React.Component {
 
       } else {
         const tdc =  JSON.parse(JSON.stringify(this.state.tdc));
-        const start =moment().week(this.state.weekNow-1).startOf("week");
-        const finish = moment().week(this.state.weekNow).endOf("week").add(2*light,"days");
+        const start =moment().week(this.props.className!=="month"? this.state.weekNow-1: this.props.weekNow-1).startOf("week");
+        const finish = moment().week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow).endOf("week").add(5*light,"days"); 
        
         const scheduledTDC = tdc.filter((x) => moment(x.date).isBetween(start, finish, undefined, "[]"));      
         this.setState({ scheduledTDC: scheduledTDC });
@@ -130,11 +130,11 @@ class WeekView extends React.Component {
   weekCrops(crops) {
     //crops which are during selected week
     const weekNowMon = moment()
-      .week(this.state.weekNow)
+      .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
       .weekday(1)
       .startOf("day");
     const weekNowSun = moment()
-      .week(this.state.weekNow)
+      .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
       .weekday(7)
       .endOf("day");
     const weekCrops = [];
@@ -152,11 +152,11 @@ class WeekView extends React.Component {
   weekTDC(tdc) {
     //crops which are during selected week
     const weekNowMon = moment()
-      .week(this.state.weekNow)
+      .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
       .weekday(1)
       .startOf("day");
     const weekNowSun = moment()
-      .week(this.state.weekNow)
+      .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
       .weekday(7)
       .endOf("day");
     const weekTDC = [];
@@ -385,15 +385,15 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,light
 
   render() {
     const microgreens=this.props.microgreens;
-    const start=moment().week(this.state.weekNow).weekday(1).startOf('day');
-    const finish=moment().week(this.state.weekNow).weekday(7).add(10,"days").endOf('day');
+    let weekNow= this.props.className==="month" ? this.props.weekNow : this.state.weekNow;
+    const start=moment().week(weekNow).weekday(1).startOf('day');
+    const finish=moment().week(weekNow).weekday(7).add(20,"days").endOf('day');
     
     const weekTDC=this.tdcDateRange(this.state.tdc,start,finish);
     const grpWeekTDCByDay = groupByDay(weekTDC,this.props.trays);
     const grpByFNDTrays = groupByFNDTrays(grpWeekTDCByDay, microgreens);
 
     const byShelves = this.renderByFND(grpByFNDTrays, 7);
-    let weekNow= this.state.weekNow;
     calcDatesCrop(this.props.crops, microgreens);
     const weekCrops = this.weekCrops(this.props.crops);
 
@@ -406,7 +406,7 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,light
       this.state.checkedItems,
       this.props.setSelectedCrop
     );
-weekNow=moment().week(this.state.weekNow);
+    weekNow=moment().week(this.props.className==="month" ? this.props.weekNow : this.state.weekNow);
     const [mon, tue, wed, thu, fri, sat, sun] = [
       JSON.parse(JSON.stringify(weekNow.weekday(1))),
       JSON.parse(JSON.stringify(weekNow.weekday(2))),
@@ -419,28 +419,29 @@ weekNow=moment().week(this.state.weekNow);
     const filter = this.renderMicrogreensFilter();
     return (
       <div id="WeekView" className={this.props.className}>
+        {this.props.className!=="month" ? 
         <div className="switchWrapper">
           <p>{this.state.toggleVal ? "MICROGREENS" : "PÓŁKI"}</p>
           <label className="switch">
             <input type="checkbox" onChange={this.toggleView}></input>
             <span className="slider-green"></span>
           </label>
-        </div>
-        <div className="filter">{filter}</div>
+        </div>:''}
+        {this.props.className!=="month" ? <div className="filter">{filter}</div>:''}
         <div className="control-row">
-          {this.state.weekNow > 1 ? (
+          {this.state.weekNow > 1  && this.props.className!=="month" ?  (
             <div onClick={this.minusWeek} className="back">{"<<"}</div>
           ) : (
             <div></div>
           )}
           <div>{this.state.weekNow}</div>
-          {this.state.weekNow <= 52 ? (
+          {this.state.weekNow <= 52 && this.props.className!=="month"? (
             <div onClick={this.plusWeek} className="next">{">>"}</div>
           ) : (
             <div></div>
           )}
         </div>
-        <div className="head">
+        {this.props.className!=="month"?<div className="head">
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Pon</div>
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Wt</div>
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Śr</div>
@@ -448,7 +449,7 @@ weekNow=moment().week(this.state.weekNow);
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Pt</div>
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Sob</div>
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Ndz</div>
-        </div>
+        </div>:''}
         <div className="head-2 row">
           <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }} onClick={() => this.showDayView(mon)}>
             {moment(mon).format("DD.MM")}

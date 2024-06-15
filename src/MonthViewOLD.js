@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import FNDTray from "./FNDTray";
 import './MonthView.css';
-import WeekView from './WeekView';
 
 import { calcDatesCrop, renderByMicrogreens, groupByShelves, groupByDay, groupByFNDTrays  } from './ViewCommon';
 
@@ -169,21 +168,8 @@ class MonthView extends React.Component {
     const monthCrops = this.monthCrops(this.props.crops);
     const monthNow = moment().month(this.state.monthNow);
     const days = monthNow.daysInMonth();
-   // const byShelves = this.monthTDC(this.props.tdc, days);
+    const byShelves = this.monthTDC(this.props.tdc, days);
 
-    const firstDayMonth=monthNow.clone().startOf('month').set({hours:12});
-    const firstDayMonthWeek=firstDayMonth.isoWeek();
-    const lastDayMonth=monthNow.clone().endOf('month').set({hours:12});
-    const lastDayMonthWeek=lastDayMonth.isoWeek();
-
-   
-  const monthViewGrp=[];
-    for (let i=firstDayMonthWeek;i<=lastDayMonthWeek;i++){
-monthViewGrp.push(<WeekView className="month" weekNow={i} trays={this.props.trays} tdc={this.props.tdc} microgreens={this.props.microgreens} 
-crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop}></WeekView>)
-    }
-
-    const byShelves=<div>{monthViewGrp}</div>
 
     const head = this.renderHead();
     const filter = this.renderMicrogreensFilter();
@@ -202,15 +188,7 @@ crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedC
         <div className='control-row'>{this.state.monthNow > 0 ? <div onClick={this.minusMonth} className="back">{"<<"}</div> : <div></div>}<div>{this.state.monthNow + 1}</div>{this.state.monthNow <= 10 ? <div onClick={this.plusMonth} className="next">{">>"}</div> : <div></div>}</div>
         {this.state.toggleVal ?
           <div className='viewWrapper'>
-      <div className="head">
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Pon</div>
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Wt</div>
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Śr</div>
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Czw</div>
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Pt</div>
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Sob</div>
-          <div style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>Ndz</div>
-        </div>
+            <div className='head'>{head}</div>
             <div className='monthCrops'>{byShelves}</div></div> :
           <div className='viewWrapper'>
             <div className='head'>{head}</div>

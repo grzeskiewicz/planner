@@ -3,6 +3,9 @@ import React from "react";
 import { API_URL, request } from "./APIConnection";
 import Microgreen from "./Microgreen";
 import { isMobile } from 'react-device-detect';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt,faEdit} from "@fortawesome/free-solid-svg-icons";
+
 
 
 class Microgreens extends React.Component {
@@ -55,6 +58,7 @@ class Microgreens extends React.Component {
       .then((result) => {
         if (result.success) {
           this.props.refreshMicrogreens();
+          alert("Dodano definicję mikroliści.");
         } else {
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
@@ -118,7 +122,7 @@ class Microgreens extends React.Component {
 
   renderMicrogreensTable() {
     return this.props.microgreens.map((microgreen, index) => {
-      return <Microgreen editMicrogreens={this.editMicrogreens} selectedMicrogreens={this.state.selectedMicrogreens} setSelectedMicrogreens={this.setSelectedMicrogreens} microgreen={microgreen} key={index} index={index}></Microgreen>
+      return <Microgreen refreshMicrogreens={this.props.refreshMicrogreens} editMicrogreens={this.editMicrogreens} selectedMicrogreens={this.state.selectedMicrogreens} setSelectedMicrogreens={this.setSelectedMicrogreens} microgreen={microgreen} key={index} index={index}></Microgreen>
     });
   }
 
@@ -130,21 +134,27 @@ class Microgreens extends React.Component {
     if (this.props.microgreens !== '') microgreensTable = this.renderMicrogreensTable();
     const microgreensListTable = <div id="microgreens-list">
         <div className="head">
-         <div>Nazwa</div><div>Name</div><div>Taca[g]</div><div>Zbiór taca[g]</div><div>{isMobile ? 'Nawodnienie' : 'Nawodnienie'}</div><div>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</div><div>{isMobile ? 'Black.' : 'Blackout [dni]'}</div><div>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</div><div>Całość [dni]</div><div>Kolor</div>
+         <div>Nazwa</div><div>Name</div><div>Taca[g]</div><div>Zbiór taca[g]</div><div>{isMobile ? 'Nawodnienie' : 'Nawodnienie'}</div><div>{isMobile ? 'Obciąż.' : 'Obciążanie [dni]'}</div><div>{isMobile ? 'Black.' : 'Blackout [dni]'}</div><div>{isMobile ? 'Naśw.' : 'Naświetlanie [dni]'}</div><div>Całość [dni]</div><div>Kolor</div>    
+         <div className="iconTD">
+          <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+        </div>
+        <div className="iconTD">
+          <FontAwesomeIcon icon={faEdit} size="lg" />
+        </div>
         </div>
         <div className="body">
           {microgreensTable}
         </div>
     </div>;
     const addMicrogreensForm = <form className="" onSubmit={this.addMicrogreens}>
-      <input placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
-      <input placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
-      <input placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder='Zbiór waga L taca [g]' value={this.state.gramsHarvest} onChange={this.handleGramsHarvest} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Nawodnienie' : 'Nawodnienie'} value={this.state.wateringLevel} onChange={this.handleWateringLevel} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="text" placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
+      <input type="text" placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
+      <input type="number" placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder='Zbiór waga L taca [g]' value={this.state.gramsHarvest} onChange={this.handleGramsHarvest} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder={isMobile ? 'Nawodnienie' : 'Nawodnienie'} value={this.state.wateringLevel} onChange={this.handleWateringLevel} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input id="microgreens-color-picker" placeholder='Kolor' value={this.state.color} onChange={this.handleColor} type="color"></input>
       <button type='submit'>DODAJ</button>
       {this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}

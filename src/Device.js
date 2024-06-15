@@ -62,7 +62,7 @@ resetDevice(){
       } else{
       alert("Nie można zresetować OrangePI");
       }
-    }).catch(error => Promise.reject(new Error(error))); 
+    }).catch(error => {alert("Lipa jakaś"); return error}); 
   }
   }
 
@@ -72,9 +72,8 @@ resetDevice(){
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
-
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {alert("Problem z uruchomieniem gniazda!"); return error});
   }
   }
 
@@ -86,7 +85,7 @@ resetDevice(){
       console.log(result);
       // this.getSocketInfo();
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {alert("Problem z wyłączeniem gniazda!"); return error});
   }
   }
 
@@ -95,10 +94,9 @@ resetDevice(){
     fetch(request(`${API_URL}/getsocketinfo`, "POST", {ip:this.props.socketIP}))
     .then((res) => res.json())
     .then((result) => {
-      console.log(result.data.Status.Power);
 this.setState({info:result.data.Status});
     })
-    .catch((error) => Promise.reject(new Error(error)));   
+    .catch((error) => {alert("Problem z pobraniem statusu gniazda!"); return error});   
   }
 
 
@@ -125,7 +123,7 @@ this.setState({info:result.data.Status});
         alert("Error!")
       }
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {alert("Problem z uruchomieniem nawadniania!"); return error});
   }
 
 

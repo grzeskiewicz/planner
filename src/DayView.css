@@ -30,8 +30,9 @@ flex:0 45%;
   }
   
   .close {
-    color: Black;
+    color: black;
     float: right;
+    font-size:2rem;
   }
   
   .close:hover {

@@ -15,14 +15,9 @@ class Tray extends React.Component {
 
   handleTray() {
     this.props.handleScheduleTDC(this.props.trayData);
-    console.log(this.props.trayData)
-   /* if (this.props.trayData.crop_id === null) {
-      this.props.handleScheduleTDC(this.props.trayData);
-    }
-    else {
-      this.props.handleScheduleTDC(this.props.trayData);
-    }*/
   }
+
+  
   render() {    
     const crops = this.props.crops;
     const trayData = this.props.trayData;

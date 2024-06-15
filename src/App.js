@@ -51,10 +51,8 @@ class App extends React.Component {
               this.getCustomers().then((customers) => {
                 this.getOrders().then((orders) => {
                   console.log("DANE POBRANE Z DB");
-                  console.log(orders);
                   this.setState({ isReady: true })
                 });
-
               });
             });
           })
@@ -71,7 +69,6 @@ class App extends React.Component {
         this.setState({ microgreens: result });
         return result;
       });
-  //   }).catch(error => Promise.reject(new Error(error)));
   }
 
   getTrays() {

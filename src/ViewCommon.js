@@ -102,8 +102,7 @@ export function whichStageShelves(day, crop) {
 export function cropInfoRender(cropInfo, microgreen) {
   return (
     <div className="cropInfo">
-      <p>KONTRAHENT INFO</p>
-      <p>ID:{cropInfo.id}</p>
+      <p>CROP ID:{cropInfo.id}</p>
       <p>{microgreen.name_pl}</p>
       <p>
         S: {moment(cropInfo.start).format("DD.MM hh:mm")} (
@@ -178,8 +177,6 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
 
       const copy =moment().week(weekNow).set({hour:12,minutes:0});
       stage = whichStage(copy.isoWeekday(i), crop);
-    //  console.log(stage)
-     // console.log(i,copy.isoWeekday(i).format('YYYY-MM-DD'))
 
 
     }
@@ -199,7 +196,6 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
     } else if (monthNow === null) {
       const copy =moment().week(weekNow).set({hour:12,minutes:0});
       stage = whichStage(copy.isoWeekday(i), crop);
-    //  console.log(i,copy.isoWeekday(i).format('YYYY-MM-DD'))
     }
 
     if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false 
@@ -221,14 +217,12 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
 }
 
 export function renderByMicrogreens(crops, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
- // console.log(crops,microgreens,weekNow.week());
   const groupedRows = [];
   for (const microgreen of microgreens) {
     const cropsGrouped = crops.filter((x) => x.microgreen_id === microgreen.id);
     if (cropsGrouped.length > 0) {
       const rows = [];
       for (const crop of cropsGrouped) {
-       // console.log(weekNow)
         const row = renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop);
         rows.push(<div className='row' key={crop.id}>{row}</div>);
       }

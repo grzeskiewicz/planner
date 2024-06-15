@@ -1,7 +1,7 @@
 import React from 'react';
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faCheckCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -39,14 +39,14 @@ this.enter=this.enter.bind(this);
 
 
 
-  deleteMicrogreens(crop){
-    if (window.confirm("Czy usunąć zasiew?")) {
-      fetch(request(`${API_URL}/deletecrop`, "POST", {"crop_id": crop.id}))
+  deleteMicrogreens(microgreen){
+    if (window.confirm("Czy usunąć definicję mikroliści?")) {
+      fetch(request(`${API_URL}/deletemicrogreens`, "POST", {"id": microgreen.id}))
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
       if (result.success) {
-        this.props.refreshCrops();
+        this.props.refreshMicrogreens();
+        alert("Definicja mikroliści usunięta.");
       } else {
         alert("SQL Erro - błędne wartości!")
       }
@@ -123,18 +123,24 @@ const isEditEnabled=this.state.editMicrogreensEnabled;
 const selectedMicrogreens=this.props.selectedMicrogreens;
 const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
   return (
-    <div className={"MicrogreenEntry " + (amISelectedToEdit ? "edit":"") } onClick={this.enableEditMicrogreens} key={this.props.index} onKeyDown={this.enter}>
-    <div>{ amISelectedToEdit ?<input   type="text" value={this.state.name_pl} onChange={this.handleNamePL}></input>:microgreen.name_pl}</div>
+    <div className={"MicrogreenEntry " + (amISelectedToEdit ? "edit":"") } key={this.props.index} onKeyDown={this.enter}>
+    <div>{ amISelectedToEdit? <input type="text" value={this.state.name_pl} onChange={this.handleNamePL}></input>:microgreen.name_pl}</div>
     <div>{amISelectedToEdit ? <input type="text" value={this.state.name_en} onChange={this.handleNameEN}></input>:microgreen.name_en}</div>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.grams_tray} onChange={this.handleGramsTray}></input>:microgreen.grams_tray}</div>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.grams_harvest} onChange={this.handleGramsHarvest}></input>:microgreen.grams_harvest}</div>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.top_water} onChange={this.handleWateringLevel}></input>:microgreen.watering_level}</div>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.weight} onChange={this.handleWeight}></input>:microgreen.weight}</div>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</div>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.light} onChange={this.handleLight}></input>:microgreen.light}</div>
+    <div>{ amISelectedToEdit? <input type="number" value={this.state.grams_tray} onChange={this.handleGramsTray}></input>:microgreen.grams_tray}</div>
+    <div>{ amISelectedToEdit? <input type="number" value={this.state.grams_harvest} onChange={this.handleGramsHarvest}></input>:microgreen.grams_harvest}</div>
+    <div>{ amISelectedToEdit? <input type="number" value={this.state.watering_level} onChange={this.handleWateringLevel}></input>:microgreen.watering_level}</div>
+    <div>{ amISelectedToEdit? <input type="number" value={this.state.weight} onChange={this.handleWeight}></input>:microgreen.weight}</div>
+    <div>{ amISelectedToEdit? <input type="number" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</div>
+    <div>{ amISelectedToEdit? <input type="number" value={this.state.light} onChange={this.handleLight}></input>:microgreen.light}</div>
     <div>{this.state.weight+this.state.blackout+this.state.light}</div>
     <div style={{backgroundColor:microgreen.color}}>{ amISelectedToEdit? <input type="color" value={this.state.color} onChange={this.handleColor}></input>:microgreen.color.toUpperCase()}</div>
-    { amISelectedToEdit ? <div onClick={this.saveMicrogreen}><FontAwesomeIcon icon={faCheckCircle} size="lg"/></div>:null}
+    { !amISelectedToEdit? <div className="iconTD" onClick={() => this.deleteMicrogreens(microgreen)}>
+          <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+        </div> :''}
+        { !amISelectedToEdit? <div className="iconTD" onClick={this.enableEditMicrogreens}>
+          <FontAwesomeIcon icon={faEdit} size="lg" />
+        </div>: ''}
+    { amISelectedToEdit ? <div className='iconTD save' onClick={this.saveMicrogreen}><FontAwesomeIcon icon={faCheckCircle} size="lg"/></div>:null}
 </div>);}
 }
 

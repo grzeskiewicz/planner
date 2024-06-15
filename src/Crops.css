@@ -10,9 +10,11 @@
     cursor:default;
 
   }
+#allCrops{
+  margin-top: 3rem;
+}
 
-
- #cropsTable .head{
+ #cropsTable .head, #allCrops .head{
     cursor:default;
     text-transform: uppercase;
     display: flex;
@@ -20,17 +22,17 @@
   }
   
 
-  #cropsTable .head > * {
+  #cropsTable .head > * ,#allCrops .head > *{
     flex:2;
     border: 1px solid black;
 text-align: center;  
 }
 
-#cropsTable .head .cropType{
+#cropsTable .head .cropType, #allCrops .head .cropType{
   flex:3;
 }
 
-#cropsTable .head .trays, #cropsTable .head .iconTD{
+#cropsTable .head .trays, #cropsTable .head .iconTD, #allCrops .head .trays, #allCrops .head .iconTD{
   flex:1;
 }
 
@@ -94,6 +96,7 @@ align-items: center;
 
 .iconTD{
   cursor: pointer;
+justify-content: center;
 }
 .iconTD:hover{
  background-color:  #04AA6D;
