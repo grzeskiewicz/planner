@@ -149,21 +149,20 @@ class Microgreens extends React.Component {
     const addMicrogreensForm = <form className="" onSubmit={this.addMicrogreens}>
       <input type="text" placeholder='Nazwa (ENG)' value={this.state.nameEN} onChange={this.handleNameEN} required></input>
       <input type="text" placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
-      <input type="number" placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input type="number" placeholder='Zbiór waga L taca [g]' value={this.state.gramsHarvest} onChange={this.handleGramsHarvest} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder='Taca waga [g]' max="2000" value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" placeholder='Zbiór waga L taca [g]' max="2000" value={this.state.gramsHarvest} onChange={this.handleGramsHarvest} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <select value={this.state.wateringLevel} onChange={this.handleWateringLevel} required>
-    <option value={1}>1</option>
-    <option value={2}>2</option>
-    <option value={3}>3</option>
+    <option value={1}>POZIOM NAWODNIENIA - 1</option>
+    <option value={2}>POZIOM NAWODNIENIA - 2</option>
+    <option value={3}>POZIOM NAWODNIENIA - 3</option>
       </select>
-      <input type="number" placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input type="number" placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input type="number" placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" max="30" placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" max="30" placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <input type="number" max="30" placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input id="microgreens-color-picker" placeholder='Kolor' value={this.state.color} onChange={this.handleColor} type="color"></input>
       <button type='submit'>DODAJ</button>
       {this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
     </form>;
-   // console.log(isMobile)
 
     return <div className="Microgreens">
       <div id="addMicrogreens">

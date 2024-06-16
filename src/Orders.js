@@ -269,7 +269,7 @@ return <div id="ordersList">{ordersDayGrp}</div>
             <select id="customer-selection" name="customer-selection" onChange={this.handleCustomerID} value={this.state.customerID}>
             {mappedCustomers}
             </select>
-             <input type="datetime-local" value={this.state.deliveryDate} onChange={this.handleDeliveryDate} required></input>
+             <input type="datetime-local" min={moment().subtract(10,"days").format('YYYY-MM-DD HH:mm')} value={this.state.deliveryDate} onChange={this.handleDeliveryDate} required></input>
       <textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
       <fieldset>
         <legend>DODAJ DO ZAMÓWIENIA</legend>
@@ -277,7 +277,7 @@ return <div id="ordersList">{ordersDayGrp}</div>
             <select id="microgreens-selection" name="microgreens-selection" onChange={this.handleMicrogreens} value={this.state.microgreensID}>
             {mappedMicrogreens}
             </select>
-            <input placeholder='Waga' type="number" value={this.state.weight} onChange={this.handleWeight}></input>
+            <input placeholder='Waga' type="number" min="10" max="3000" value={this.state.weight} onChange={this.handleWeight}></input>
             <button onClick={this.handleOrders}>+</button>
             
         </div>

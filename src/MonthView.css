@@ -48,14 +48,15 @@ text-align: center;
 }
 
 .filter div > * {
-    margin:0.25rem;
 }
 .filter div{
     display: flex;
     flex-flow:row nowrap;
-    padding: 0.4rem;
-
+    flex:1;
+    justify-content: center;
+text-align: center;
 }
+
 .control-row > *{
 flex:0 5%;
 text-align: center;

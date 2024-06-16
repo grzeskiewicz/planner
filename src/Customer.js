@@ -364,22 +364,22 @@ const editCustomer=<form className="editCustomer" onSubmit={this.saveCustomer} o
   return (
     <div className='customerEntryWrapper'>
     <div className={"customerEntry " + (amISelectedToEdit ? "edit":"") } onKeyDown={this.enter}>
-    <div>{customer.company_name}</div>
-    <div>{customer.company_nip}</div>
-    <div>{customer.company_regon}</div>
-    <div>{customer.customer_address}</div>
-    <div>{customer.customer_postcode}</div>
-    <div>{customer.customer_location}</div>
-    <div>{ customer.customer_voivodeship}</div>
-    <div>{ customer.customer_fullname}</div>
-    <div>{customer.customer_pesel}</div>
-    <div>{ customer.delivery_address}</div>
-    <div>{ customer.delivery_postcode}</div>
-    <div>{customer.delivery_location}</div>
-    <div>{customer.delivery_voivodeship}</div>
-    <div>{ customer.customer_email}</div>
-    <div>{ customer.customer_telephone1}</div>
-    <div>{ customer.customer_telephone2}</div>
+    <div className='companyNameField'>{customer.company_name}</div>
+    <div className='NIPField'>{customer.company_nip}</div>
+    <div className='REGONField'>{customer.company_regon}</div>
+    <div className='customerAddressField'>{customer.customer_address}</div>
+    <div className='customerPostcodeField'>{customer.customer_postcode}</div>
+    <div className='customerLocationField'>{customer.customer_location}</div>
+    <div className='customerVoivodeshipField'>{ customer.customer_voivodeship}</div>
+    <div className='customerFullnameField'>{ customer.customer_fullname}</div>
+    <div className='PESELField'>{customer.customer_pesel}</div>
+    <div className='deliveryAddressField'>{ customer.delivery_address}</div>
+    <div className='deliveryPostcodeField'>{customer.delivery_postcode}</div>
+    <div className='deliveryLocationField'>{customer.delivery_location}</div>
+    <div className='deliveryVoivodeshipField'>{customer.delivery_voivodeship}</div>
+    <div className='emailField'>{ customer.customer_email}</div>
+    <div className='telField'>{ customer.customer_telephone1}</div>
+    <div className='telField'>{ customer.customer_telephone2}</div>
     <div className="iconTD" onClick={this.enableEditCustomer}>
           <FontAwesomeIcon icon={faEdit} size="lg" />
         </div>

@@ -412,14 +412,14 @@ tdcDateRange(tdc,start,finish){
         <legend>ZAKRES</legend>
             <input type="date" onChange={this.handleCropDateFrom} value={this.state.cropDateFrom.format('YYYY-MM-DD')}></input>
             <span> - </span>
-            <input type="date" onChange={this.handleCropDateTo} value={this.state.cropDateTo.format('YYYY-MM-DD')}></input>
+            <input type="date" min={this.state.cropDateFrom.clone().add(7,"days").format('YYYY-MM-DD')} onChange={this.handleCropDateTo} value={this.state.cropDateTo.format('YYYY-MM-DD')}></input>
             </fieldset>
             {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> :<button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
             </div>
          {cropsTable.length >0 ? 
           <div id="cropsTable">
             <div className='head'>
-              <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
+              <div>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
               <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
               </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
             </div>

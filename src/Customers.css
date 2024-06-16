@@ -45,6 +45,15 @@ flex-flow:row wrap;
     flex:0 100%;
   }
 
+  .companyNameField, .customerAddressField,.customerLocationField,.customerFullnameField,
+  .deliveryAddressField,.deliveryLocationField,.emailField {
+
+  }
+
+  .NIPField,.REGONField,.customerPostcodeField,.PESELField,.deliveryPostcodeField,.telField,.deliveryVoivodeshipField,.customerVoivodeshipField{
+justify-content: center;
+  }
+
   .editCustomer{
     flex:0 30%;
   }
@@ -82,7 +91,7 @@ flex:0 65%;
   
 
 #customers-list{
-    flex:0 90%;
+    flex:0 100%;
     font-size:0.8rem;
 }
 
@@ -98,26 +107,24 @@ font-size:1rem;
 
 #addCustomer {
     display: flex;
+    flex:0 100%;
     flex-flow:row nowrap;
-    flex:0 10%;
-    margin-right: 2rem;
+    justify-content: center;
 }
 
 #addCustomer form{
     display: flex;
-    flex-flow:column nowrap;  
-    height:100%; 
+    flex-flow:column nowrap; 
+    justify-content: space-between;
+    flex:0 20%; 
 }
 
-  #addCustomer form > *{
-    margin-bottom:1rem;
+  #addCustomer form > div, #addCustomer form > input,#addCustomer form > select{
     text-transform: uppercase;
     flex:0 5%;
-    height:100%;
   }
 
   #addCustomer form > div > input{
-    height:100%;
     text-transform: uppercase;
   }
  
