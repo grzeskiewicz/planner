@@ -136,7 +136,7 @@ return regonArray[8] === checkSum;
         alert("SQL Erro - błędne wartości!")
       }
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {alert("Błąd zablokowania klienta"); return error});
     } else {
     }
   }
@@ -152,7 +152,7 @@ return regonArray[8] === checkSum;
         alert("SQL Erro - błędne wartości!")
       }
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {alert("Błąd odblokowania klienta"); return error});
     } else {
     }
   }

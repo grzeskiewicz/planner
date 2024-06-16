@@ -27,33 +27,37 @@ class Crop extends React.Component {
 
 
   deleteSchedule(crop) {
-    fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop_id: crop.id }))
+    if (window.confirm("Czy zakończyć zasiew?\nZostanie USUNIĘTY z harmonogramu nawadniania\noraz oznaczony w bazie jako ZAKOŃCZONY.\nPROCES NIEODWRACALNY")) {
+
+    fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
-          this.props.refreshCrops();
-          fetch(request(`${API_URL}/completewatering`, "POST", { crop_id: crop.id }))
+
+          fetch(request(`${API_URL}/completewatering`, "POST", { crop: crop.id }))
             .then((res2) => res2.json())
             .then((result2) => {
               if (result.success) {
                 this.props.refreshCrops();
               } else {
-                alert("SQL Erro - błędne wartości!");
+                alert("SQL Error - błędne wartości!");
               }
             })
-            .catch((error) => Promise.reject(new Error(error)));
+            .catch((error) => {alert("Nie udało się zakończyć nawadniania w bazie!"); return error});
         } else {
-          alert("SQL Erro - błędne wartości!");
+          alert("SQL Error - błędne wartości!");
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Nie udało się usunąć zadania z centrum nawadniania!!!"); return error});
+
+    }
   }
 
 
-
+ 
 
   deleteCrop(crop) {
-    if (window.confirm("Czy usunąć zasiew?")) {
+    if (window.confirm("Czy usunąć zasiew (baza + harmonogram nawadniania)?")) {
       fetch(request(`${API_URL}/deletecrop`, "POST", { crop_id: Number(crop.id) }))
         .then((res) => res.json())
         .then((result) => {
@@ -63,12 +67,12 @@ class Crop extends React.Component {
             fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
               .then((res2) => res2.json())
               .then((result2) => {
-              }).catch((error) => Promise.reject(new Error(error)));
+              }).catch((error) => {alert("Zasiew usunięty, ale nie udało się usunąć zadania z centrum nawadniania!!!"); return error});
           } else {
-            alert("SQL Erro - błędne wartości!");
+            alert("SQL Error - błędne wartości!");
           }
         })
-        .catch((error) => Promise.reject(new Error(error)));
+        .catch((error) => {alert("Problem z usunięciem zasiewu!"); return error});
     } else {
     }
   }
@@ -92,10 +96,10 @@ class Crop extends React.Component {
           // alert("Notatki edytowane")
           this.props.refreshCrops();
         } else {
-          alert("SQL Erro - błędne wartości!");
+          alert("SQL Error - błędne wartości!");
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Nie udało się zapisać notatek!"); return error});
   }
 
   enter(e) {
@@ -113,18 +117,6 @@ class Crop extends React.Component {
   scheduleCrop(crop) {
     this.props.showWeekView(crop);
   }
-  //<textarea disabled={this.state.editNotesEnabled} onChange={this.editNotes} className='cropNotes'>  </textarea>
-  //        <div>{shelfData.rack_name + shelfData.level}</div>
-  //        {crop.scheduled === 1 ? <div>&#10004;</div> : <td onClick={() => this.scheduleWatering(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg"/></div>}
-
-
-  /*
-   {this.state.editNotesEnabled && Number(crop.id) === Number(this.props.selectedCrop) ?
-          <tr className='rowNotesEdit'><div>
-            <textarea onKeyDown={this.enter} rows="8" onChange={this.editNotes} type="text" value={this.state.notes}></textarea>
-            <FontAwesomeIcon onClick={this.saveNotes} icon={faCheckCircle} size="lg" /></div></tr> : ''}
-        {this.state.showWeekView ? '' : ''}
-  */
 
   render() {
     const crop = this.props.crop;
@@ -170,8 +162,8 @@ class Crop extends React.Component {
         <div className="iconTD" onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </div>
-       { this.props.addCrop===false ? crop.scheduled === 1 ? <div>&#10004;</div> : <div className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></div>:null}
-        {crop.completed === 1 ? <div>&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> :  this.props.addCrop===true ? null:<div className="iconTD">-</div>}
+       { this.props.addCrop===false ? crop.scheduled === 1 ? <div className="iconTD">&#10004;</div> : <div className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></div>:null}
+        {crop.completed === 1 ? <div className="iconTD">&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> :  this.props.addCrop===true ? null:<div className="iconTD">-</div>}
      
       </div>
     );

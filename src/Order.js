@@ -42,7 +42,7 @@ this.enter=this.enter.bind(this);
         alert("SQL Erro - błędne wartości!")
       }
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) => {alert("Błąd! Nie udało się usunąć zamówienia!"); return error});
     } else {
     }
   }

@@ -114,7 +114,6 @@ class Crops extends React.Component {
     this.setState({ showHarvestSim: !this.state.showHarvestSim, harvest: '', start: '' });
   }
   makeSimulation(microgreen) {
-    // console.log(microgreen)
     if (this.state.harvest !== '') {
       const lightExposureStart = moment(this.state.harvest).subtract(microgreen.light, "days");
       const blackoutStart = moment(lightExposureStart).subtract(microgreen.blackout, "days");
@@ -183,12 +182,16 @@ class Crops extends React.Component {
       (moment(x.harvest).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)))
       || (moment(x.start).isSameOrAfter(moment(from)) && moment(x.start).isSameOrBefore(moment(to)))
       || (x.harvest === null) || (x.harvest === "undefined"));
-    /*(moment(x.start).isSameOrBefore(moment(from)) && moment(x.harvest).isSameOrAfter(moment(from))) ||
-     ( moment(x.start).isSameOrBefore(moment(to)) && moment(x.harvest).isSameOrAfter(moment(to))) ||
-      (moment(x.start).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to))));*/
-    return rangeDateCrops.map((crop, index) => {
-      //  console.log(moment(crop.harvest),moment(crop.start));
-      //  console.log(moment(crop.harvest).isSameOrAfter(moment(from)), moment(crop.harvest).isSameOrBefore(moment(to)) ,moment(crop.start).isSameOrAfter(moment(from)), moment(crop.start).isSameOrBefore(moment(to)));
+const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
+  const startA=moment(a.start);
+  const startB=moment(b.start); 
+
+  if (startA.isBefore(startB)) return -1;
+  if (startB.isBefore(startA)) return 1;
+  if (startA.isSame(startB)) return 0;
+});
+
+    return rangeDateCropsSorted.map((crop, index) => {
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
 
       return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
@@ -246,10 +249,7 @@ class Crops extends React.Component {
   addCrops(event) {
     event.preventDefault();
     const crop = {
-      // start: this.state.start !== '' ? moment(this.state.start).format('YYYY-MM-DD') : '',
-      // harvest: this.state.harvest !== '' ? moment(this.state.harvest).format('YYYY-MM-DD') : '',
       microgreenID: this.state.microgreensID,
-     // trays: this.state.trays,
       notes: this.state.notes
     }
     fetch(request(`${API_URL}/addcrops`, "POST", crop))
@@ -261,7 +261,7 @@ class Crops extends React.Component {
           alert("SQL Erro - błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Nie udało się dodać zasiewu!"); return error});
   }
 
 
@@ -280,7 +280,7 @@ class Crops extends React.Component {
           alert("SQL Erro - błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Błąd zapisu harmonogramu!"); return error});
   }
 
   refreshTDC() {
@@ -312,22 +312,39 @@ class Crops extends React.Component {
     if (window.confirm('Czy jesteś pewien, że chcesz zaplanować nawadnianie (reset obecnego harmonogramu)?')) {
 
     const tdc = this.props.tdc;
-    const weekTDC = this.weekTDC(tdc);
-    const grp = groupByDay(weekTDC, this.props.trays);
+  //const weekTDC = this.weekTDC(tdc);
+    const start=moment().startOf('day');
+    const finish=moment().week(start.isoWeek() +1).weekday(7);
+    const scheduleTDC=this.tdcDateRange(tdc,start,finish)
+    const grp = groupByDay(scheduleTDC, this.props.trays);
     const schedule = this.groupByFNDTrays(grp);
-
+const filteredScheduleTDC=scheduleTDC.filter((x)=>x.crop_id!==null);
+const cropsListArr=(filteredScheduleTDC.map((x)=> x.crop_id));
+const cropsListSet=new Set(cropsListArr);
+const cropsList=Array.from(cropsListSet.values());
     fetch(request(`${WATERING_API}/schedule`, "POST", { schedule: schedule }))
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        //console.log(result);
         if (result.success) {
-          console.log("GIT")
-          // this.props.refreshCrops();
+          console.log("GIT WATERING API");
+          fetch(request(`${API_URL}/schedulewatering`, "POST", {crops:cropsList}))
+          .then((res) => res.json())
+          .then((result) => {
+            console.log(result);
+            if (result.success) {
+              this.props.refreshCrops();
+            } else {
+              alert("SQL Erro - błędne wartości!")
+            }
+          })
+          .catch((error) => {alert("Nie udało się dodać zasiewu!"); console.log(error); return error});
+
         } else {
-          alert("SQL Erro - błędne wartości!")
+          alert("SQL Error - błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Błąd! Rescheduling nieudany!"); return error});
     } else{
 
     }
@@ -336,6 +353,23 @@ class Crops extends React.Component {
   updateSim(sim){
     this.setState({sim:sim});
     }
+
+tdcDateRange(tdc,start,finish){
+      const startDate = moment(start).startOf("day");
+      const finishdate = moment(finish).endOf("day");
+      const TDC = [];
+      for (const entry of tdc) {
+        if (
+          moment(entry.date).isBetween(startDate, finishdate, undefined, "[]")
+        ) {
+          let entryCp = JSON.parse(JSON.stringify(entry));
+          let entryDate = moment(entryCp.date);
+          entryCp.date = entryDate.format("DD.MM.YYYY");
+          TDC.push(entry);
+        }
+      }
+      return TDC;
+  }    
     
 
   weekTDC(tdc) {
@@ -369,8 +403,6 @@ class Crops extends React.Component {
     if (this.props.crops !== '') cropsTable = this.renderRangeCropsTable();
     const allCrops = this.renderAllCropsTable();
    
- 
-
     return (
       <div className='Crops'>
         <div id="cropList">

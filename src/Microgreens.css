@@ -82,13 +82,13 @@
     height:100%; 
 }
 
-  #addMicrogreens form  input{
+  #addMicrogreens form  input, #addMicrogreens form  select{
     margin-bottom:1rem;
     text-transform: uppercase;
     flex:0 5%;
   }
 
-  .MicrogreenEntry input{
+  .MicrogreenEntry input, .MicrogreenEntry select{
     flex:1;
     box-sizing:border-box;
     width: 100% 

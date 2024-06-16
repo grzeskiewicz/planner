@@ -142,7 +142,7 @@ delete customerData.showLockedCustomers;
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error))
+      .catch((error) => {alert("Błąd dodawania klienta!"); return error});
   }
 
   toggleLockedCustomersList(){
@@ -230,7 +230,7 @@ validateREGON(regon) {
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error)) */
+      .catch((error) => {alert("Błąd edycji klienta!"); return error});
   }
 
   handleCompanyName(event) {

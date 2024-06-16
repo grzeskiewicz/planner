@@ -68,7 +68,7 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error))
+      .catch((error) => {alert("Nie udało się dodać zamówienia!"); return error});
     } else {
         alert("Pusta lista w zamówieniu!");
     }
@@ -86,7 +86,7 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Edycja zamówienia nieudana"); return error});
   }
 
 
@@ -133,7 +133,7 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
           alert("SQL Erro - błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Błąd usuwania zamówienia"); return error});
       } else {
       }
   }

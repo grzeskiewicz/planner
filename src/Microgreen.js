@@ -51,7 +51,7 @@ this.enter=this.enter.bind(this);
         alert("SQL Erro - błędne wartości!")
       }
     })
-    .catch((error) => Promise.reject(new Error(error)));
+    .catch((error) =>{alert("Błąd! Nie udało się usunąć definicji mikroliści!"); return error});
     } else {
     }
 
@@ -128,7 +128,12 @@ const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
     <div>{amISelectedToEdit ? <input type="text" value={this.state.name_en} onChange={this.handleNameEN}></input>:microgreen.name_en}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.grams_tray} onChange={this.handleGramsTray}></input>:microgreen.grams_tray}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.grams_harvest} onChange={this.handleGramsHarvest}></input>:microgreen.grams_harvest}</div>
-    <div>{ amISelectedToEdit? <input type="number" value={this.state.watering_level} onChange={this.handleWateringLevel}></input>:microgreen.watering_level}</div>
+    <div>{ amISelectedToEdit? 
+    <select value={this.state.watering_level} onChange={this.handleWateringLevel}>
+    <option value={1}>1</option>
+    <option value={2}>2</option>
+    <option value={3}>3</option>
+    </select>:microgreen.watering_level}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.weight} onChange={this.handleWeight}></input>:microgreen.weight}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.light} onChange={this.handleLight}></input>:microgreen.light}</div>

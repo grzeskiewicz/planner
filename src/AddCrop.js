@@ -79,7 +79,7 @@ renderMicrogreensSelection() {
       microgreenID: this.state.microgreensID,
       notes: this.state.notes
     }
-    console.log(crop);
+
     fetch(request(`${API_URL}/addcrops`, "POST", crop))
       .then((res) => res.json())
       .then((result) => {
@@ -87,10 +87,10 @@ renderMicrogreensSelection() {
           this.props.refreshCrops();
           this.setState({stage:2,crop: result.crop})
         } else {
-          alert("SQL Erro - błędne wartości!")
+          alert("SQL Error - błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Błąd dodawania zasiewu!"); return error});
   }
 
 
@@ -102,14 +102,15 @@ renderMicrogreensSelection() {
       .then((result) => {
         console.log(result);
         if (result.success) {
+          alert("Zasiew zaktualizowany.")
           this.props.refreshTDC();
           this.props.refreshCrops();
-          alert("Zasiew zaktualizowany.")
+          this.props.setSelectedCrop(crop);
         } else {
-          alert("SQL Erro - błędne wartości!")
+          alert("SQL Error - błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error)));
+      .catch((error) => {alert("Błąd zapisu harmonogramu!"); return error});
   }  
 
 updateSim(sim){

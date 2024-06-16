@@ -63,7 +63,7 @@ class Microgreens extends React.Component {
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error))
+      .catch((error) => {alert("Błąd! Nie udało się dodać definicji mikroliści!"); return error});
   }
 
 
@@ -80,7 +80,7 @@ class Microgreens extends React.Component {
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })
-      .catch((error) => Promise.reject(new Error(error))); //Promise.reject(new Error(error)) */
+      .catch((error) => {alert("Błąd! Edycja definicji mikroliści nieudana!"); return error}); 
   }
 
   handleNameEN(event) {
@@ -151,7 +151,11 @@ class Microgreens extends React.Component {
       <input type="text" placeholder='Nazwa (PL)' value={this.state.namePL} onChange={this.handleNamePL} required></input>
       <input type="number" placeholder='Taca waga [g]' value={this.state.gramsTray} onChange={this.handleGramsTray} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input type="number" placeholder='Zbiór waga L taca [g]' value={this.state.gramsHarvest} onChange={this.handleGramsHarvest} required pattern="^\d+$" title="Wprowadź liczbę"></input>
-      <input type="number" placeholder={isMobile ? 'Nawodnienie' : 'Nawodnienie'} value={this.state.wateringLevel} onChange={this.handleWateringLevel} required pattern="^\d+$" title="Wprowadź liczbę"></input>
+      <select value={this.state.wateringLevel} onChange={this.handleWateringLevel} required>
+    <option value={1}>1</option>
+    <option value={2}>2</option>
+    <option value={3}>3</option>
+      </select>
       <input type="number" placeholder={isMobile ? 'Obciąż.' : 'Obciążanie [dni]'} value={this.state.weight} onChange={this.handleWeighting} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input type="number" placeholder={isMobile ? 'Black.' : 'Blackout [dni]'} value={this.state.blackout} onChange={this.handleBlackout} required pattern="^\d+$" title="Wprowadź liczbę"></input>
       <input type="number" placeholder={isMobile ? 'Naśw.' : 'Naświetlanie [dni]'} value={this.state.light} onChange={this.handleExposure} required pattern="^\d+$" title="Wprowadź liczbę"></input>
