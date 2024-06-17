@@ -4,14 +4,6 @@
     flex:0 100%;
   }
 
-
-  /*
-  #customers-list{
-    display: flex;
-    flex-flow:column nowrap;
-    flex:0 70%;
-  }*/
-
   
   .Customers .head{
     text-transform: uppercase;
@@ -19,14 +11,23 @@
     display: flex;
     flex-flow:row nowrap;
     border-bottom:6px double black;
+    background-color: lightblue;
+    font-weight: bold;
+  }
+
+  .Customers .head .iconTD{
+    flex:1;
   }
 
   .Customers .head div {
-    flex:1;
+    flex:2;
     text-align: center;
   border: 1px solid black;
+  padding-top:0.5rem;
+  padding-bottom: 0.4rem;
   }
 
+ 
   .Customers .body{
     display: flex;
     flex-flow:column nowrap;
@@ -45,14 +46,25 @@ flex-flow:row wrap;
     flex:0 100%;
   }
 
-  .companyNameField, .customerAddressField,.customerLocationField,.customerFullnameField,
-  .deliveryAddressField,.deliveryLocationField,.emailField {
-
+ .customerEntry .companyNameField, .customerEntry  .customerAddressField,.customerEntry  .customerLocationField,.customerEntry .customerFullnameField,
+ .customerEntry .deliveryAddressField,.customerEntry  .deliveryLocationField,.customerEntry .emailField,.customerEntry .deliveryVoivodeshipField,.customerEntry .customerVoivodeshipField{
+flex:3;
   }
+
+
+  .Customers .head .companyNameField, .Customers .head .customerAddressField,.Customers .head  .customerLocationField,.Customers .head .customerFullnameField,
+  .Customers .head .deliveryAddressField,.Customers .head  .deliveryLocationField,.Customers .head .emailField,.Customers .head .deliveryVoivodeshipField,.Customers .head .customerVoivodeshipField {
+ flex:3;
+   }
+
 
   .NIPField,.REGONField,.customerPostcodeField,.PESELField,.deliveryPostcodeField,.telField,.deliveryVoivodeshipField,.customerVoivodeshipField{
 justify-content: center;
   }
+
+ .customerEntry .iconTD{
+  flex:1;
+ }
 
   .editCustomer{
     flex:0 30%;
@@ -79,14 +91,14 @@ flex:0 65%;
   }
 
   .customerEntry div{
-    flex:1;
+    flex:2;
     text-align: center;
     display: flex;
     border:1px solid black;
   }
   
     .customerEntry:hover{
-      border:3px solid green;
+      border:2px solid green;
     }
   
 

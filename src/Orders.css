@@ -25,9 +25,19 @@ flex-flow:row nowrap;
 font-size:0.9rem;
   }
 
+.addOrderEntry .typeField, .Orders .head .typeField{
+  flex:2;
+}
+
+  .addOrderEntry > div {
+    flex:1;
+    text-align: center;
+  }
+
   .addOrderEntry .iconTD{
         align-self: end;
     margin-left: auto;
+    text-align: center;
   }
 
   .addOrderEntry p{
@@ -43,6 +53,10 @@ font-size:0.9rem;
     display: flex;
     flex:0 100%;
     flex-flow:column nowrap;
+}
+
+.ordersDayWrapper.wrapped{
+  flex:0 5%;
 }
 
 .customerGroup{
@@ -83,7 +97,7 @@ max-height:50vh;
 
 .ordersDayWrapper{
     display: flex;
-    flex:0 94vh;
+    flex:0 100vh;
 }
 
 .ordersDay{
@@ -95,6 +109,11 @@ border:2px solid lightslategray;
 
 .ordersDay > legend {
     font-size:1.2rem;
+    cursor: pointer;
+}
+
+.ordersDay > legend:hover{
+  color:green;
 }
 
 .orderNotes{
@@ -136,7 +155,6 @@ border:2px solid lightslategray;
   }
   
     .orderEntry:hover{
-      border:3px solid green;
     }
   
     .orderEntry.edit{
@@ -152,6 +170,12 @@ border:2px solid lightslategray;
 
 #AOFWrapper{
     flex:0 100%;
+}
+
+#AOFWrapper label{
+  font-size:0.8rem;
+  margin-top:0.5rem;
+margin-bottom: 0.3rem;
 }
 
 #addOrder form{

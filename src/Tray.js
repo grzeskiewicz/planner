@@ -4,6 +4,22 @@ import { Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { tooltipClasses } from "@mui/material/Tooltip";
 import { cropInfoRender } from "./ViewCommon";
+import { height } from "@fortawesome/free-solid-svg-icons/fa0";
+
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'lightblue',
+    color: 'rgba(0, 0, 0, 0.87)',
+    width: 400,
+    height: 300,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid black',
+  },
+}));
+
 
 class Tray extends React.Component {
   constructor(props) {
@@ -35,7 +51,7 @@ class Tray extends React.Component {
       if (selectedCrop) microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id);
     }
     if (trayData!==undefined && trayData.crop_id !== null) {
-      return <Tooltip title={cropInfoRender(trayCrop, microgreenData)}><div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div></Tooltip>;
+      return <HtmlTooltip title={cropInfoRender(trayCrop, microgreenData)}><div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div></HtmlTooltip>;
     } else {
       return <div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div>;
     }

@@ -81,6 +81,7 @@ border:none;
     display: flex;
     flex-flow:column nowrap;
     gap:0.1rem;
+    flex:0 100%;
 }
 
 .cropInfo p{

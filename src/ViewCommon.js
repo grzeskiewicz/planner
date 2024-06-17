@@ -1,9 +1,9 @@
 import moment from "moment";
+import 'moment/locale/pl';
+import React from "react";
 import { Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { tooltipClasses } from "@mui/material/Tooltip";
-import React from "react";
-
 
 export function groupByDay(tdc, trays) {
   //grupowanie po 'date', dodanie oznaczenia FND Trays (elektrozawory)
@@ -100,19 +100,20 @@ export function whichStageShelves(day, crop) {
 }
 
 export function cropInfoRender(cropInfo, microgreen) {
+moment().locale('pl');
+//        {moment(cropInfo.start).format("dddd").substring(0, 3).toUpperCase()})
   return (
     <div className="cropInfo">
       <p>CROP ID:{cropInfo.id}</p>
       <p>{microgreen.name_pl}</p>
       <p>
         S: {moment(cropInfo.start).format("DD.MM hh:mm")} (
-        {moment(cropInfo.start).format("dddd").substring(0, 3).toUpperCase()})
+        {moment(cropInfo.start).format("dddd").toUpperCase()})
       </p>
       <p>
         B: {moment(cropInfo.blackoutStart).format("DD.MM hh:mm")} (
         {moment(cropInfo.blackoutStart)
           .format("dddd")
-          .substring(0, 3)
           .toUpperCase()}
         )
       </p>
@@ -120,31 +121,34 @@ export function cropInfoRender(cropInfo, microgreen) {
         L: {moment(cropInfo.lightExposureStart).format("DD.MM hh:mm")} (
         {moment(cropInfo.lightExposureStart)
           .format("dddd")
-          .substring(0, 3)
           .toUpperCase()}
         )
       </p>
       <p>
         H: {moment(cropInfo.harvest).format("DD.MM hh:mm")} (
-        {moment(cropInfo.harvest).format("dddd").substring(0, 3).toUpperCase()})
+        {moment(cropInfo.harvest).format("dddd").toUpperCase()})
       </p>
       <p className="notes">{cropInfo.notes}</p>
     </div>
   );
 }
 
-/*const HtmlTooltip = styled(({ className, ...props }) => (
-<Tooltip {...props}  classes={{ popper: className }} />
+
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
-[`& .${tooltipClasses.tooltip}`]: {
-  backgroundColor: '#8ebf93',
-  color: '#ffffff',
-  minWidth: 300,
-  maxWidth: 300,
-  fontSize: theme.typography.pxToRem(14),
-  border: '1px solid #083b0d',
-},
-}));*/
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'lightblue',
+    color: 'rgba(0, 0, 0, 0.87)',
+    width: 400,
+    height: 300,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}));
+
+
 
 export function renderEmptyRow(days) {
   const row = [];
@@ -199,10 +203,10 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
     }
 
     if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false 
-      row.push(<Tooltip title={cropInfoRender(crop, microgreen)}>
+      row.push(<HtmlTooltip title={cropInfoRender(crop, microgreen)}>
         <div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' 
          style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': parseFloat(100 / days * grp.length).toFixed(2) + "%" }}>{grpRender}</div>
-        </Tooltip>);
+        </HtmlTooltip>);
     } else if (firstDayWithStage !== i && stage !== undefined && stage !== false) {
       continue;
     } else {

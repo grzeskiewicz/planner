@@ -6,7 +6,7 @@ import { isMobile } from 'react-device-detect';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCheckCircle, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
-
+import OrdersDay from "./OrdersDay";
 
 
 class Orders extends React.Component {
@@ -64,6 +64,15 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
         if (result.success) {
             alert("Dodano zamówienie!");
           this.props.refreshOrders();
+          this.setState({
+            deliveryDate:'',
+            notes:'',
+            customerID: this.props.customers ? this.props.customers[0].id: '',
+            selectedOrder:'',
+            microgreensID:99,
+            weight:'',
+            orders:[],
+          })
         } else {
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
@@ -215,7 +224,8 @@ const summary=[];
         }
 
 
-ordersDayGrp.push(<div className="ordersDayWrapper"><fieldset className="ordersDay"><legend>{day}</legend>{ordersDay}<div className="ordersSummary"><div className="head"><div>MICROGREENS</div><div>WAGA TOTAL</div><div>ILE TAC?</div></div><div className="body">{summary}</div></div></fieldset></div>);
+//ordersDayGrp.push(<div className="ordersDayWrapper"><fieldset className="ordersDay"><legend>{day}</legend>{ordersDay}<div className="ordersSummary"><div className="head"><div>MICROGREENS</div><div>WAGA TOTAL</div><div>ILE TAC?</div></div><div className="body">{summary}</div></div></fieldset></div>);
+ordersDayGrp.push(<OrdersDay ordersDay={ordersDay} day={day} summary={summary}></OrdersDay>);
 
 }
 return <div id="ordersList">{ordersDayGrp}</div>
@@ -245,13 +255,15 @@ return <div id="ordersList">{ordersDayGrp}</div>
 
   renderOrdersList(){
     const orders = JSON.parse(JSON.stringify(this.state.orders));
-    
-    return orders.map((order, index) => {
+    const head=<div className="head"><div>LP</div><div className="typeField">TYP</div><div>WAGA</div><div></div></div>
+    const ordersMapped=orders.map((order, index) => {
         const microgreeenData=this.props.microgreens.find((x)=>Number(x.id)===Number(order.microgreensID));
-        return <div className="addOrderEntry"><div className="orderInfo">{index+1}.{microgreeenData.name_pl} WAGA:{order.weight}</div>
+        return <div className="addOrderEntry"><div>{index+1}</div><div className="typeField">{microgreeenData.name_pl}</div><div>{order.weight}</div>
         <div className="iconTD" onClick={() => this.deleteOrder(order)}><FontAwesomeIcon icon={faTrashAlt} size="lg" /></div>
         </div>
     }); 
+
+return <div>{orders.length>0 ? head:''}{ordersMapped}</div>
  }
 
 
@@ -266,9 +278,11 @@ return <div id="ordersList">{ordersDayGrp}</div>
           {ordersTable}
     </div>;
     const addOrderForm = <form className="" onSubmit={this.addOrder}>
+           <label>KLIENT:</label>
             <select id="customer-selection" name="customer-selection" onChange={this.handleCustomerID} value={this.state.customerID}>
             {mappedCustomers}
             </select>
+            <label>DATA DOSTAWY:</label>
              <input type="datetime-local" min={moment().subtract(10,"days").format('YYYY-MM-DD HH:mm')} value={this.state.deliveryDate} onChange={this.handleDeliveryDate} required></input>
       <textarea rows="10" placeholder='NOTATKI' value={this.state.notes} onChange={this.handleNotes}></textarea>
       <fieldset>

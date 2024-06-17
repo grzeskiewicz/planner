@@ -343,19 +343,19 @@ render(){
   const isCompany=customer.company_nip.length>0;
 const editCustomer=<form className="editCustomer" onSubmit={this.saveCustomer} onKeyDown={this.enter}>
 {isCompany ? <div className='editCustomerField'><p>Nazwa firmy:</p><input value={this.state.company_name} onChange={this.handleCompanyName}></input></div>:''}
-{isCompany ? <div className='editCustomerField'><p>NIP</p><input className={this.state.isNIPValid ? 'valid':'invalid'}  value={this.state.company_nip} onChange={this.handleNIP}></input></div>:''}
+{isCompany ? <div className='editCustomerField'><p>NIP:</p><input className={this.state.isNIPValid ? 'valid':'invalid'}  value={this.state.company_nip} onChange={this.handleNIP}></input></div>:''}
 {isCompany ? <div className='editCustomerField'><p>REGON:</p><input className={this.state.isREGONValid ? 'valid':'invalid'} value={this.state.company_regon} onChange={this.handleREGON}></input></div>:''}
 <div className='editCustomerField'><p>Adres:</p><input  value={this.state.customer_address} onChange={this.handleCustomerAddress} required></input></div>
 <div className='editCustomerField'><p>Kod pocztowy:</p><input maxLength="6" placeholder='Kod pocztowy XX-XXX' type="text"  pattern="^\d{2}-\d{3}$" value={this.state.customer_postcode} onChange={this.handleCustomerPostcode} required></input></div>
-<div className='editCustomerField'><p>Miejscowość</p><input  value={this.state.customer_location} onChange={this.handleCustomerLocation} required></input></div>
+<div className='editCustomerField'><p>Miejscowość:</p><input  value={this.state.customer_location} onChange={this.handleCustomerLocation} required></input></div>
 <div className='editCustomerField'><p>Województwo:</p>{this.renderVoivodeshipSelection(this.handleCustomerVoivodeship,this.state.customer_voivodeship)}</div>
-{!isCompany ? <div className='editCustomerField'><p>Imię i nazwisko</p><input  value={this.state.customer_fullname} onChange={this.handleCustomerFullname}></input></div>:''}
-{!isCompany ? <div className='editCustomerField'><p>PESEL</p><input value={this.state.customer_pesel} onChange={this.handlePESEL}></input></div>:''}
+{!isCompany ? <div className='editCustomerField'><p>Imię i nazwisko:</p><input  value={this.state.customer_fullname} onChange={this.handleCustomerFullname}></input></div>:''}
+{!isCompany ? <div className='editCustomerField'><p>PESEL:</p><input value={this.state.customer_pesel} onChange={this.handlePESEL}></input></div>:''}
 <div className='editCustomerField'><p>Adres dostawa:</p><input  value={this.state.delivery_address} onChange={this.handleDeliveryAddress} required></input></div>
 <div className='editCustomerField'><p>Kod dostawa:</p><input type="text" maxLength="6" placeholder='Kod dostawa XX-XXX' pattern="[0-9]{2}-[0-9]{3}" value={this.state.delivery_postcode} onChange={this.handleDeliveryPostcode} required></input></div>
 <div className='editCustomerField'><p>Miejscowość dostawa:</p><input value={this.state.delivery_location} onChange={this.handleDeliveryLocation} required></input></div>
 <div className='editCustomerField'><p>Województwo dostawa:</p>{this.renderVoivodeshipSelection(this.handleDeliveryVoivodeship,this.state.delivery_voivodeship)}</div>
-<div className='editCustomerField'><p>E-mail</p><input pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" value={this.state.customer_email} onChange={this.handleCustomerEmail} required></input></div>
+<div className='editCustomerField'><p>E-mail:</p><input pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" value={this.state.customer_email} onChange={this.handleCustomerEmail} required></input></div>
 <div className='editCustomerField'><p>Telefon 1:</p><input type="text" maxLength="9" pattern="\d{9}"  value={this.state.customer_telephone1} onChange={this.handleCustomerTelephone1} required></input></div>
 <div className='editCustomerField'><p>Telefon 2:</p><input type="text" maxLength="9" pattern="\d{9}"  value={this.state.customer_telephone2} onChange={this.handleCustomerTelephone2}></input></div>
 { amISelectedToEdit ? <button type='submit'>ZAPISZ</button>:null}

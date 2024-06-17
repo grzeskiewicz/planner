@@ -84,10 +84,12 @@ this.toggleLockedCustomersList=this.toggleLockedCustomersList.bind(this);
     const customersListTable = <div id="customers-list">
       <button onClick={this.toggleLockedCustomersList}>Zablokowani</button>
         <div className="head">
-         <div>Nazwa firmy</div><div>NIP</div><div>REGON</div><div>Adres</div><div>Kod pocztowy</div><div>Miejscowość</div><div>Województwo</div>
-         <div>Imię i nazwisko</div><div>PESEL</div>
-         <div>Adres dostawa</div><div>Kod poczt. dostawa</div><div>Miejscowość dostawa</div><div>Woj. dostawa</div>
-         <div>E-mail</div><div>Telefon 1</div><div>Telefon 2</div>
+         <div className='companyNameField'>Firma</div><div className='NIPField'>NIP</div><div className='REGONField'>REGON</div><div className='customerAddressField'>Adres</div>
+         <div className='customerPostcodeField'>Kod pocztowy</div><div className='customerLocationField'>Miejscowość</div><div className='customerVoivodeshipField'>Województwo</div>
+         <div className='customerFullnameField'>Imię i nazwisko</div><div className='PESELField'>PESEL</div>
+         <div className='deliveryAddressField'>Adres dostawa</div><div className='deliveryPostcodeField'>Kod poczt. dostawa</div><div className='deliveryLocationField'>Miejscowość dostawa</div>
+         <div className='deliveryVoivodeshipField'>Woj. dostawa</div>
+         <div className='emailField'>E-mail</div><div className='telField'>Telefon 1</div><div className='telField'>Telefon 2</div>
          <div className="iconTD">
           <FontAwesomeIcon icon={faEdit} size="lg" />
         </div>
@@ -101,18 +103,20 @@ this.toggleLockedCustomersList=this.toggleLockedCustomersList.bind(this);
     </div>;
 const lockedCustomersListTable=<div id="customers-list">
 <button onClick={this.toggleLockedCustomersList}>Aktywni</button>
-  <div className="head">
-   <div>Nazwa firmy</div><div>NIP</div><div>REGON</div><div>Adres</div><div>Kod pocztowy</div><div>Miejscowość</div><div>Województwo</div>
-   <div>Imię i nazwisko</div><div>PESEL</div>
-   <div>Adres dostawa</div><div>Kod poczt. dostawa</div><div>Miejscowość dostawa</div><div>Woj. dostawa</div>
-   <div>E-mail</div><div>Telefon 1</div><div>Telefon 2</div>
-   <div className="iconTD">
-    <FontAwesomeIcon icon={faEdit} size="lg" />
-  </div>
-  <div className="iconTD">
-    <FontAwesomeIcon icon={faUnlock} size="lg" />
-  </div>
-  </div>
+<div className="head">
+         <div className='companyNameField'>Firma</div><div className='NIPField'>NIP</div><div className='REGONField'>REGON</div><div className='customerAddressField'>Adres</div>
+         <div className='customerPostcodeField'>Kod pocztowy</div><div className='customerLocationField'>Miejscowość</div><div className='customerVoivodeshipField'>Województwo</div>
+         <div className='customerFullnameField'>Imię i nazwisko</div><div className='PESELField'>PESEL</div>
+         <div className='deliveryAddressField'>Adres dostawa</div><div className='deliveryPostcodeField'>Kod poczt. dostawa</div><div className='deliveryLocationField'>Miejscowość dostawa</div>
+         <div className='deliveryVoivodeshipField'>Woj. dostawa</div>
+         <div className='emailField'>E-mail</div><div className='telField'>Telefon 1</div><div className='telField'>Telefon 2</div>
+         <div className="iconTD">
+          <FontAwesomeIcon icon={faEdit} size="lg" />
+        </div>
+        <div className="iconTD">
+          <FontAwesomeIcon icon={faLock} size="lg" />
+        </div>
+        </div>
   <div className="body">
     {lockedCustomersTable}
   </div>
