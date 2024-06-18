@@ -1,10 +1,10 @@
 import "./Customers.css";
 import React from "react";
 import { API_URL, request } from "./APIConnection";
-import { isMobile } from 'react-device-detect';
 import Customer from "./Customer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCheckCircle, faEdit,faLock,faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { faEdit,faLock,faUnlock } from "@fortawesome/free-solid-svg-icons";
+//import { isMobile } from 'react-device-detect';
 
 
 class Customers extends React.Component {
@@ -81,42 +81,31 @@ this.toggleLockedCustomersList=this.toggleLockedCustomersList.bind(this);
     if (this.props.customers !== '') customersTable = this.renderCustomersTable();
     if (this.props.customers !== '') lockedCustomersTable = this.renderLockedCustomersTable();
 
+    const head=<div className="head">
+    <div className='companyNameField'>Firma</div><div className='NIPField'>NIP</div><div className='REGONField'>REGON</div><div className='customerAddressField'>Adres</div>
+    <div className='customerPostcodeField'>Kod pocztowy</div><div className='customerLocationField'>Miejscowość</div><div className='customerVoivodeshipField'>Województwo</div>
+    <div className='customerFullnameField'>Imię i nazwisko</div><div className='PESELField'>PESEL</div>
+    <div className='deliveryAddressField'>Adres dostawa</div><div className='deliveryPostcodeField'>Kod poczt. dostawa</div><div className='deliveryLocationField'>Miejscowość dostawa</div>
+    <div className='deliveryVoivodeshipField'>Woj. dostawa</div>
+    <div className='emailField'>E-mail</div><div className='telField'>Telefon 1</div><div className='telField'>Telefon 2</div>
+    <div className="iconTD">
+     <FontAwesomeIcon icon={faEdit} size="lg" />
+   </div>
+   <div className="iconTD">
+     <FontAwesomeIcon icon={this.state.showLockedCustomers ? faUnlock:faLock} size="lg" />
+   </div>
+   </div>;
+
     const customersListTable = <div id="customers-list">
       <button onClick={this.toggleLockedCustomersList}>Zablokowani</button>
-        <div className="head">
-         <div className='companyNameField'>Firma</div><div className='NIPField'>NIP</div><div className='REGONField'>REGON</div><div className='customerAddressField'>Adres</div>
-         <div className='customerPostcodeField'>Kod pocztowy</div><div className='customerLocationField'>Miejscowość</div><div className='customerVoivodeshipField'>Województwo</div>
-         <div className='customerFullnameField'>Imię i nazwisko</div><div className='PESELField'>PESEL</div>
-         <div className='deliveryAddressField'>Adres dostawa</div><div className='deliveryPostcodeField'>Kod poczt. dostawa</div><div className='deliveryLocationField'>Miejscowość dostawa</div>
-         <div className='deliveryVoivodeshipField'>Woj. dostawa</div>
-         <div className='emailField'>E-mail</div><div className='telField'>Telefon 1</div><div className='telField'>Telefon 2</div>
-         <div className="iconTD">
-          <FontAwesomeIcon icon={faEdit} size="lg" />
-        </div>
-        <div className="iconTD">
-          <FontAwesomeIcon icon={faLock} size="lg" />
-        </div>
-        </div>
+{head}
         <div className="body">
           {customersTable}
         </div>
     </div>;
 const lockedCustomersListTable=<div id="customers-list">
 <button onClick={this.toggleLockedCustomersList}>Aktywni</button>
-<div className="head">
-         <div className='companyNameField'>Firma</div><div className='NIPField'>NIP</div><div className='REGONField'>REGON</div><div className='customerAddressField'>Adres</div>
-         <div className='customerPostcodeField'>Kod pocztowy</div><div className='customerLocationField'>Miejscowość</div><div className='customerVoivodeshipField'>Województwo</div>
-         <div className='customerFullnameField'>Imię i nazwisko</div><div className='PESELField'>PESEL</div>
-         <div className='deliveryAddressField'>Adres dostawa</div><div className='deliveryPostcodeField'>Kod poczt. dostawa</div><div className='deliveryLocationField'>Miejscowość dostawa</div>
-         <div className='deliveryVoivodeshipField'>Woj. dostawa</div>
-         <div className='emailField'>E-mail</div><div className='telField'>Telefon 1</div><div className='telField'>Telefon 2</div>
-         <div className="iconTD">
-          <FontAwesomeIcon icon={faEdit} size="lg" />
-        </div>
-        <div className="iconTD">
-          <FontAwesomeIcon icon={faLock} size="lg" />
-        </div>
-        </div>
+{head}
   <div className="body">
     {lockedCustomersTable}
   </div>

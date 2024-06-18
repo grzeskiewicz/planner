@@ -102,10 +102,10 @@ renderMicrogreensSelection() {
       .then((result) => {
         console.log(result);
         if (result.success) {
-          alert("Zasiew zaktualizowany.")
-          this.props.refreshTDC();
+          alert("Zasiew zaktualizowany.");
           this.props.refreshCrops();
           this.props.setSelectedCrop(crop);
+          this.props.refreshTDC();
         } else {
           alert("SQL Error - błędne wartości!")
         }

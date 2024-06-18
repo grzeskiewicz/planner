@@ -2,7 +2,8 @@ import './Customers';
 import React from 'react';
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCheckCircle ,faEdit,faLock,faUnlock} from "@fortawesome/free-solid-svg-icons";
+import {faEdit,faLock,faUnlock} from "@fortawesome/free-solid-svg-icons";
+import { validateNIP,validateREGON, validatePESEL } from "./CustomerCommon";
 
 
 class Customer extends React.Component {
@@ -57,73 +58,6 @@ this.enter=this.enter.bind(this);
 }
 
 
-checkSumPesel(digits) {
-  const digit11 = digits[10];
-  digits.pop();
-
-  const times = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
-  const reducer = (accumulator, currentValue, index) => accumulator + (currentValue * times[index]);
-
-  let sum = digits.reduce(reducer);
-
-  sum %= 10;
-  sum = 10 - sum;
-  sum %= 10;
-
-  if (sum === digit11) {
-    return true;
-  } else {
-    return false;
-  }
-}
-peselToDigits(value) { return value.split("").map(item => parseInt(item));}
-
-validatePESEL(value) {
-  const digits = this.peselToDigits(value);
-
-  if (digits.length !== 11 && digits.every(item => !isNaN(item))) {
-    return false;
-  }
-
-  return this.checkSumPesel(digits);
-}
-
-validateNIP(nip) {
-  if (typeof nip === "number") {
-      nip = nip.toString();
-  } else {
-      nip = nip.replace(/-/g, "");
-  }
-
-  if (nip.length !== 10) {
-      return false;
-  }
-
-  const nipArray= nip.split("").map(value => parseInt(value));
-  const checkSum = (6 * nipArray[0] + 5 * nipArray[1] + 7 * nipArray[2] + 2 * nipArray[3] + 3 * nipArray[4] + 4 * nipArray[5] + 5 * nipArray[6] + 6 * nipArray[7] + 7 * nipArray[8])%11;
-  return nipArray[9] === checkSum;
-}
-
-
-validateREGON(regon) {
-if (typeof regon === "number") {
-    regon = regon.toString();
-} else {
-    regon = regon.replace(/-/g, "");
-}
-
-if (regon.length !== 9) {
-    return false;
-}
-
-const regonArray= regon.split("").map(value => parseInt(value));
-let checkSum = (8 * regonArray[0] + 9 * regonArray[1] + 2 * regonArray[2] + 3 * regonArray[3] + 4 * regonArray[4] + 5 * regonArray[5] + 6 * regonArray[6] + 7 * regonArray[7])%11;
-if (checkSum === 10) {
-    checkSum = 0;
-}
-return regonArray[8] === checkSum;
-}
-
 
   lockCustomer(customer){
     if (window.confirm("Czy zablokować klienta?")) {
@@ -173,7 +107,7 @@ return regonArray[8] === checkSum;
 
   handleNIP(event){
     const NIP=event.target.value;
-    const isNIPValid=this.validateNIP(NIP);
+    const isNIPValid=validateNIP(NIP);
     if (!isNIPValid) {
       event.target.setCustomValidity("Błędny NIP");
     } else {
@@ -184,7 +118,7 @@ return regonArray[8] === checkSum;
 
   handleREGON(event){
     const REGON=event.target.value;
-    const isREGONValid=this.validateREGON(REGON);
+    const isREGONValid=validateREGON(REGON);
     if (!isREGONValid) {
       event.target.setCustomValidity("Błędny REGON");
     } else {
@@ -224,7 +158,7 @@ return regonArray[8] === checkSum;
 
   handlePESEL(event){
     const PESEL=event.target.value;
-    const isPESELValid=this.validatePESEL(PESEL);
+    const isPESELValid=validatePESEL(PESEL);
     if (!isPESELValid) {
       event.target.setCustomValidity("Błędny PESEL");
     } else {
@@ -282,14 +216,6 @@ handleCustomerTelephone1(event){
       this.setState({ customer_telephone2: event.target.value});
     }
   
-handleCustomerTelephone1(event){
-  if(event.target.validity.patternMismatch){
-    event.target.setCustomValidity("Błędny format numeru telefonu");
-  } else {
-    event.target.setCustomValidity('');
-  }
-    this.setState({ customer_telephone1: event.target.value });
-}
 
 
 saveCustomer(event){

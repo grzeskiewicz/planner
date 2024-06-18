@@ -6,7 +6,7 @@ import Crop from './Crop';
 import WeekView from './WeekView';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faCalendarCheck, faCheckToSlot } from "@fortawesome/free-solid-svg-icons";
-import { isMobile } from 'react-device-detect';
+//import { isMobile } from 'react-device-detect';
 
 import { groupByDay } from './ViewCommon';
 //const WATERING_API = 'http://192.168.2.6:3051';
@@ -23,9 +23,6 @@ class Crops extends React.Component {
       notes: '',
       harvest: '',
       start: '',
-      showHarvestSim: true,
-      showCalendar: false,
-      showCalendarRange: false,
       cropDateFrom: moment().subtract(15, 'days'),
       cropDateTo: moment().add(15, 'days'),
       clicks: Number(0),
@@ -40,20 +37,15 @@ class Crops extends React.Component {
     this.handleTrays = this.handleTrays.bind(this);
     this.handleNotes = this.handleNotes.bind(this);
     this.handleHarvest = this.handleHarvest.bind(this);
-    this.handleDaySelection = this.handleDaySelection.bind(this);
     this.handleRangeSelection = this.handleRangeSelection.bind(this);
     this.handleCropDateFrom=this.handleCropDateFrom.bind(this);
     this.handleCropDateTo=this.handleCropDateTo.bind(this);
-    this.toggleCalendar = this.toggleCalendar.bind(this);
     this.renderMicrogreensSelection = this.renderMicrogreensSelection.bind(this);
     this.renderShelvesSelection = this.renderShelvesSelection.bind(this);
     this.addCrops = this.addCrops.bind(this);
     this.handleStart = this.handleStart.bind(this);
-    this.toggleSimulation = this.toggleSimulation.bind(this);
     this.setSelectedCrop = this.setSelectedCrop.bind(this);
-    this.toggleCalendarRange = this.toggleCalendarRange.bind(this);
     this.renderRangeCropsTable = this.renderRangeCropsTable.bind(this);
-    this.hideCalendarRange = this.hideCalendarRange.bind(this);
     this.showWeekView = this.showWeekView.bind(this);
     this.saveScheduleTDC = this.saveScheduleTDC.bind(this);
     this.scheduleWatering = this.scheduleWatering.bind(this);
@@ -66,22 +58,7 @@ class Crops extends React.Component {
   componentDidMount() {
   }
 
-  renderMicrogreensSelection() {
-    const microgreens = JSON.parse(JSON.stringify(this.props.microgreens));
-    microgreens.unshift({ id: 99, name_pl: "MICROGREENS", name_en: "MICROGREENS" });
-    return microgreens.map((microgreen, index) => {
-      return <option key={index} value={microgreen.id} id={microgreen.id}>{microgreen.name_pl}</option>
-    });
-  }
 
-
-  renderShelvesSelection() {
-    const shelves = JSON.parse(JSON.stringify(this.props.shelves));
-    shelves.unshift({ id: 999, rack_name: "PÓŁKA", level: "" })
-    return shelves.map((shelf, index) => {
-      return <option key={index} value={shelf.id} id={shelf.id}>{shelf.rack_name + " " + shelf.level}</option>
-    });
-  }
 
   handleMicrogreens(event) {
     this.setState({ microgreensID: event.target.value });
@@ -110,9 +87,31 @@ class Crops extends React.Component {
     this.setState({ cropDateTo: moment(event.target.value)});
   }
 
-  toggleSimulation() {
-    this.setState({ showHarvestSim: !this.state.showHarvestSim, harvest: '', start: '' });
+  setSelectedCrop(id) {
+    this.setState({ selectedCrop: id });
   }
+
+
+
+  renderMicrogreensSelection() {
+    const microgreens = JSON.parse(JSON.stringify(this.props.microgreens));
+    microgreens.unshift({ id: 99, name_pl: "MICROGREENS", name_en: "MICROGREENS" });
+    return microgreens.map((microgreen, index) => {
+      return <option key={index} value={microgreen.id} id={microgreen.id}>{microgreen.name_pl}</option>
+    });
+  }
+
+
+  renderShelvesSelection() {
+    const shelves = JSON.parse(JSON.stringify(this.props.shelves));
+    shelves.unshift({ id: 999, rack_name: "PÓŁKA", level: "" })
+    return shelves.map((shelf, index) => {
+      return <option key={index} value={shelf.id} id={shelf.id}>{shelf.rack_name + " " + shelf.level}</option>
+    });
+  }
+
+
+
   makeSimulation(microgreen) {
     if (this.state.harvest !== '') {
       const lightExposureStart = moment(this.state.harvest).subtract(microgreen.light, "days");
@@ -149,9 +148,7 @@ class Crops extends React.Component {
     }
   }
 
-  setSelectedCrop(id) {
-    this.setState({ selectedCrop: id });
-  }
+
 
 
   renderCropsTable() {
@@ -217,33 +214,16 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
   }
 
 
-  handleDaySelection(date) {
-    this.state.showHarvestSim ? this.setState({ harvest: date, showCalendar: false }) : this.setState({ start: date, showCalendar: false });
-  }
-
   handleRangeSelection(date, clicks, from, to) {
     if (clicks === 0) {
       this.setState({ cropDateFrom: from, cropDateTo: from }); return;
     } else if (clicks === 1) {
       this.setState({ cropDateTo: to });
       this.renderRangeCropsTable();
-      this.hideCalendarRange();
       return;
     }
   }
 
-  toggleCalendar() {
-    this.setState({ showCalendar: !this.state.showCalendar });
-  }
-
-  toggleCalendarRange(e) {
-    e.preventDefault();
-    //this.setState({showCalendarRange:!this.state.showCalendarRange});
-    this.setState({ showCalendarRange: true });
-  }
-  hideCalendarRange() {
-    this.setState({ showCalendarRange: false });
-  }
 
 
   addCrops(event) {
@@ -312,7 +292,6 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
     if (window.confirm('Czy jesteś pewien, że chcesz zaplanować nawadnianie (reset obecnego harmonogramu)?')) {
 
     const tdc = this.props.tdc;
-  //const weekTDC = this.weekTDC(tdc);
     const start=moment().startOf('day');
     const finish=moment().week(start.isoWeek() +1).weekday(7);
     const scheduleTDC=this.tdcDateRange(tdc,start,finish)
@@ -402,6 +381,12 @@ tdcDateRange(tdc,start,finish){
     let cropsTable;
     if (this.props.crops !== '') cropsTable = this.renderRangeCropsTable();
     const allCrops = this.renderAllCropsTable();
+
+    const head=<div className='head'>
+    <div>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
+    <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+    </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
+  </div>;
    
     return (
       <div className='Crops'>
@@ -418,11 +403,7 @@ tdcDateRange(tdc,start,finish){
             </div>
          {cropsTable.length >0 ? 
           <div id="cropsTable">
-            <div className='head'>
-              <div>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
-              <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-              </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
-            </div>
+          {head}
             <div className='body'>
               {cropsTable}
             </div>
@@ -430,11 +411,7 @@ tdcDateRange(tdc,start,finish){
           {this.state.showWeekView ? <WeekView updateSim={this.updateSim} addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
-            <div className='head'>
-              <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div>Notatki</div>
-              <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-              </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
-            </div>
+                {head}
                 <div className='body'>
                   {allCrops}
                 </div>

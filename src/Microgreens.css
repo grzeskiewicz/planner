@@ -25,6 +25,8 @@
     display: flex;
     flex-flow:row nowrap;
     border-bottom:6px double black;
+    background-color: lightblue;
+    font-weight: bold;
   }
 
   .Microgreens .head div {

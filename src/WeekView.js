@@ -3,7 +3,6 @@ import moment from "moment";
 import "./WeekView.css";
 import { calcDatesCrop, renderByMicrogreens, groupByShelves, groupByDay, groupByFNDTrays } from "./ViewCommon";
 import FNDTray from "./FNDTray";
-import { faLightbulb } from "@fortawesome/free-solid-svg-icons";
 //tdc - traydatecrop
 
 class WeekView extends React.Component {
@@ -35,6 +34,14 @@ class WeekView extends React.Component {
 
   componentDidMount() {
     this.fillScheduledTDC();
+  }
+
+  handleCheck = (e) => {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    this.setState((prevState) => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked),
+    }));
   }
 
   fillScheduledTDC() {
@@ -216,13 +223,6 @@ class WeekView extends React.Component {
     return checkedItems;
   }
 
-  handleCheck = (e) => {
-    const item = e.target.name;
-    const isChecked = e.target.checked;
-    this.setState((prevState) => ({
-      checkedItems: prevState.checkedItems.set(item, isChecked),
-    }));
-  };
 
   renderMicrogreensFilter() {
     return this.props.microgreens.map((microgreen, index) => {
@@ -306,10 +306,7 @@ const sim={
   trays:trays
 }
 
-//if (this.props.addCrop)
-   this.props.updateSim(sim); 
-//if (this.props.className!=="main") this.props.updateSim(sim); 
-
+this.props.updateSim(sim); 
 
 this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
 
@@ -334,9 +331,6 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC});
           const startSim=!isLast? blackoutSim.clone().subtract(microgreenData.weight,"days"):null;
 
 
-
-
-
           if (isLast) lightExposureStart=blockDate.clone(); blockDate=undefined; 
          // if (isLast) blockDate=undefined; 
           const fillTrays=mergedTDC.filter((x) => x.status === "1" && x.crop_id===selectedCrop.id);
@@ -352,11 +346,8 @@ const sim={
   trays:trays
   }
 
-//if (this.props.addCrop)
    this.props.updateSim(sim); 
 
-
-//console.log(scheduledTDC)
 this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,lightExposureStart:lightExposureStart});
       }
     }

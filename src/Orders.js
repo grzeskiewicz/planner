@@ -4,7 +4,7 @@ import { API_URL, request } from "./APIConnection";
 import Order from "./Order";
 import { isMobile } from 'react-device-detect';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCheckCircle, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import OrdersDay from "./OrdersDay";
 
@@ -47,6 +47,37 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
   setSelectedOrder(id) {
     this.setState({ selectedOrder: id });
   }
+
+
+  handleDeliveryDate(event) {
+    this.setState({ deliveryDate: moment(event.target.value).format('YYYY-MM-DD HH:mm') });
+  }
+
+  handleNotes(event) {
+    this.setState({ notes: event.target.value });
+  }
+
+  handleCustomerID(event){
+    this.setState({ customerID: event.target.value });
+  }
+
+  handleMicrogreens(event){
+    this.setState({ microgreensID: event.target.value });
+  }
+
+  handleWeight(event){
+    this.setState({ weight: event.target.value });
+  }
+
+  handleDaySelection(date) {
+    this.setState({showCalendar:false,deliveryDate: moment(date).set({hours: 12, minutes:0}).format('YYYY-MM-DD HH:mm')})
+  }
+
+  toggleCalendar() {
+    this.setState({ showCalendar: !this.state.showCalendar });
+  }
+
+
 
   addOrder(event) {
     event.preventDefault();
@@ -99,26 +130,6 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
   }
 
 
-  handleDeliveryDate(event) {
-    this.setState({ deliveryDate: moment(event.target.value).format('YYYY-MM-DD HH:mm') });
-  }
-
-  handleNotes(event) {
-    this.setState({ notes: event.target.value });
-  }
-
-  handleCustomerID(event){
-    this.setState({ customerID: event.target.value });
-  }
-
-  handleMicrogreens(event){
-    this.setState({ microgreensID: event.target.value });
-  }
-
-  handleWeight(event){
-    this.setState({ weight: event.target.value });
-  }
-
   handleOrders(event){
     event.preventDefault();
     if (this.state.microgreensID!==99 && this.state.weight!=='') {
@@ -145,90 +156,6 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
       .catch((error) => {alert("Błąd usuwania zamówienia"); return error});
       } else {
       }
-  }
-
-  handleDaySelection(date) {
-    this.setState({showCalendar:false,deliveryDate: moment(date).set({hours: 12, minutes:0}).format('YYYY-MM-DD HH:mm')})
-  }
-
-  toggleCalendar() {
-    this.setState({ showCalendar: !this.state.showCalendar });
-  }
-  renderOrdersTable() { //TODO rozdzielic na kilka funkcji
-const orders=this.props.orders;
-const microgreens=this.props.microgreens;
-
-const grp=[];
-
-for (const order of orders){
-    const deliveryDate=moment(order.delivery_date).format('YYYY-MM-DD');
-    if (!grp[deliveryDate]) grp[deliveryDate] = [];
-    grp[deliveryDate].push(order); //group by delivery date 
-}
-
-for (let [day, arr] of Object.entries(grp)) {
-    const grpCustomer=[];
-    for (const entry of arr){
-        if (!grpCustomer[entry.customer_id]) grpCustomer[entry.customer_id] = [];
-        grpCustomer[entry.customer_id].push(entry); //group by customer_id in certain day
-    }
-grp[day]=grpCustomer;
-}
-
-const ordersDayGrp=[];
-for (let [day, byDay] of Object.entries(grp)) {
-
-    const ordersDay=[];
-
-    for (let i=0;i<byDay.length;i++){ //i=customer_id
-        let mappedCustomersOrdersDay=undefined;
-        if (byDay[i]!==undefined) {   
-
-               mappedCustomersOrdersDay = byDay[i].map((order, index) => {
-            return <Order customers={this.props.customers} microgreens={this.props.microgreens} editOrder={this.editOrder} selectedOrder={this.state.selectedOrder} 
-            setSelectedOrder={this.setSelectedOrder} order={order} key={index} index={index}></Order>
-          });
-        
-        }
-
-          if (mappedCustomersOrdersDay!==undefined) ordersDay.push(<fieldset className="customerGroup"><legend>Klient ID:{i}</legend>
-          <div className="customerGroupOrdersWrapper">
-          <div className="head"><div>MICROGREENS</div><div>WAGA[G]</div></div>
-          {mappedCustomersOrdersDay}
-          <fieldset className="orderNotes" ><legend>Notatki</legend>{byDay[i][0].notes}</fieldset></div>
-          <div className="iconTD" onClick={() => this.deleteCustomerOrder(i,byDay[i][0].delivery_date)}>
-          <FontAwesomeIcon icon={faTrashAlt} size="lg" />
-        </div> 
-          </fieldset>);
-    }
-
-
-    const ordersDayByMicrogreens=[];
-    for (const orders of byDay){
-        if (orders!==undefined) {
-            for (const order of orders){
-                if (!ordersDayByMicrogreens[order.microgreen_id]) ordersDayByMicrogreens[order.microgreen_id] = [];
-                ordersDayByMicrogreens[order.microgreen_id].push(order); //group by microgreen_id
-            }
-        }
-    }
-
-const summary=[];
-    for (const orders of ordersDayByMicrogreens){
-        if (orders && orders.length) {
-            const initialValue = 0;
-         const sumWeight=  orders.reduce((sum, order)=>sum + order.weight,initialValue);
-         const microgreenData=microgreens.find((x)=>x.id===orders[0].microgreen_id);
-         summary.push(<div className="orderEntry"><div>{microgreenData.name_pl}</div><div>{sumWeight}</div><div>{Math.ceil(sumWeight/microgreenData.grams_harvest)}</div></div>)
-        }
-        }
-
-
-//ordersDayGrp.push(<div className="ordersDayWrapper"><fieldset className="ordersDay"><legend>{day}</legend>{ordersDay}<div className="ordersSummary"><div className="head"><div>MICROGREENS</div><div>WAGA TOTAL</div><div>ILE TAC?</div></div><div className="body">{summary}</div></div></fieldset></div>);
-ordersDayGrp.push(<OrdersDay ordersDay={ordersDay} day={day} summary={summary}></OrdersDay>);
-
-}
-return <div id="ordersList">{ordersDayGrp}</div>
   }
 
 
@@ -265,6 +192,113 @@ return <div id="ordersList">{ordersDayGrp}</div>
 
 return <div>{orders.length>0 ? head:''}{ordersMapped}</div>
  }
+
+ groupCustomerOrdersByDeliveryDate(orders){
+  const grp=[];
+
+  for (const order of orders){
+      const deliveryDate=moment(order.delivery_date).format('YYYY-MM-DD');
+      if (!grp[deliveryDate]) grp[deliveryDate] = [];
+      grp[deliveryDate].push(order); //group by delivery date 
+  }
+
+  for (let [day, arr] of Object.entries(grp)) {
+    const grpCustomer=[];
+    for (const entry of arr){
+        if (!grpCustomer[entry.customer_id]) grpCustomer[entry.customer_id] = [];
+        grpCustomer[entry.customer_id].push(entry); //group by customer_id in certain day
+    }
+    grp[day]=grpCustomer;
+}
+
+  return grp;
+ }
+
+
+
+groupDayOrdersByMicrogreens(byDay){
+  const ordersDayByMicrogreens=[];
+  for (const orders of byDay){
+      if (orders!==undefined) {
+          for (const order of orders){
+              if (!ordersDayByMicrogreens[order.microgreen_id]) ordersDayByMicrogreens[order.microgreen_id] = [];
+              ordersDayByMicrogreens[order.microgreen_id].push(order); //group by microgreen_id
+          }
+      }
+  }
+
+  return ordersDayByMicrogreens;
+}
+
+renderDaySummary(ordersDayByMicrogreens){
+  const microgreens=this.props.microgreens;
+  const summary=[];
+  for (const orders of ordersDayByMicrogreens){
+      if (orders && orders.length) {
+          const initialValue = 0;
+       const sumWeight=  orders.reduce((sum, order)=>sum + order.weight,initialValue);
+       const microgreenData=microgreens.find((x)=>x.id===orders[0].microgreen_id);
+       summary.push(<div className="orderEntry"><div>{microgreenData.name_pl}</div><div>{sumWeight}</div><div>{Math.ceil(sumWeight/microgreenData.grams_harvest)}</div></div>)
+      }
+      }
+      return summary;
+}
+
+renderOrdersDay(byDay){
+
+  const ordersDay=[];
+
+  for (let i=0;i<byDay.length;i++){ //i=customer_id
+      let mappedCustomersOrdersDay=undefined;
+      if (byDay[i]!==undefined) {   
+
+             mappedCustomersOrdersDay = byDay[i].map((order, index) => {
+          return <Order customers={this.props.customers} microgreens={this.props.microgreens} editOrder={this.editOrder} selectedOrder={this.state.selectedOrder} 
+          setSelectedOrder={this.setSelectedOrder} order={order} key={index} index={index}></Order>
+        });
+      
+      }
+
+        if (mappedCustomersOrdersDay!==undefined) {
+        ordersDay.push(<fieldset className="customerGroup">
+        <legend>Klient ID:{i}</legend>
+        <div className="customerGroupOrdersWrapper">
+        <div className="head"><div>MICROGREENS</div><div>WAGA[G]</div></div>
+        {mappedCustomersOrdersDay}
+        <fieldset className="orderNotes" ><legend>Notatki</legend>{byDay[i][0].notes}</fieldset></div>
+        <div className="iconTD" onClick={() => this.deleteCustomerOrder(i,byDay[i][0].delivery_date)}>
+        <FontAwesomeIcon icon={faTrashAlt} size="lg" />
+      </div> 
+        </fieldset>);}
+  }
+  return ordersDay;
+}
+
+ //=============================================================================================================================================================  
+
+ 
+renderOrdersTable() { //TODO rozdzielic na kilka funkcji
+const orders=this.props.orders;
+
+const grp=this.groupCustomerOrdersByDeliveryDate(orders); //grupowanie zamówień klienta z danego dnia  i przypięcie zgrupowanych zamówien klientów do danego dnia
+
+const ordersDayGrp=[];
+
+for (let [day, byDay] of Object.entries(grp)) {
+
+const ordersDay=this.renderOrdersDay(byDay);
+
+const ordersDayByMicrogreens=this.groupDayOrdersByMicrogreens(byDay); //summary data
+const summary=this.renderDaySummary(ordersDayByMicrogreens); //render summary
+
+ordersDayGrp.push(<OrdersDay ordersDay={ordersDay} day={day} summary={summary}></OrdersDay>);
+}
+return <div id="ordersList">{ordersDayGrp}</div>
+  }
+
+//=============================================================================================================================================================  
+
+
 
 
   render() {
@@ -303,7 +337,6 @@ return <div>{orders.length>0 ? head:''}{ordersMapped}</div>
       <button type='submit'>DODAJ</button>
       {this.state.error !== '' ? <p className="error">{this.state.error}</p> : ''}
     </form>;
-   // console.log(isMobile)
 
     return <div className="Orders">
       <div id="addOrder">

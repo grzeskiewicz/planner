@@ -1,8 +1,7 @@
 import React from 'react';
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import moment from 'moment';
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -80,7 +79,6 @@ enter(e){
 render(){
 const order=this.props.order;
 const microgreens=this.props.microgreens;
-const customers=this.props.customers;
 const microgreenData=microgreens.find((x)=>x.id===order.microgreen_id);
 
 const isEditEnabled=this.state.editOrderEnabled;

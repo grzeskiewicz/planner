@@ -1,10 +1,9 @@
 import React from 'react';
 import moment from 'moment';
-import FNDTray from "./FNDTray";
 import './MonthView.css';
 import WeekView from './WeekView';
 
-import { calcDatesCrop, renderByMicrogreens, groupByShelves, groupByDay, groupByFNDTrays  } from './ViewCommon';
+import { calcDatesCrop, renderByMicrogreens } from './ViewCommon';
 
 
 class MonthView extends React.Component {
@@ -103,74 +102,7 @@ class MonthView extends React.Component {
     this.setState({ toggleVal: !this.state.toggleVal });
   }
 
-
-  //=============================================================================================
-
-  //START TUTAJ SPRAWDZANIA
-  monthTDC(tdc, days) { //crops which are during selected week
-    const monthNowFirst = moment().month(this.state.monthNow).startOf('month');
-    const monthNowLast = moment().month(this.state.monthNow).endOf('month');
-    const monthTDCArr = [];
-    for (const entry of tdc) {
-      if (moment(entry.date).isBetween(monthNowFirst, monthNowLast, undefined, '[]')) {
-        let entryCp = JSON.parse(JSON.stringify(entry));
-        let entryDate = moment(entryCp.date);
-        entryCp.date = entryDate.format('DD.MM.YYYY');
-        monthTDCArr.push(entry);
-      }
-    }
-    const grpMonthTDC = groupByDay(monthTDCArr,this.props.trays);
-    const grpByFNDTrays = groupByFNDTrays(grpMonthTDC, this.props.microgreens);
-    return this.renderByFND2(grpByFNDTrays, days);
-  }
-
   //=======================================================================================================
-
-
-
-  createShelf2(grpByShelves, days, n) {
-    const fndtrays=this.props.fndtrays;
-    let row = [];
-    if (grpByShelves) {
-      for (let i = 0; i < days; i++) {
-        row.push(<div className="shelf" style={{ flexBasis: parseFloat(100 / days).toFixed(2) + "%" }}>
-          <FNDTray fndtrays={fndtrays} range="month" tray={grpByShelves[i][n][0]} pos="L"></FNDTray>
-          <FNDTray fndtrays={fndtrays} range="month" tray={grpByShelves[i][n][1]} pos="P"></FNDTray>
-        </div>)
-      }
-      return <div className="row">{row}</div>;
-    } else { return <div className="row">{row}</div> }
-  }
-
-
-  createRack2(grpByShelves, days) {
-    const rack = (
-      <div className="rack">
-        {this.createShelf2(grpByShelves, days, 0)}
-        {this.createShelf2(grpByShelves, days, 1)}
-        {this.createShelf2(grpByShelves, days, 2)}
-        {this.createShelf2(grpByShelves, days, 3)}
-      </div>
-    );
-    return rack;
-  }
-
-
-  renderByFND2(grpByFNDT, days) {
-    const arr = [];
-
-    for (let i = 0; i < days; i++) {
-      const grpByShelves = groupByShelves(grpByFNDT[i]);
-      if (grpByShelves !== undefined) arr.push(grpByShelves);
-    }
-    if (arr.length > 0) {
-      const rack = this.createRack2(arr, days);
-      return rack;
-    } else {
-      // console.log(arr);
-    };
-  }
-
 
 
   render() {
@@ -178,7 +110,6 @@ class MonthView extends React.Component {
     const monthCrops = this.monthCrops(this.props.crops);
     const monthNow = moment().month(this.state.monthNow);
     const days = monthNow.daysInMonth();
-   // const byShelves = this.monthTDC(this.props.tdc, days);
 
     const firstDayMonth=monthNow.clone().startOf('month').set({hours:12});
     const firstDayMonthWeek=firstDayMonth.isoWeek();
