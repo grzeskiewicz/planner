@@ -2,6 +2,7 @@ import './Devices.css';
 import React from 'react';
 import {pingCheck,request,API_URL} from "./APIConnection";
 const RACK_URL='192.168.2.6'
+const WATERING_API='http://localhost:3051';
 
 class Device extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class Device extends React.Component {
       this.handleValve=this.handleValve.bind(this);
       this.handleDuration=this.handleDuration.bind(this);
       this.getSocketInfo=this.getSocketInfo.bind(this);
+      this.resetValves=this.resetValves.bind(this);
 }
 
 
@@ -108,6 +110,7 @@ this.setState({info:result.data.Status});
     this.setState({duration:e.target.value})
   }
 
+
   runValve(e){
     e.preventDefault();
     if (Number.isInteger(this.state.duration)) {alert("Not a number!"); return;}
@@ -126,6 +129,13 @@ this.setState({info:result.data.Status});
     .catch((error) => {alert("Problem z uruchomieniem nawadniania!"); return error});
   }
 
+  resetValves(){
+    fetch(request(`${WATERING_API}/resetvalves`, 'GET'))
+      .then(res => res.json())
+      .then(result => {
+        if (result.success) alert("Przestawiono elektrozawory na stan zamknięcia.")
+      });
+  }
 
 
 render(){
@@ -140,6 +150,7 @@ render(){
    <button onClick={this.turnSocketOFF}>OFF</button>
    <button onClick={this.turnSocketON}>ON</button>
    </fieldset>
+   <button onClick={this.resetValves}>Reset elektrozaworów</button>
 
    {this.state.status=== "active" && this.props.name==="ORANGEPI" ? 
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>

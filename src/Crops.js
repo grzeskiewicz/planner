@@ -51,7 +51,7 @@ class Crops extends React.Component {
     this.scheduleWatering = this.scheduleWatering.bind(this);
     this.deleteCrop=this.deleteCrop.bind(this);
     this.updateSim=this.updateSim.bind(this);
-
+    this.resetSchedule=this.resetSchedule.bind(this);
   }
 
 
@@ -179,6 +179,8 @@ class Crops extends React.Component {
       (moment(x.harvest).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)))
       || (moment(x.start).isSameOrAfter(moment(from)) && moment(x.start).isSameOrBefore(moment(to)))
       || (x.harvest === null) || (x.harvest === "undefined"));
+   
+/*      
 const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
   const startA=moment(a.start);
   const startB=moment(b.start); 
@@ -186,9 +188,8 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
   if (startA.isBefore(startB)) return -1;
   if (startB.isBefore(startA)) return 1;
   if (startA.isSame(startB)) return 0;
-});
-
-    return rangeDateCropsSorted.map((crop, index) => {
+});*/
+    return rangeDateCrops.map((crop, index) => {
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
 
       return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
@@ -312,6 +313,7 @@ const cropsList=Array.from(cropsListSet.values());
           .then((result) => {
             console.log(result);
             if (result.success) {
+              alert("Harmonogram nawadniania zaktualizowany!")
               this.props.refreshCrops();
             } else {
               alert("SQL Erro - błędne wartości!")
@@ -377,6 +379,34 @@ tdcDateRange(tdc,start,finish){
   }
 
 
+  resetSchedule(){
+    const tdc = this.props.tdc;
+    const start=moment().startOf('day');
+    const finish=moment().week(start.isoWeek() +1).weekday(7);
+    const scheduleTDC=this.tdcDateRange(tdc,start,finish)
+const filteredScheduleTDC=scheduleTDC.filter((x)=>x.crop_id!==null);
+const cropsListArr=(filteredScheduleTDC.map((x)=> x.crop_id));
+const cropsListSet=new Set(cropsListArr);
+const cropsList=Array.from(cropsListSet.values());
+
+
+    if (window.confirm('Wyczyścić harmonogram nawadniania?')) {
+    fetch(request(`${WATERING_API}/cleanschedule`, 'GET'))
+    .then(res => res.json())
+    .then(result => {
+      console.log(result);
+      fetch(request(`${API_URL}/cleanschedule`, "POST", {crops:cropsList}))
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.success) {
+          this.props.refreshCrops();
+          alert("Harmonogram nawadaniania wyczyszczony.");
+        }
+      });
+    });
+  }
+  }
+
   render() {
     let cropsTable;
     if (this.props.crops !== '') cropsTable = this.renderRangeCropsTable();
@@ -392,6 +422,7 @@ tdcDateRange(tdc,start,finish){
       <div className='Crops'>
         <div id="cropList">
           <div id="schedulerDiv"><button onClick={this.scheduleWatering}>SCHEDULER</button></div>
+          <div id="resetScheduleDiv"><button onClick={this.resetSchedule}>RESET HARMONOGRAMU</button></div>
          <div id="cropDateRange">
           <fieldset>
         <legend>ZAKRES</legend>
