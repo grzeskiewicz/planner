@@ -118,6 +118,13 @@ justify-content: center;
   flex:3;
 }
 
+#cropsTable .head .color{
+  flex:1;
+}
+
+.color{
+  flex:1;
+}
 
 .cropNotesEnabled textarea{
   resize: none;

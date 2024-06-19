@@ -413,7 +413,7 @@ const cropsList=Array.from(cropsListSet.values());
     const allCrops = this.renderAllCropsTable();
 
     const head=<div className='head'>
-    <div>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div className='cropNotes'>Notatki</div>
+    <div className='color'>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div className='cropNotes'>Notatki</div>
     <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
     </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
   </div>;
