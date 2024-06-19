@@ -102,7 +102,6 @@ delete customerData.showCompanyForm;
             isTelNum2Valid:true
           })
         } else {
-            console.log(result.err)
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })

@@ -44,7 +44,6 @@ this.toggleLockedCustomersList=this.toggleLockedCustomersList.bind(this);
             this.props.refreshCustomers();
             this.setState({ selectedCustomer: '' });
         } else {
-            console.log(result.msg)
           alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
         }
       })

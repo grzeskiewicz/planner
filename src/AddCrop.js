@@ -100,7 +100,6 @@ renderMicrogreensSelection() {
     fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest,light:microgreenData.light }))
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         if (result.success) {
           alert("Zasiew zaktualizowany.");
           this.props.refreshCrops();

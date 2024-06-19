@@ -311,7 +311,7 @@ const cropsList=Array.from(cropsListSet.values());
           fetch(request(`${API_URL}/schedulewatering`, "POST", {crops:cropsList}))
           .then((res) => res.json())
           .then((result) => {
-            console.log(result);
+         //   console.log(result);
             if (result.success) {
               alert("Harmonogram nawadniania zaktualizowany!")
               this.props.refreshCrops();

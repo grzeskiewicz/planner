@@ -34,7 +34,6 @@ this.enter=this.enter.bind(this);
       fetch(request(`${API_URL}/deleteorder`, "POST", {"order_id": order.id}))
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
       if (result.success) {
         this.props.refreshOrders();
       } else {

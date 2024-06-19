@@ -17,7 +17,6 @@ unwrapOrdersDay(){
 
   setTimeout(() => {
     this.myRef.current.scrollIntoView({behavior: "smooth", block: "end" });
-    console.log("Delayed for 1 second.");
   }, "500");
 }
 
