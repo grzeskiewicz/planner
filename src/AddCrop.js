@@ -179,7 +179,7 @@ render(){
                   <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div><div>X</div></div>
 <Crop sim={this.state.sim} addCrop={true} refreshCrops={this.props.refreshCrops} crop={this.state.crop} microgreenData={microgreenData} setSelectedCrop={this.props.setSelectedCrop}
         trays={this.props.trays} tdc={this.props.traydatecrops} refreshTDC={this.props.refreshTDC}></Crop></div>:''}
-{this.state.stage===2 ? <WeekView addCrop={true} updateSim={this.updateSim} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.crop} className="scheduleCrop" trays={this.props.trays} tdc={this.props.tdc} 
+{this.state.stage===2 ? <WeekView addCrop={1} updateSim={this.updateSim} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.crop} className="scheduleCrop" trays={this.props.trays} tdc={this.props.tdc} 
 microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop}></WeekView>: null}
         </div>);}
 }

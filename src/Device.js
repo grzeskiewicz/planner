@@ -129,11 +129,13 @@ this.setState({info:result.data.Status});
     .catch((error) => {alert("Problem z uruchomieniem nawadniania!"); return error});
   }
 
-  resetValves(){
+  resetValves(e){
+    e.preventDefault();
     fetch(request(`${WATERING_API}/resetvalves`, 'GET'))
       .then(res => res.json())
       .then(result => {
-        if (result.success) alert("Przestawiono elektrozawory na stan zamknięcia.")
+        if (result.success) {
+          alert("Przestawiono elektrozawory na stan zamknięcia.");}
       });
   }
 
@@ -150,10 +152,12 @@ render(){
    <button onClick={this.turnSocketOFF}>OFF</button>
    <button onClick={this.turnSocketON}>ON</button>
    </fieldset>
-   <button onClick={this.resetValves}>Reset elektrozaworów</button>
 
-   {this.state.status=== "active" && this.props.name==="ORANGEPI" ? 
+   {this.state.status!== "active" && this.props.name==="ORANGEPI" ? 
+   <fieldset>
+    <legend>ELEKTROZAWORY</legend>
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
+   <button onClick={this.resetValves}>Reset elektrozaworów</button>
   <p>Elektrozawór:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
          <option value="1">1</option>
@@ -176,7 +180,8 @@ render(){
          <p>Czas otwarcia [s]:</p>
          <input type="number" value={this.state.duration} onChange={this.handleDuration}></input>
          <button disabled={this.state.isDisabled} type='submit'>Start</button>
-    </form> :''}
+    </form></fieldset>
+ :''}
 </div>);}
 }
 

@@ -5,11 +5,19 @@ flex:0 100%;
 gap:0.25rem;
 }
 
-#WeekView .row, #WeekView .head, #WeekView .head-2{
+#WeekView .head, #WeekView .head-2{
     display: flex;
     flex-flow:row nowrap;
     justify-content: space-evenly;
     cursor: default;
+}
+
+#WeekView .row{
+    display: flex;
+    flex-flow:row nowrap;
+    justify-content: space-evenly;
+    cursor: default;
+    flex:1;
 }
 
  #WeekView .head div,  #WeekView .head-2 div {
@@ -37,8 +45,14 @@ flex-basis:50%;
 border:1px solid black;
 }
 
+.monthCrops #WeekView .rack{
+flex:1;
+}
+
 #WeekView .rack{
-    flex:0 30%;
+    display: flex;
+    flex-flow:column;
+    height:25vh;
 }
 
 .FNDTray.blocked{
@@ -101,7 +115,7 @@ border:none;
 }
 
 #WeekView.scheduleCrop{
-  height: 70%;;
+  height: 70%;
 }
 
 
@@ -113,7 +127,9 @@ justify-content: stretch;
 }
 
 .viewWrapper{
-    flex:0 80%;
+    display: flex;
+    flex-flow:column nowrap;
+    flex:0 100%;
 }
 
 .tray{
