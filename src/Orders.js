@@ -16,7 +16,7 @@ class Orders extends React.Component {
       showAOF: false,
       deliveryDate:'',
       notes:'',
-      customerID: this.props.customers ? this.props.customers[0].id: '',
+      customerID: this.props.customers && this.props.customers.length>0 ? this.props.customers[0].id: '',
       selectedOrder:'',
       microgreensID:99,
       weight:'',

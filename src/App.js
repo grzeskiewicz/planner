@@ -113,6 +113,7 @@ class App extends React.Component {
     return fetch(request(`${API_URL}/customers`, 'GET'))
       .then(res => res.json())
       .then(result => {
+        console.log(result)
         this.setState({ customers: result });
         return result;
       });
@@ -177,6 +178,7 @@ class App extends React.Component {
 
 
   render() {
+    console.log(this.state.customers)
     const isReady = this.state.isReady;
 
     if (isReady) {
