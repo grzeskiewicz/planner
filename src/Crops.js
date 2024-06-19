@@ -9,8 +9,8 @@ import { faTrashAlt, faCalendarCheck, faCheckToSlot } from "@fortawesome/free-so
 //import { isMobile } from 'react-device-detect';
 
 import { groupByDay } from './ViewCommon';
-//const WATERING_API = 'http://192.168.2.6:3051';
-const WATERING_API = 'http://localhost:3051';
+const WATERING_API = 'http://192.168.2.6:3051';
+//const WATERING_API = 'http://localhost:3051';
 
 
 class Crops extends React.Component {

@@ -8,7 +8,7 @@ import { isMobile } from 'react-device-detect';
 
 
 
-const WATERING_API = 'http://localhost:3051';
+const WATERING_API = 'http://192.168.2.6:3051';
 
 class Crop extends React.Component {
   constructor(props) {
