@@ -128,7 +128,10 @@ moment().locale('pl');
         H: {moment(cropInfo.harvest).format("DD.MM hh:mm")} (
         {moment(cropInfo.harvest).format("dddd").toUpperCase()})
       </p>
+      <p>KLIENCI: </p>
+      
       <p className="notes">{cropInfo.notes}</p>
+    
     </div>
   );
 }

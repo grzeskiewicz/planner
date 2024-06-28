@@ -2,7 +2,7 @@ import React from 'react';
 import { API_URL, request } from "./APIConnection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-
+import moment from 'moment';
 
 
 
@@ -86,7 +86,7 @@ renderCropsToLink(cropsToLink){
 const nullCrop=<option value='NULL'></option>;
   const cropsToLinkCopy=JSON.parse(JSON.stringify(cropsToLink));
   cropsToLinkCopy.unshift(nullCrop);
-  const cropsOptions=cropsToLinkCopy.map((crop,index)=> <option key={index} value={crop.id}>{crop.id}</option>);
+  const cropsOptions=cropsToLinkCopy.map((crop,index)=> <option key={index} value={crop.id}>{crop.id ? `ID:${crop.id}` : 'PUSTE'}{crop.harvest ? ` H:${moment(crop.harvest).format('DD.MM.YYYY')}`: ''} </option>);
   return <select value={this.state.cropToLink} className='cropsToLinkSelection' name="cropstolink-selection" onChange={this.handleCropToLink}>{cropsOptions}</select>
 }
 

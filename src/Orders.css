@@ -97,9 +97,10 @@ font-size:0.9rem;
     border:1px solid lightslategray;
 display: flex;
 flex-flow:column;
-flex:0 15%;
+flex:0 20vw;
 max-height:50vh;
 }
+
 
 .customerGroup .iconTD {
   display: flex;
@@ -124,8 +125,22 @@ max-height:50vh;
     justify-content: flex-end;
     align-self: flex-end;
     margin-left: auto;
+}
 
+.ordersSummary .head > div:nth-child(1){
+  flex:2;
+}
 
+.ordersSummary .head > div{
+  flex:1;
+}
+
+.ordersSummary .orderEntry > div:nth-child(1){
+  flex:2
+}
+
+.ordersSummary .orderEntry > div{
+  flex:1;
 }
 
 
@@ -180,7 +195,6 @@ border:2px solid lightslategray;
   }
 
   .Orders .head div {
-    flex:1;
     text-align: center;
   }
 
@@ -195,6 +209,20 @@ border:2px solid lightslategray;
     display: flex;
     flex-flow:row nowrap;
     border-bottom:1px solid black;
+  }
+
+  .customerGroup .orderEntry > div:nth-child(1),.customerGroup .head > div:nth-child(1)  {
+    background-color: lightyellow;
+    flex:1;
+  }
+  .customerGroup .orderEntry > div:nth-child(2) ,.customerGroup .head > div:nth-child(2){
+    background-color: lightcoral;
+    flex:1
+  }
+
+  .customerGroup .orderEntry > div:nth-child(3),.customerGroup .head > div:nth-child(3) {
+    background-color: lightblue;
+    flex:2;
   }
 
   .orderEntry div{
