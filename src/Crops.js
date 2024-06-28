@@ -441,7 +441,7 @@ const cropsList=Array.from(cropsListSet.values());
               {cropsTable}
             </div>
           </div>:''}
-          {this.state.showWeekView ? <WeekView customers={this.state.customers} orders={this.props.orders} updateSim={this.updateSim} addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
+          {this.state.showWeekView ? <WeekView customers={this.props.customers} orders={this.props.orders} updateSim={this.updateSim} addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
                 {head}
