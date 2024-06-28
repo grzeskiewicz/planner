@@ -1,7 +1,6 @@
 import "./Orders.css";
 import React from "react";
 import { API_URL, request } from "./APIConnection";
-import Order from "./Order";
 import { isMobile } from 'react-device-detect';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt} from "@fortawesome/free-solid-svg-icons";
@@ -21,19 +20,23 @@ class Orders extends React.Component {
       microgreensID:99,
       weight:'',
       orders:[],
-      showCalendar:false
+      showCalendar:false,
+      showCropsToLink:false,
+      ordersDateFrom: moment().subtract(15, 'days').set({hours:1}),
+      ordersDateTo: moment().add(15, 'days').set({hours:23}),
     };
 
 this.renderMicrogreensSelection=this.renderMicrogreensSelection.bind(this);
-this.setSelectedOrder=this.setSelectedOrder.bind(this);
 this.addOrder=this.addOrder.bind(this);
-this.editOrder=this.editOrder.bind(this);
 this.handleCustomerID=this.handleCustomerID.bind(this);
 this.handleDeliveryDate=this.handleDeliveryDate.bind(this);
 this.handleNotes=this.handleNotes.bind(this);
 this.handleMicrogreens=this.handleMicrogreens.bind(this);
 this.handleWeight=this.handleWeight.bind(this);
 this.handleOrders=this.handleOrders.bind(this);
+this.handleOrdersDateTo=this.handleOrdersDateTo.bind(this);
+this.handleOrdersDateFrom=this.handleOrdersDateFrom.bind(this);
+
 this.deleteOrder=this.deleteOrder.bind(this);
 this.toggleCalendar=this.toggleCalendar.bind(this);
 this.handleDaySelection=this.handleDaySelection.bind(this);
@@ -42,10 +45,6 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
 
   refreshOrders() {
     this.props.refreshOrders();
-  }
-
-  setSelectedOrder(id) {
-    this.setState({ selectedOrder: id });
   }
 
 
@@ -78,16 +77,27 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
   }
 
 
+  handleOrdersDateTo(event){
+    this.setState({ ordersDateTo: moment(event.target.value)});
+  }
+
+
+  handleOrdersDateFrom(event){
+    this.setState({ ordersDateFrom: moment(event.target.value)});
+  }
+
 
   addOrder(event) {
     event.preventDefault();
     if (this.state.orders.length > 0){
-   const orderData = JSON.parse(JSON.stringify(this.state));
-   delete orderData.showAOF;
-   delete orderData.selectedOrder;
-   delete orderData.microgreensID;
-   delete orderData.weight;
-   delete orderData.showCalendar;
+   const orderData = {
+    deliveryDate:this.state.deliveryDate,
+    notes:this.state.notes,
+    customerID: this.state.customerID,
+    microgreensID:this.state.microgreensID,
+    weight:this.state.weight,
+    orders:this.state.orders,
+   }
 
     fetch(request(`${API_URL}/addorder`, "POST", orderData))
       .then((res) => res.json())
@@ -114,20 +124,6 @@ this.deleteCustomerOrder=this.deleteCustomerOrder.bind(this);
     }
   }
 
-
-  editOrder(orderData) {
-    fetch(request(`${API_URL}/editorder`, "POST", orderData))
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          this.props.refreshOrders();
-          this.setState({ selectedOrder: '' });
-        } else {
-          alert("SQL Error - powtarzające się nazwy lub błędne wartości!")
-        }
-      })
-      .catch((error) => {alert("Edycja zamówienia nieudana"); return error});
-  }
 
 
   handleOrders(event){
@@ -244,70 +240,82 @@ renderDaySummary(ordersDayByMicrogreens){
       return summary;
 }
 
-renderOrdersDay(byDay){
-
-  const ordersDay=[];
-
-  for (let i=0;i<byDay.length;i++){ //i=customer_id
-      let mappedCustomersOrdersDay=undefined;
-      if (byDay[i]!==undefined) {   
-
-             mappedCustomersOrdersDay = byDay[i].map((order, index) => {
-          return <Order customers={this.props.customers} microgreens={this.props.microgreens} editOrder={this.editOrder} selectedOrder={this.state.selectedOrder} 
-          setSelectedOrder={this.setSelectedOrder} order={order} key={index} index={index}></Order>
-        });
-      
-      }
-
-        if (mappedCustomersOrdersDay!==undefined) {
-        ordersDay.push(<fieldset className="customerGroup">
-        <legend>Klient ID:{i}</legend>
-        <div className="customerGroupOrdersWrapper">
-        <div className="head"><div>MICROGREENS</div><div>WAGA[G]</div></div>
-        {mappedCustomersOrdersDay}
-        <fieldset className="orderNotes" ><legend>Notatki</legend>{byDay[i][0].notes}</fieldset></div>
-        <div className="iconTD" onClick={() => this.deleteCustomerOrder(i,byDay[i][0].delivery_date)}>
-        <FontAwesomeIcon icon={faTrashAlt} size="lg" />
-      </div> 
-        </fieldset>);}
-  }
-  return ordersDay;
-}
-
  //=============================================================================================================================================================  
 
  
-renderOrdersTable() { //TODO rozdzielic na kilka funkcji
-const orders=this.props.orders;
+renderOrdersTable(orders) { //TODO rozdzielic na kilka funkcji
 
 const grp=this.groupCustomerOrdersByDeliveryDate(orders); //grupowanie zamówień klienta z danego dnia  i przypięcie zgrupowanych zamówien klientów do danego dnia
 
 const ordersDayGrp=[];
 
 for (let [day, byDay] of Object.entries(grp)) {
-
-const ordersDay=this.renderOrdersDay(byDay);
-
 const ordersDayByMicrogreens=this.groupDayOrdersByMicrogreens(byDay); //summary data
 const summary=this.renderDaySummary(ordersDayByMicrogreens); //render summary
 
-ordersDayGrp.push(<OrdersDay ordersDay={ordersDay} day={day} summary={summary}></OrdersDay>);
+ordersDayGrp.push(<OrdersDay customers={this.props.customers} microgreens={this.props.microgreens} ordersDay={byDay} day={day} summary={summary} refreshOrders={this.props.refreshOrders}></OrdersDay>);
 }
-return <div id="ordersList">{ordersDayGrp}</div>
+return <div id="ordersList">
+<div id="ordersDateRange">
+<fieldset>
+<legend>ZAKRES</legend>
+  <input type="date" onChange={this.handleOrdersDateFrom} value={this.state.ordersDateFrom.format('YYYY-MM-DD')}></input>
+  <span> - </span>
+  <input type="date" min={this.state.ordersDateFrom.clone().add(7,"days").format('YYYY-MM-DD')} onChange={this.handleOrdersDateTo} value={this.state.ordersDateTo.format('YYYY-MM-DD')}></input>
+  </fieldset>
+  </div>
+  {ordersDayGrp}</div>
   }
 
 //=============================================================================================================================================================  
 
 
+//const finalArr = arrFiltered.reduce((accumulator, currentValue) => accumulator.concat(currentValue), [],);
 
+
+linkCropsToOrders(){
+  const orders=this.props.orders;
+  const crops=this.props.crops;
+
+  const ordersByDeliveryDate=[];
+
+  for (const order of orders){
+    const deliveryDate=moment(order.delivery_date).format('YYYY-MM-DD');
+    if (!ordersByDeliveryDate[deliveryDate]) ordersByDeliveryDate[deliveryDate] = [];
+    ordersByDeliveryDate[deliveryDate].push(order); //group by delivery date 
+}
+
+
+const linkedOrders=[];
+  for (let [day, arr] of Object.entries(ordersByDeliveryDate)) {
+
+const dayDate=moment(day).set({hours:1});
+const past2Days=moment(day).set({hours:1}).subtract(2,"days");
+const cropsCloseToDate=crops.filter((crop)=> moment(crop.harvest).isBetween(past2Days,dayDate, undefined, "[]"));
+
+for (const order of arr){
+ const cropsToPropose=cropsCloseToDate.filter((crop)=>crop.microgreen_id===order.microgreen_id);
+ const orderCopy=JSON.parse(JSON.stringify(order));
+  orderCopy.cropsToLink=cropsToPropose;
+  linkedOrders.push(orderCopy);
+  }
+  }
+  return linkedOrders;
+}
 
   render() {
     const mappedMicrogreens = this.renderMicrogreensSelection();
     const mappedCustomers=this.renderCustomerSelection();
     const mappedOrders=this.renderOrdersList();
 
+   const orders=this.linkCropsToOrders(); //proposedCrops for every order
+   const from = this.state.ordersDateFrom.set({hours:1});
+   const to = this.state.ordersDateTo.set({hours:23});
+   const rangeDateOrders = orders.filter((x) => moment(x.delivery_date).isBetween(from, to, undefined, "[]"));
+
+
     let ordersTable;
-    if (this.props.orders.length >0) ordersTable = this.renderOrdersTable();
+    if (this.props.orders.length >0) ordersTable = this.renderOrdersTable(rangeDateOrders); //this.renderOrdersTable(orders); 
     const ordersListTable = <div id="ordersListWrapper">
           {ordersTable}
     </div>;

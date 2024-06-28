@@ -25,6 +25,7 @@ flex-flow:row nowrap;
 font-size:0.9rem;
   }
 
+
 .addOrderEntry .typeField, .Orders .head .typeField{
   flex:2;
 }
@@ -55,10 +56,43 @@ font-size:0.9rem;
     flex-flow:column nowrap;
 }
 
-.ordersDayWrapper.wrapped{
+
+#ordersDateRange{
+  display: flex;
+  flex-flow:row nowrap;
+  margin-bottom: 1rem;
+  justify-content: space-between;
+}
+
+
+#ordersDateRange > div{
+  display: flex;
+  flex-flow:row nowrap;
+  justify-content: space-between;
+  font-size:1rem;
+  margin-right: 0.5rem;
+  flex:0 15%;
+}
+
+#ordersDateRange button{
+  margin:0;
+}
+
+#ordersDateRange input {
+  cursor: pointer;
+  text-align: center;
+  font-size:1rem;
+}
+
+
+.ordersDayMain.wrapped{
   flex:0 5%;
 }
 
+
+.ordersDayWrapper.wrapped{
+  flex:0 5%;
+}
 .customerGroup{
     border:1px solid lightslategray;
 display: flex;
@@ -95,16 +129,30 @@ max-height:50vh;
 }
 
 
-.ordersDayWrapper{
+.ordersDayMain{
     display: flex;
     flex:0 100vh;
+}
+
+.ordersDayWrapper{
+display: flex;
+flex-flow:row wrap;
+flex:0 80%;
 }
 
 .ordersDay{
     flex:0 100%;
     display: flex;
-    flex-flow:row wrap;
+    flex-flow:column wrap;
 border:2px solid lightslategray;
+}
+
+.ordersDay .cropsToLink{
+  display: flex;
+}
+
+.cropsToLinkSelection{
+  flex:0 100%;
 }
 
 .ordersDay > legend {

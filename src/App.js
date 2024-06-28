@@ -113,7 +113,6 @@ class App extends React.Component {
     return fetch(request(`${API_URL}/customers`, 'GET'))
       .then(res => res.json())
       .then(result => {
-        console.log(result)
         this.setState({ customers: result });
         return result;
       });
@@ -124,6 +123,7 @@ class App extends React.Component {
     return fetch(request(`${API_URL}/orders`, 'GET'))
     .then(res => res.json())
     .then(result => {
+      console.log(result);
       this.setState({ orders: result });
       return result;
     });
@@ -178,7 +178,7 @@ class App extends React.Component {
 
 
   render() {
-    console.log(this.state.customers)
+    //console.log(this.state.customers)
     const isReady = this.state.isReady;
 
     if (isReady) {
@@ -203,7 +203,7 @@ class App extends React.Component {
           {this.state.microgreens !== '' && this.state.tab === 4 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
           {this.state.tab === 5 ? <Customers customers={this.state.customers} refreshCustomers={this.getCustomers}></Customers>  : null}
           {this.state.tab === 6 ? <AddCustomer showCustomersTab={this.showCustomersTab} refreshCustomers={this.getCustomers}></AddCustomer>  : null}
-          {this.state.tab === 7 ? <Orders microgreens={this.state.microgreens} customers={this.state.customers} orders={this.state.orders} refreshOrders={this.getOrders}></Orders>  : null}
+          {this.state.tab === 7 ? <Orders crops={this.state.crops} microgreens={this.state.microgreens} customers={this.state.customers} orders={this.state.orders} refreshOrders={this.getOrders}></Orders>  : null}
           {this.state.tab === 8 ? <Devices></Devices> : null}
 
 

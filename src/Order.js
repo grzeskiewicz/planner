@@ -11,18 +11,19 @@ class Order extends React.Component {
       super(props);
       this.state = {
       editOrderEnabled:false,
-
       id:this.props.order.id,
       microgreen_id:this.props.order.microgreen_id,
       weight:this.props.order.weight,
       customer_id: this.props.order.customer_id, 
       elivery_date:this.props.order.delivery_date,
-      notes:this.props.order.notes
+      notes:this.props.order.notes,
+      cropToLink:this.props.order.crop_id ? this.props.order.crop_id:'NULL'
     }
 this.enableEditOrder=this.enableEditOrder.bind(this);
 this.deleteOrder=this.deleteOrder.bind(this);
 this.handleNamePL=this.handleNamePL.bind(this);
-
+this.handleCropToLink=this.handleCropToLink.bind(this);
+this.renderCropsToLink=this.renderCropsToLink.bind(this);
 this.saveOrder=this.saveOrder.bind(this);
 this.enter=this.enter.bind(this);
 }
@@ -75,6 +76,20 @@ enter(e){
 }
 
 
+handleCropToLink(e){
+  this.props.handleCropToLink(this.props.order.id,e.target.value);
+  this.setState({ cropToLink: e.target.value });
+}
+
+
+renderCropsToLink(cropsToLink){
+const nullCrop=<option value='NULL'></option>;
+  const cropsToLinkCopy=JSON.parse(JSON.stringify(cropsToLink));
+  cropsToLinkCopy.unshift(nullCrop);
+  const cropsOptions=cropsToLinkCopy.map((crop,index)=> <option key={index} value={crop.id}>{crop.id}</option>);
+  return <select value={this.state.cropToLink} className='cropsToLinkSelection' name="cropstolink-selection" onChange={this.handleCropToLink}>{cropsOptions}</select>
+}
+
 render(){
 const order=this.props.order;
 const microgreens=this.props.microgreens;
@@ -83,10 +98,14 @@ const microgreenData=microgreens.find((x)=>x.id===order.microgreen_id);
 const isEditEnabled=this.state.editOrderEnabled;
 const selectedOrder=this.props.selectedOrder;
 const amISelectedToEdit=isEditEnabled && selectedOrder===order.id;
+
+const renderCropsToLink=this.renderCropsToLink(order.cropsToLink);
+
   return (
     <div className={"orderEntry " + (amISelectedToEdit ? "edit":"") } onClick={this.enableEdit} key={this.props.index} onKeyDown={this.enter}>
     <div>{microgreenData.name_pl}</div>
     <div>{order.weight}</div>
+    {this.props.showCropsToLink? <div className='cropsToLink'>{renderCropsToLink}</div>:''}
 
     { amISelectedToEdit ? <div onClick={this.saveOrder}><FontAwesomeIcon icon={faCheckCircle} size="lg"/></div>:null}
 </div>);}

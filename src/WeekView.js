@@ -88,7 +88,6 @@ class WeekView extends React.Component {
     const isScheduled= (this.props.className==="scheduleCrop" && this.props.selectedCrop.harvest) ? true: false;
     const blockDate2 = isScheduled ? this.props.selectedCrop.lightExposureStart:undefined;
     const blockDate = this.state.blockDate !== undefined ? this.state.blockDate : blockDate2;
-console.log(this.props)
     const row = (
       <div className="row">
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>
