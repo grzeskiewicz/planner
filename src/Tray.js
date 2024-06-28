@@ -36,6 +36,8 @@ class Tray extends React.Component {
   
   render() {    
     const crops = this.props.crops;
+    const orders=this.props.orders;
+    const customers=this.props.customers;
     const trayData = this.props.trayData;
     const selectedCrop = this.props.selectedCrop;
     let trayCrop, microgreenData;
@@ -43,7 +45,15 @@ class Tray extends React.Component {
 
     const isBlocked = this.props.isBlocked && !isTraySameSelectedCrop;
 
-//console.log(this.props);
+    const customersLinked=orders.filter((order)=>order.crop_id===trayData.crop_id);
+
+    const customersInfos=customersLinked.map((order)=> {
+      const customerInfo=customers.find((x)=>x.id===order.customer_id);
+      return <p>ID:{customerInfo.id} {customerInfo.company_name}{customerInfo.customer_fullname} Dostawa:{customerInfo.delivery_location}</p>
+    });
+
+    
+
     if (trayData!==undefined && trayData.crop_id !== null) {
       trayCrop = crops.find((x) => x.id === trayData.crop_id);
       microgreenData = this.props.microgreens.find((x) => x.id === trayCrop.microgreen_id);
@@ -51,7 +61,7 @@ class Tray extends React.Component {
       if (selectedCrop) microgreenData = this.props.microgreens.find((x) => x.id === selectedCrop.microgreen_id);
     }
     if (trayData!==undefined && trayData.crop_id !== null && !this.props.addCrop) {
-      return <HtmlTooltip title={cropInfoRender(trayCrop, microgreenData)}><div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div></HtmlTooltip>;
+      return <HtmlTooltip title={cropInfoRender(trayCrop, microgreenData,customersInfos)}><div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div></HtmlTooltip>;
     } else {
       return <div style={{ backgroundColor: trayData.status === "1" && microgreenData ? microgreenData.color : '' }} className={"tray "+ (isBlocked ? 'blocked' : '')} onClick={() => this.handleTray()}><span>&nbsp;&nbsp;</span></div>;
     }

@@ -106,6 +106,8 @@ class MonthView extends React.Component {
 
 
   render() {
+    const orders=this.props.orders;
+    const customers=this.props.customers;
     calcDatesCrop(this.props.crops, this.props.microgreens);
     const monthCrops = this.monthCrops(this.props.crops);
     const monthNow = moment().month(this.state.monthNow);
@@ -119,7 +121,7 @@ class MonthView extends React.Component {
    
   const monthViewGrp=[];
     for (let i=firstDayMonthWeek;i<=lastDayMonthWeek;i++){
-monthViewGrp.push(<WeekView className="month" weekNow={i} trays={this.props.trays} tdc={this.props.tdc} microgreens={this.props.microgreens} 
+monthViewGrp.push(<WeekView customers={this.props.customers} orders={this.props.orders} className="month" weekNow={i} trays={this.props.trays} tdc={this.props.tdc} microgreens={this.props.microgreens} 
 crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop}></WeekView>)
     }
 
@@ -128,7 +130,7 @@ crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedC
     const head = this.renderHead();
     const filter = this.renderMicrogreensFilter();
     //here pass the function for setSelectedCrop for App.js
-    const month = renderByMicrogreens(monthCrops, this.props.microgreens, days, monthNow, null, this.state.checkedItems, this.props.setSelectedCrop);
+    const month = renderByMicrogreens(monthCrops, this.props.microgreens, days, monthNow, null, this.state.checkedItems, this.props.setSelectedCrop,orders,customers);
     return (
       <div id="MonthView">
         <div className='switchWrapper'>

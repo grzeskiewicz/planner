@@ -123,7 +123,6 @@ class App extends React.Component {
     return fetch(request(`${API_URL}/orders`, 'GET'))
     .then(res => res.json())
     .then(result => {
-      console.log(result);
       this.setState({ orders: result });
       return result;
     });
@@ -196,10 +195,10 @@ class App extends React.Component {
         </div>
         
         <div id="board">
-          {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></Crops> : null}
+          {this.state.microgreens !== '' && this.state.tab === 0 ? <Crops customers={this.state.customers} orders={this.state.orders} trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></Crops> : null}
           {this.state.tab === 1 ? <AddCrop trays={this.state.trays} microgreens={this.state.microgreens} crops={this.state.crops} tdc={this.state.traydatecrops} refreshTDC={this.getTrayDateCrops} refreshCrops={this.getCrops} markedCrop={this.state.markedCrop} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></AddCrop> : null}
-          {this.state.crops !== '' && this.state.tab === 2 ? <WeekView className="main" trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
-          {this.state.crops !== '' && this.state.tab === 3 ? <MonthView fndtrays={this.state.FNDTrays} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
+          {this.state.crops !== '' && this.state.tab === 2 ? <WeekView  className="main" customers={this.state.customers} orders={this.state.orders} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
+          {this.state.crops !== '' && this.state.tab === 3 ? <MonthView fndtrays={this.state.FNDTrays} customers={this.state.customers} orders={this.state.orders} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
           {this.state.microgreens !== '' && this.state.tab === 4 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
           {this.state.tab === 5 ? <Customers customers={this.state.customers} refreshCustomers={this.getCustomers}></Customers>  : null}
           {this.state.tab === 6 ? <AddCustomer showCustomersTab={this.showCustomersTab} refreshCustomers={this.getCustomers}></AddCustomer>  : null}

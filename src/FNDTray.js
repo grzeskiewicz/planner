@@ -22,12 +22,12 @@ class FNDTray extends React.Component {
     const isBlocked = blockDate !== undefined  && blockDate !=='' && moment(blockDate).format('YYYY-MM-DD') !== moment(trays[0].date).format('YYYY-MM-DD');
     if (this.props.range === "week") {
       return <div className={"FNDTray "}>
-        <Tray addCrop={this.props.addCrop} isBlocked={isBlocked} crops={this.props.crops} trayData={trays[0]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
-        <Tray addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[1]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
-        <Tray addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[2]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
-        <Tray addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[3]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
-        <Tray addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[4]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
-        <Tray addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[5]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
+        <Tray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} isBlocked={isBlocked} crops={this.props.crops} trayData={trays[0]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
+        <Tray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[1]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
+        <Tray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[2]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
+        <Tray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[3]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
+        <Tray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[4]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
+        <Tray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  isBlocked={isBlocked} crops={this.props.crops} trayData={trays[5]} handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens}></Tray>
       </div>;
     } else {
      const fndData=this.props.fndtrays.find((x)=>x.id===this.props.tray[0].fndtray_id);

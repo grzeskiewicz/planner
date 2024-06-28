@@ -99,8 +99,8 @@ export function whichStageShelves(day, crop) {
   return stage;
 }
 
-export function cropInfoRender(cropInfo, microgreen) {
-moment().locale('pl');
+export function cropInfoRender(cropInfo, microgreen,customersInfos) {
+  moment().locale('pl');
 //        {moment(cropInfo.start).format("dddd").substring(0, 3).toUpperCase()})
   return (
     <div className="cropInfo">
@@ -129,7 +129,8 @@ moment().locale('pl');
         {moment(cropInfo.harvest).format("dddd").toUpperCase()})
       </p>
       <p>KLIENCI: </p>
-      
+{customersInfos}
+<p>NOTATKI:</p>
       <p className="notes">{cropInfo.notes}</p>
     
     </div>
@@ -171,7 +172,7 @@ export function renderEmptyRow(days) {
 
 
 
-export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop) {
+export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop,customersInfos) {
   const row = [];
   const grp = [];
   let firstDayWithStage;
@@ -206,7 +207,7 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
     }
 
     if (firstDayWithStage === i) { //FIRST OCCURENCE OF STAGE !==false 
-      row.push(<HtmlTooltip title={cropInfoRender(crop, microgreen)}>
+      row.push(<HtmlTooltip title={cropInfoRender(crop, microgreen,customersInfos)}>
         <div onClick={() => setSelectedCrop(crop.id)} key={i} className='cropGrp row' 
          style={{ backgroundImage: `linear-gradient(to right,white, 30%,${microgreen.color})`, 'flexBasis': parseFloat(100 / days * grp.length).toFixed(2) + "%" }}>{grpRender}</div>
         </HtmlTooltip>);
@@ -223,14 +224,22 @@ export function renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, 
   return row;
 }
 
-export function renderByMicrogreens(crops, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop) {
+export function renderByMicrogreens(crops, microgreens, days, monthNow, weekNow, checkedItems, setSelectedCrop,orders,customers) {
   const groupedRows = [];
   for (const microgreen of microgreens) {
     const cropsGrouped = crops.filter((x) => x.microgreen_id === microgreen.id);
     if (cropsGrouped.length > 0) {
       const rows = [];
       for (const crop of cropsGrouped) {
-        const row = renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop);
+        const customersLinked=orders.filter((order)=>order.crop_id===crop.id);
+
+        const customersInfos=customersLinked.map((order)=> {
+          const customerInfo=customers.find((x)=>x.id===order.customer_id);
+          return <p>ID:{customerInfo.id} {customerInfo.company_name}{customerInfo.customer_fullname} Dostawa:{customerInfo.delivery_location}</p>
+        });
+
+
+        const row = renderRowMicrogreens(crop, microgreen, days, monthNow, weekNow, setSelectedCrop,customersInfos);
         rows.push(<div className='row' key={crop.id}>{row}</div>);
       }
       const isChecked = checkedItems.get(microgreen.name_pl);

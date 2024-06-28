@@ -91,32 +91,32 @@ class WeekView extends React.Component {
     const row = (
       <div className="row">
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[0][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[0][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[0][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[0][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>
-          <FNDTray addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[1][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
-          <FNDTray addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[1][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[1][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[1][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>
-          <FNDTray addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[2][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops} ></FNDTray>
-          <FNDTray addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[2][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[2][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops} ></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop}  blockDate={blockDate} range="week" tray={grpByShelves[2][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[3][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[3][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[3][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[3][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }} >
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[4][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[4][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[4][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[4][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }} >
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[5][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[5][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[5][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[5][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
         <div className="shelf" style={{ flexBasis: parseFloat(100 / 7).toFixed(2) + "%" }}>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[6][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
-          <FNDTray addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[6][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[6][i][0]} pos="L" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
+          <FNDTray customers={this.props.customers} orders={this.props.orders}  addCrop={this.props.addCrop} blockDate={blockDate} range="week" tray={grpByShelves[6][i][1]} pos="P" handleScheduleTDC={this.handleScheduleTDC} selectedCrop={this.props.selectedCrop} microgreens={this.props.microgreens} crops={this.props.crops}></FNDTray>
         </div>
       </div>
     );
@@ -377,6 +377,8 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,light
   }
 
   render() {
+const orders=this.props.orders;
+const customers=this.props.customers;
     const microgreens=this.props.microgreens;
     let weekNow= this.props.className==="month" ? this.props.weekNow : this.state.weekNow;
     const start=moment().week(weekNow).weekday(1).startOf('day');
@@ -397,7 +399,9 @@ this.setState({blockDate:blockDate,scheduledTDC:scheduledTDC,tdc:mergedTDC,light
       null,
       weekNow,
       this.state.checkedItems,
-      this.props.setSelectedCrop
+      this.props.setSelectedCrop,
+      orders,
+      customers
     );
     weekNow=moment().week(this.props.className==="month" ? this.props.weekNow : this.state.weekNow);
     const [mon, tue, wed, thu, fri, sat, sun] = [
