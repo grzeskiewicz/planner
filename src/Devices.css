@@ -14,6 +14,11 @@ flex-flow:row nowrap;
 }
 
 
+.runValveForm select , .runValveForm input{
+    flex:0 4vh; 
+    font-size:100%;
+}
+
 @media screen and (max-width: 400px)  {
 .Device{
     flex-flow:column;
