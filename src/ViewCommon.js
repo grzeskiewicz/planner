@@ -231,7 +231,7 @@ export function renderByMicrogreens(crops, microgreens, days, monthNow, weekNow,
     if (cropsGrouped.length > 0) {
       const rows = [];
       for (const crop of cropsGrouped) {
-        const customersLinked=orders.filter((order)=>order.crop_id===crop.id);
+        const customersLinked=orders ? orders.filter((order)=>order.crop_id===crop.id):[];
 
         const customersInfos=customersLinked.map((order)=> {
           const customerInfo=customers.find((x)=>x.id===order.customer_id);

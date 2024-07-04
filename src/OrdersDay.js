@@ -101,9 +101,11 @@ renderOrdersDay(byDay){
       
       }
 
+      const customerData=this.props.customers.find((x)=>x.id===i);
+console.log(customerData)
         if (mappedCustomersOrdersDay!==undefined) {
         ordersDay.push(<fieldset className="customerGroup">
-        <legend>Klient ID:{i}</legend>
+        <legend>{customerData.company_name!=="" ? customerData.company_name:customerData.customer_fullname}</legend>
         <div className="customerGroupOrdersWrapper">
         <div className="head"><div>MICROGREENS</div><div>WAGA[G]</div>{this.state.showCropsToLink ? <div>Link?</div>:''}</div>
         {mappedCustomersOrdersDay}

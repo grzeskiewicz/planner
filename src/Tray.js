@@ -45,7 +45,7 @@ class Tray extends React.Component {
 
     const isBlocked = this.props.isBlocked && !isTraySameSelectedCrop;
 
-    const customersLinked=orders.filter((order)=>order.crop_id===trayData.crop_id);
+    const customersLinked=orders ? orders.filter((order)=>order.crop_id===trayData.crop_id):[];
 
     const customersInfos=customersLinked.map((order)=> {
       const customerInfo=customers.find((x)=>x.id===order.customer_id);
