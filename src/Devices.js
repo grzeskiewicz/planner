@@ -14,6 +14,7 @@ class Devices extends React.Component {
       <div className="Devices">
         <Device name="ORANGEPI" port="3051" socketPort="3069" socketIP="192.168.2.10"></Device>
         <Device name="LAMPS" port="80" socketPort="3069" socketIP="192.168.2.12"></Device>
+        <Device name="SOAKER" port="80" socketPort="3069" socketIP="192.168.2.20"></Device>
       </div>
     );
   }
