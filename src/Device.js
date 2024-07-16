@@ -25,6 +25,8 @@ class Device extends React.Component {
       this.handleDuration=this.handleDuration.bind(this);
       this.getSocketInfo=this.getSocketInfo.bind(this);
       this.resetValves=this.resetValves.bind(this);
+      this.turnSocketON=this.turnSocketON.bind(this);
+      this.turnSocketOFF=this.turnSocketOFF.bind(this);
 }
 
 
