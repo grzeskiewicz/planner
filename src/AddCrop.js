@@ -49,7 +49,7 @@ handleStart(event) {
 }
 
 toggleSimulation() {
-  this.setState({ showHarvestSim: !this.state.showHarvestSim, harvest: '', start: '' });
+  this.setState({ showHarvestSim: !this.state.showHarvestSim, harvest1: '', start1: '' });
 }
 
 toggleCalendar() {

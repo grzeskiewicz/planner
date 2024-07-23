@@ -140,11 +140,11 @@ class WeekView extends React.Component {
     //crops which are during selected week
     const weekNowMon = moment()
       .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
-      .weekday(1)
+      .weekday(0)
       .startOf("day");
     const weekNowSun = moment()
       .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
-      .weekday(7)
+      .weekday(6)
       .endOf("day");
     const weekCrops = [];
     for (const crop of crops) {
@@ -162,11 +162,11 @@ class WeekView extends React.Component {
     //crops which are during selected week
     const weekNowMon = moment()
       .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
-      .weekday(1)
+      .weekday(0)
       .startOf("day");
     const weekNowSun = moment()
       .week(this.props.className!=="month"? this.state.weekNow:this.props.weekNow)
-      .weekday(7)
+      .weekday(6)
       .endOf("day");
     const weekTDC = [];
     for (const entry of tdc) {
@@ -381,8 +381,8 @@ const orders=this.props.orders;
 const customers=this.props.customers;
     const microgreens=this.props.microgreens;
     let weekNow= this.props.className==="month" ? this.props.weekNow : this.state.weekNow;
-    const start=moment().week(weekNow).weekday(1).startOf('day');
-    const finish=moment().week(weekNow).weekday(7).add(20,"days").endOf('day');
+    const start=moment().week(weekNow).weekday(0).startOf('day');
+    const finish=moment().week(weekNow).weekday(6).add(20,"days").endOf('day');
     
     const weekTDC=this.tdcDateRange(this.state.tdc,start,finish);
     const grpWeekTDCByDay = groupByDay(weekTDC,this.props.trays);
@@ -405,14 +405,15 @@ const customers=this.props.customers;
     );
     weekNow=moment().week(this.props.className==="month" ? this.props.weekNow : this.state.weekNow);
     const [mon, tue, wed, thu, fri, sat, sun] = [
+      JSON.parse(JSON.stringify(weekNow.weekday(0))),
       JSON.parse(JSON.stringify(weekNow.weekday(1))),
       JSON.parse(JSON.stringify(weekNow.weekday(2))),
       JSON.parse(JSON.stringify(weekNow.weekday(3))),
       JSON.parse(JSON.stringify(weekNow.weekday(4))),
       JSON.parse(JSON.stringify(weekNow.weekday(5))),
       JSON.parse(JSON.stringify(weekNow.weekday(6))),
-      JSON.parse(JSON.stringify(weekNow.weekday(7))),
     ];
+
     const filter = this.renderMicrogreensFilter();
     return (
       <div id="WeekView" className={this.props.className} ref={this.myRef}>
