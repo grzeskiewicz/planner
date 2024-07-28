@@ -1,8 +1,8 @@
 import './Devices.css';
 import React from 'react';
 import {pingCheck,request,API_URL} from "./APIConnection";
-const RACK_URL='192.168.2.6'
-const WATERING_API='http://192.168.2.6:3051';
+const RACK_URL='192.168.1.6'
+const WATERING_API='http://192.168.1.6:3051';
 
 class Device extends React.Component {
   constructor(props) {
