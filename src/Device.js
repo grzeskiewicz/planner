@@ -100,7 +100,7 @@ resetDevice(){
     .then((result) => {
 this.setState({info:result.data.Status});
     })
-    .catch((error) => {alert("Problem z pobraniem statusu gniazda!"); return error});   
+    .catch((error) => {console.log("Problem z pobraniem statusu gniazda!"); return error});   
   }
 
 
