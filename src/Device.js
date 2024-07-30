@@ -117,7 +117,7 @@ this.setState({info:result.data.Status});
     e.preventDefault();
     if (!Number.isInteger(Number(this.state.duration))) {alert("Not a number!"); return;}
     this.setState({isDisabled:true});
-    fetch(request(`${WATERING_APIL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
+    fetch(request(`${WATERING_API}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
     .then((res) => res.json())
     .then((result) => {
       this.setState({isDisabled:false});
