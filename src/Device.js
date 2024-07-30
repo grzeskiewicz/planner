@@ -155,7 +155,7 @@ render(){
    <button onClick={this.turnSocketON}>ON</button>
    </fieldset>
 
-   {this.state.status!== "active" && this.props.name==="ORANGEPI" ? 
+   {this.state.status=== "active" && this.props.name==="ORANGEPI" ? 
    <fieldset>
     <legend>ELEKTROZAWORY</legend>
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
