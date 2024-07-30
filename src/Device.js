@@ -115,9 +115,9 @@ this.setState({info:result.data.Status});
 
   runValve(e){
     e.preventDefault();
-    if (Number.isInteger(this.state.duration)) {alert("Not a number!"); return;}
+    if (!Number.isInteger(Number(this.state.duration))) {alert("Not a number!"); return;}
     this.setState({isDisabled:true});
-    fetch(request(`${RACK_URL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
+    fetch(request(`${WATERING_APIL}/runvalve`, "POST", {valve:this.state.valve,duration:this.state.duration}))
     .then((res) => res.json())
     .then((result) => {
       this.setState({isDisabled:false});
@@ -162,22 +162,22 @@ render(){
    <button onClick={this.resetValves}>RESET ELEKTROZAWORÓW</button>
   <p>ELEKTROZAWÓR:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
-         <option value="1">1</option>
-         <option value="2">2</option>
-         <option value="3">3</option>
-         <option value="4">4</option>
-         <option value="5">5</option>
-         <option value="6">6</option>
-         <option value="7">7</option>
-         <option value="8">8</option>
-         <option value="9">9</option>
-         <option value="10">10</option>
-         <option value="11">11</option>
-         <option value="12">12</option>
-         <option value="13">13</option>
-         <option value="14">14</option>
-         <option value="15">15</option>
-         <option value="16">16</option>
+         <option value={1}>1</option>
+         <option value={2}>2</option>
+         <option value={3}>3</option>
+         <option value={4}>4</option>
+         <option value={5}>5</option>
+         <option value={6}>6</option>
+         <option value={7}>7</option>
+         <option value={8}>8</option>
+         <option value={9}>9</option>
+         <option value={10}>10</option>
+         <option value={11}>11</option>
+         <option value={12}>12</option>
+         <option value={13}>13</option>
+         <option value={14}>14</option>
+         <option value={15}>15</option>
+         <option value={16}>16</option>
          </select>
          <p>CZAS OTWARCIA[s]:</p>
          <input type="number" value={this.state.duration} onChange={this.handleDuration}></input>
