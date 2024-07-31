@@ -75,7 +75,11 @@ resetDevice(){
     fetch(request(`${API_URL}/turnon`, "POST", {ip:this.props.socketIP}))
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
+      setTimeout(() => {
+        this.props.name==="ORANGEPI" ? this.checkPIStatus():this.checkStatus();
+        this.getSocketInfo();
+      }, "500");
+
     })
     .catch((error) => {alert("Problem z uruchomieniem gniazda!"); return error});
   }
@@ -86,8 +90,10 @@ resetDevice(){
     fetch(request(`${API_URL}/turnoff`, "POST", {ip:this.props.socketIP}))
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
-      // this.getSocketInfo();
+      setTimeout(() => {
+        this.props.name==="ORANGEPI" ? this.checkPIStatus():this.checkStatus();
+        this.getSocketInfo();
+      }, "500");
     })
     .catch((error) => {alert("Problem z wyłączeniem gniazda!"); return error});
   }
@@ -98,6 +104,7 @@ resetDevice(){
     fetch(request(`${API_URL}/getsocketinfo`, "POST", {ip:this.props.socketIP}))
     .then((res) => res.json())
     .then((result) => {
+      console.log(result.data.Status);
 this.setState({info:result.data.Status});
     })
     .catch((error) => {console.log("Problem z pobraniem statusu gniazda!"); return error});   
