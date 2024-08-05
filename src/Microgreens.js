@@ -29,7 +29,7 @@ class Microgreens extends React.Component {
       namePL: '',
       gramsTray: '',
       gramsHarvest:'',
-      wateringLevel:'',
+      wateringLevel:'1',
       weight: '',
       blackout: '',
       light: '',
