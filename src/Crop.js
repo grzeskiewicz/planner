@@ -136,15 +136,24 @@ class Crop extends React.Component {
       harvest=isMobile ? moment(sim.harvest).format("DD.MM") : moment(sim.harvest).format("DD.MM.YYYY");
       trays=sim.trays;
     }
+
+    const today=moment();
+    const isStartToday=moment(crop.start).isSame(today,'day');
+    const isBlackoutToday=moment(crop.blackoutStart).isSame(today,'day');
+    const isLightToday=moment(crop.lightExposureStart).isSame(today,'day');
+    const isHarvestToday=moment(crop.harvest).isSame(today,'day');
+    const isCropDue=moment(crop.harvest).isBefore(today,'day');
+    console.log(moment(crop.blackoutStart).format('DD.MM.YYYY'),moment().format('DD.MM.YYYY'));
+
     return (
 
-      <div className={"cropEntry " + (isSelected ? "selected" : "")} key={this.props.index}>
+      <div className={"cropEntry " + (isSelected ? "selected " : "") + (isCropDue ? "cropDue":"")} key={this.props.index}>
         <div className="color" style={{ backgroundColor: this.props.microgreenData.color }}>{" "}</div>
-        <div className="cropType">{microgreenData.name_pl}</div>
-        <div>{start}</div>
-        <div>{blackoutStart}</div>
-        <div>{lightExposureStart}</div>
-        <div>{harvest}</div>
+        <div className={"cropType " + ((isStartToday || isBlackoutToday || isLightToday || isHarvestToday) ? "todayEvent":"" )}>{microgreenData.name_pl}</div>
+        <div className={isStartToday ? "todayEvent":""}>{start}</div>
+        <div className={isBlackoutToday ? "todayEvent":""}>{blackoutStart}</div>
+        <div className={isLightToday ? "todayEvent":""}>{lightExposureStart}</div>
+        <div className={isHarvestToday ? "todayEvent":""}>{harvest}</div>
         <div className="trays">{trays}</div>
         <div className="cropNotes">
           {this.state.editNotesEnabled &&
