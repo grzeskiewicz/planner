@@ -124,8 +124,8 @@ const selectedMicrogreens=this.props.selectedMicrogreens;
 const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
   return (
     <div className={"MicrogreenEntry " + (amISelectedToEdit ? "edit":"") } key={this.props.index} onKeyDown={this.enter}>
-    <div>{ amISelectedToEdit? <input type="text" value={this.state.name_pl} onChange={this.handleNamePL}></input>:microgreen.name_pl}</div>
-    <div>{amISelectedToEdit ? <input type="text" value={this.state.name_en} onChange={this.handleNameEN}></input>:microgreen.name_en}</div>
+    <div className='microgreenNamePL'>{ amISelectedToEdit? <input type="text" value={this.state.name_pl} onChange={this.handleNamePL}></input>:microgreen.name_pl}</div>
+    <div className='microgreenNameEN'>{amISelectedToEdit ? <input type="text" value={this.state.name_en} onChange={this.handleNameEN}></input>:microgreen.name_en}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.grams_tray} onChange={this.handleGramsTray}></input>:microgreen.grams_tray}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.grams_harvest} onChange={this.handleGramsHarvest}></input>:microgreen.grams_harvest}</div>
     <div>{ amISelectedToEdit? 
@@ -138,7 +138,7 @@ const amISelectedToEdit=isEditEnabled && selectedMicrogreens===microgreen.id;
     <div>{ amISelectedToEdit? <input type="number" value={this.state.blackout} onChange={this.handleBlackout}></input>:microgreen.blackout}</div>
     <div>{ amISelectedToEdit? <input type="number" value={this.state.light} onChange={this.handleLight}></input>:microgreen.light}</div>
     <div>{this.state.weight+this.state.blackout+this.state.light}</div>
-    <div style={{backgroundColor:microgreen.color}}>{ amISelectedToEdit? <input type="color" value={this.state.color} onChange={this.handleColor}></input>:microgreen.color.toUpperCase()}</div>
+    <div className='microgreenColor' style={{backgroundColor:microgreen.color}}>{ amISelectedToEdit? <input type="color" value={this.state.color} onChange={this.handleColor}></input>:microgreen.color.toUpperCase()}</div>
     { !amISelectedToEdit? <div className="iconTD" onClick={() => this.deleteMicrogreens(microgreen)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </div> :''}

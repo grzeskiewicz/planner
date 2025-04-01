@@ -7,7 +7,7 @@
   #microgreens-list{
     display: flex;
     flex-flow:column nowrap;
-    flex:0 90%;
+    flex:0 100%;
   }
   
  .MicrogreenEntry .save{
@@ -29,7 +29,7 @@
     font-weight: bold;
   }
 
-  .Microgreens .head div {
+  .Microgreens .head > * {
     flex:1;
     text-align: center;
     border:1px solid black;
@@ -50,7 +50,7 @@
     
   }
 
-  .MicrogreenEntry div{
+  .MicrogreenEntry > *{
     flex:1;
     text-align: center;
     display: flex;
@@ -71,63 +71,46 @@
     width:100%;
   }
 
-#addMicrogreens {
-    display: flex;
-    flex-flow:row nowrap;
-    flex:0 10%;
-    margin-right: 2rem;
-}
-
-#addMicrogreens form{
-    display: flex;
-    flex-flow:column nowrap;  
-    height:100%; 
-}
-
-  #addMicrogreens form  input, #addMicrogreens form  select{
-    margin-bottom:1rem;
-    text-transform: uppercase;
-    flex:0 5%;
-  }
-
   .MicrogreenEntry input, .MicrogreenEntry select{
     flex:1;
     box-sizing:border-box;
     width: 100% 
   }
- 
-  #addMicrogreens button{
-    flex:0 7%;
-  }
 
   @media screen and (max-width: 400px)  {
-    .Microgreens{
+   /* .Microgreens{
       display: flex;
       flex-flow:column nowrap;
       justify-content: flex-start;
-    }
+    }*/
 
-    #addMicrogreens form  input{
-   margin-bottom:4px; 
+    #microgreens-list {
+      flex:0 90%;
     }
-
-    .amfWrapper{
-      flex:0 100%;
-    }
-
-    .amfWrapper button{
-width:100%;
-height:30%;
-    }
-
 
     .Microgreens input {
       font-size: 0.6rem;
     }
 
-    #microgreens-list {
-      flex:0 90%;
+    .head{
+      width: 170vw;
     }
+    .MicrogreenEntry{
+      width: 170vw;
+    }
+
+    .MicrogreenEntry .microgreenNamePL, .head .microgreenNamePL{
+      flex:4;
+    }
+
+    .MicrogreenEntry .microgreenNameEN,.head .microgreenNameEN{
+      flex:4;
+    }
+
+    .MicrogreenEntry .microgreenColor, .head .microgreenColor{
+      flex:3;
+    }
+ 
 
   
   }

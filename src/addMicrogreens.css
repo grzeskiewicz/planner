@@ -1,0 +1,26 @@
+#addMicrogreens {
+    display: flex;
+    flex-flow:row wrap;
+    flex:0 100%;
+justify-content: center;
+}
+
+#addMicrogreens form{
+    display: flex;
+    flex-flow:column wrap;  
+    height:100%; 
+    flex:0 30%;
+}
+
+  #addMicrogreens form  input, #addMicrogreens form  select{
+    margin-bottom:1rem;
+    text-transform: uppercase;
+    flex:0 5%;
+  }
+
+  @media screen and (max-width: 400px)  {
+    #addMicrogreens form{
+        flex:0 100%;
+    }
+    
+  }

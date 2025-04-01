@@ -128,7 +128,7 @@ width:100vw;
   justify-content: space-evenly;
 }
   #menu div{
-display: block;
+height: 8vh;
   }
 
   #crops-month-tab{

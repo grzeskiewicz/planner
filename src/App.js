@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import Microgreens from './Microgreens';
+import AddMicrogreens from './AddMicrogreens';
 import Crops from './Crops';
 import WeekView from './WeekView';
 import Devices from './Devices';
@@ -25,6 +26,7 @@ class App extends React.Component {
       isReady: false
     }
     this.showMicrogreensTab = this.showMicrogreensTab.bind(this);
+    this.showAddMicrogreensTab = this.showAddMicrogreensTab.bind(this);
     this.showAddCropTab = this.showAddCropTab.bind(this);
     this.showCropsTab=this.showCropsTab.bind(this);
     this.showWeekTab = this.showWeekTab.bind(this);
@@ -149,21 +151,24 @@ class App extends React.Component {
     this.setState({ tab: 4 });
   }
 
-
-  showCustomersTab() {
+  showAddMicrogreensTab(){
     this.setState({ tab: 5 });
   }
 
-  showAddCustomerTab() {
+  showCustomersTab() {
     this.setState({ tab: 6 });
+  }
+
+  showAddCustomerTab() {
+    this.setState({ tab: 7 });
   }
  
   showOrdersTab() {
-    this.setState({ tab: 7 });
+    this.setState({ tab: 8 });
   }
 
   showDevicesTab() {
-    this.setState({ tab: 8 });
+    this.setState({ tab: 9 });
   }
 
 
@@ -188,6 +193,7 @@ class App extends React.Component {
           <div id="crops-week-tab" onClick={this.showWeekTab}><p>{isMobile ? '[7]' : 'WIDOK [TYDZIEŃ]'}</p></div>
           <div id="crops-month-tab" onClick={this.showMonthTab}><p>{isMobile ? '[MSC]' : 'WIDOK [MIESIĄC]'}</p></div>
           <div id="microgreens-tab" onClick={this.showMicrogreensTab}><p>MICROGREENS</p></div>
+          <div id="addmicrogreens-tab" onClick={this.showAddMicrogreensTab}><p>+ MICROGREENS</p></div>
           <div id="customers-tab" onClick={this.showCustomersTab}><p>KLIENCI</p></div>
           <div id="addcustomer-tab" onClick={this.showAddCustomerTab}><p>+ KLIENT</p></div>
           <div id="orders-tab" onClick={this.showOrdersTab}><p>ZAMÓWIENIA</p></div>
@@ -200,10 +206,11 @@ class App extends React.Component {
           {this.state.crops !== '' && this.state.tab === 2 ? <WeekView  className="main" customers={this.state.customers} orders={this.state.orders} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></WeekView> : null}
           {this.state.crops !== '' && this.state.tab === 3 ? <MonthView fndtrays={this.state.FNDTrays} customers={this.state.customers} orders={this.state.orders} trays={this.state.trays} tdc={this.state.traydatecrops} microgreens={this.state.microgreens} crops={this.state.crops} setSelectedDay={this.setSelectedDay} setSelectedCrop={this.setSelectedCrop}></MonthView> : null}
           {this.state.microgreens !== '' && this.state.tab === 4 ? <Microgreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></Microgreens> : null}
-          {this.state.tab === 5 ? <Customers customers={this.state.customers} refreshCustomers={this.getCustomers}></Customers>  : null}
-          {this.state.tab === 6 ? <AddCustomer showCustomersTab={this.showCustomersTab} refreshCustomers={this.getCustomers}></AddCustomer>  : null}
-          {this.state.tab === 7 ? <Orders crops={this.state.crops} microgreens={this.state.microgreens} customers={this.state.customers} orders={this.state.orders} refreshOrders={this.getOrders}></Orders>  : null}
-          {this.state.tab === 8 ? <Devices></Devices> : null}
+          {this.state.microgreens !== '' && this.state.tab === 5 ? <AddMicrogreens microgreens={this.state.microgreens} refreshMicrogreens={this.getMicrogreens}></AddMicrogreens> : null}
+          {this.state.tab === 6 ? <Customers customers={this.state.customers} refreshCustomers={this.getCustomers}></Customers>  : null}
+          {this.state.tab === 7 ? <AddCustomer showCustomersTab={this.showCustomersTab} refreshCustomers={this.getCustomers}></AddCustomer>  : null}
+          {this.state.tab === 8 ? <Orders crops={this.state.crops} microgreens={this.state.microgreens} customers={this.state.customers} orders={this.state.orders} refreshOrders={this.getOrders}></Orders>  : null}
+          {this.state.tab === 9 ? <Devices></Devices> : null}
 
 
 
