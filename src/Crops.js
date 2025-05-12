@@ -18,11 +18,6 @@ class Crops extends React.Component {
     super(props);
     this.state = {
       microgreensID: 99,
-      shelfID: '',
-      trays: '',
-      notes: '',
-      harvest: '',
-      start: '',
       cropDateFrom: moment().subtract(15, 'days'),
       cropDateTo: moment().add(15, 'days'),
       clicks: Number(0),
@@ -30,28 +25,26 @@ class Crops extends React.Component {
       showAllCrops: false,
       showWeekView: false,
       scheduledTDC: [],
-      selectedCrop:null,
-      sim:null
+      selectedCrop: null,
     }
+
     this.handleMicrogreens = this.handleMicrogreens.bind(this);
     this.handleTrays = this.handleTrays.bind(this);
     this.handleNotes = this.handleNotes.bind(this);
     this.handleHarvest = this.handleHarvest.bind(this);
     this.handleRangeSelection = this.handleRangeSelection.bind(this);
-    this.handleCropDateFrom=this.handleCropDateFrom.bind(this);
-    this.handleCropDateTo=this.handleCropDateTo.bind(this);
+    this.handleCropDateFrom = this.handleCropDateFrom.bind(this);
+    this.handleCropDateTo = this.handleCropDateTo.bind(this);
     this.renderMicrogreensSelection = this.renderMicrogreensSelection.bind(this);
     this.renderShelvesSelection = this.renderShelvesSelection.bind(this);
-    this.addCrops = this.addCrops.bind(this);
     this.handleStart = this.handleStart.bind(this);
     this.setSelectedCrop = this.setSelectedCrop.bind(this);
     this.renderRangeCropsTable = this.renderRangeCropsTable.bind(this);
     this.showWeekView = this.showWeekView.bind(this);
     this.saveScheduleTDC = this.saveScheduleTDC.bind(this);
     this.scheduleWatering = this.scheduleWatering.bind(this);
-    this.deleteCrop=this.deleteCrop.bind(this);
-    this.updateSim=this.updateSim.bind(this);
-    this.resetSchedule=this.resetSchedule.bind(this);
+    this.deleteCrop = this.deleteCrop.bind(this);
+    this.resetSchedule = this.resetSchedule.bind(this);
   }
 
 
@@ -79,12 +72,12 @@ class Crops extends React.Component {
     this.setState({ start: event.target.value })
   }
 
-  handleCropDateFrom(event){
-    this.setState({ cropDateFrom: moment(event.target.value)});
+  handleCropDateFrom(event) {
+    this.setState({ cropDateFrom: moment(event.target.value) });
   }
 
-  handleCropDateTo(event){
-    this.setState({ cropDateTo: moment(event.target.value)});
+  handleCropDateTo(event) {
+    this.setState({ cropDateTo: moment(event.target.value) });
   }
 
   setSelectedCrop(id) {
@@ -110,31 +103,6 @@ class Crops extends React.Component {
     });
   }
 
-
-
-  makeSimulation(microgreen) {
-    if (this.state.harvest !== '') {
-      const lightExposureStart = moment(this.state.harvest).subtract(microgreen.light, "days");
-      const blackoutStart = moment(lightExposureStart).subtract(microgreen.blackout, "days");
-      const start = moment(blackoutStart).subtract(microgreen.weight, "days");
-      return <div className='simulation'>
-        <div><p>Start:</p><p>{start.format('DD.MM.YYYY')}</p></div>
-        <div><p>Blackout:</p><p>{blackoutStart.format('DD.MM.YYYY')}</p></div>
-        <div><p>Naświetlanie:</p><p>{lightExposureStart.format('DD.MM.YYYY')}</p></div>
-        <div><p>Zbiór:</p><p>{moment(this.state.harvest).format('DD.MM.YYYY')}</p></div>
-      </div>
-    } else if (this.state.start !== '') {
-      const blackoutStart = moment(this.state.start).add(microgreen.weight, "days");
-      const lightExposureStart = moment(blackoutStart).add(microgreen.blackout, "days");
-      const harvest = moment(lightExposureStart).add(microgreen.light, "days");
-      return <div className='simulation'>
-        <div><p>Start:</p><p>{moment(this.state.start).format('DD.MM.YYYY')}</p></div>
-        <div><p>Blackout:</p><p>{blackoutStart.format('DD.MM.YYYY')}</p></div>
-        <div><p>Naświetlanie:</p><p>{lightExposureStart.format('DD.MM.YYYY')}</p></div>
-        <div><p>Zbiór:</p><p>{harvest.format('DD.MM.YYYY')}</p></div>
-      </div>
-    }
-  }
 
   calcDatesCrop(crops) {
     for (const crop of crops) {
@@ -179,28 +147,27 @@ class Crops extends React.Component {
       (moment(x.harvest).isSameOrAfter(moment(from)) && moment(x.harvest).isSameOrBefore(moment(to)))
       || (moment(x.start).isSameOrAfter(moment(from)) && moment(x.start).isSameOrBefore(moment(to)))
       || (x.harvest === null) || (x.harvest === "undefined"));
-   
-/*      
-const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
-  const startA=moment(a.start);
-  const startB=moment(b.start); 
 
-  if (startA.isBefore(startB)) return -1;
-  if (startB.isBefore(startA)) return 1;
-  if (startA.isSame(startB)) return 0;
-});*/
+    /*      
+    const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
+      const startA=moment(a.start);
+      const startB=moment(b.start); 
+    
+      if (startA.isBefore(startB)) return -1;
+      if (startB.isBefore(startA)) return 1;
+      if (startA.isSame(startB)) return 0;
+    });*/
     return rangeDateCrops.map((crop, index) => {
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
-
-      return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
+      return <Crop sim={null} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
         microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
         markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}
       ></Crop>
     });
   }
 
-  deleteCrop(){
-   this.setState({showWeekView:false,selectedCrop:undefined});
+  deleteCrop() {
+    this.setState({ showWeekView: false, selectedCrop: undefined });
   }
 
   renderAllCropsTable() {
@@ -209,8 +176,8 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
     return this.props.crops.map((crop, index) => {
       const microgreenData = this.props.microgreens.find((x) => x.id === crop.microgreen_id);
       return <Crop sim={this.state.sim} addCrop={false} deleteCrop={this.deleteCrop} setSelectedDay={this.props.setSelectedDay} refreshCrops={this.props.refreshCrops} index={index} crop={crop}
-      microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
-      markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}></Crop>
+        microgreenData={microgreenData} setSelectedCrop={this.setSelectedCrop} selectedCrop={this.state.selectedCrop}
+        markedCrop={this.props.markedCrop} microgreens={this.props.microgreens} trays={this.props.trays} tdc={this.props.tdc} crops={this.props.crops} showWeekView={this.showWeekView} refreshTDC={this.props.refreshTDC}></Crop>
     });
   }
 
@@ -227,30 +194,12 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
 
 
 
-  addCrops(event) {
-    event.preventDefault();
-    const crop = {
-      microgreenID: this.state.microgreensID,
-      notes: this.state.notes
-    }
-    fetch(request(`${API_URL}/addcrops`, "POST", crop))
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          this.props.refreshCrops();
-        } else {
-          alert("SQL Erro - błędne wartości!")
-        }
-      })
-      .catch((error) => {alert("Nie udało się dodać zasiewu!"); return error});
-  }
-
 
   saveScheduleTDC(crop, tdcs, harvest) {
-    const microgreens=this.props.microgreens;
-    const microgreenData=microgreens.find((x)=>x.id===this.state.selectedCrop.microgreen_id);
+    const microgreens = this.props.microgreens;
+    const microgreenData = microgreens.find((x) => x.id === this.state.selectedCrop.microgreen_id);
 
-    fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest,light:microgreenData.light }))
+    fetch(request(`${API_URL}/savescheduletdc`, "POST", { crop_id: crop, tdcs: tdcs, harvest: harvest, light: microgreenData.light }))
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
@@ -261,7 +210,7 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
           alert("SQL Erro - błędne wartości!")
         }
       })
-      .catch((error) => {alert("Błąd zapisu harmonogramu!"); return error});
+      .catch((error) => { alert("Błąd zapisu harmonogramu!"); return error });
   }
 
   refreshTDC() {
@@ -292,66 +241,66 @@ const rangeDateCropsSorted=rangeDateCrops.sort((a,b)=> {
   scheduleWatering() {
     if (window.confirm('Czy jesteś pewien, że chcesz zaplanować nawadnianie (reset obecnego harmonogramu)?')) {
 
-    const tdc = this.props.tdc;
-    const start=moment().startOf('day');
-    const finish=moment().week(start.isoWeek() +1).weekday(7);
-    const scheduleTDC=this.tdcDateRange(tdc,start,finish)
-    const grp = groupByDay(scheduleTDC, this.props.trays);
-    const schedule = this.groupByFNDTrays(grp);
-const filteredScheduleTDC=scheduleTDC.filter((x)=>x.crop_id!==null);
-const cropsListArr=(filteredScheduleTDC.map((x)=> x.crop_id));
-const cropsListSet=new Set(cropsListArr);
-const cropsList=Array.from(cropsListSet.values());
-    fetch(request(`${WATERING_API}/schedule`, "POST", { schedule: schedule }))
-      .then((res) => res.json())
-      .then((result) => {
-        //console.log(result);
-        if (result.success) {
-          console.log("GIT WATERING API");
-          fetch(request(`${API_URL}/schedulewatering`, "POST", {crops:cropsList}))
-          .then((res) => res.json())
-          .then((result) => {
-         //   console.log(result);
-            if (result.success) {
-              alert("Harmonogram nawadniania zaktualizowany!")
-              this.props.refreshCrops();
-            } else {
-              alert("SQL Erro - błędne wartości!")
-            }
-          })
-          .catch((error) => {alert("Nie udało się dodać zasiewu!"); console.log(error); return error});
+      const tdc = this.props.tdc;
+      const start = moment().startOf('day');
+      const finish = moment().week(start.isoWeek() + 1).weekday(7);
+      const scheduleTDC = this.tdcDateRange(tdc, start, finish)
+      const grp = groupByDay(scheduleTDC, this.props.trays);
+      const schedule = this.groupByFNDTrays(grp);
+      const filteredScheduleTDC = scheduleTDC.filter((x) => x.crop_id !== null);
+      const cropsListArr = (filteredScheduleTDC.map((x) => x.crop_id));
+      const cropsListSet = new Set(cropsListArr);
+      const cropsList = Array.from(cropsListSet.values());
+      fetch(request(`${WATERING_API}/schedule`, "POST", { schedule: schedule }))
+        .then((res) => res.json())
+        .then((result) => {
+          //console.log(result);
+          if (result.success) {
+            console.log("GIT WATERING API");
+            fetch(request(`${API_URL}/schedulewatering`, "POST", { crops: cropsList }))
+              .then((res) => res.json())
+              .then((result) => {
+                //   console.log(result);
+                if (result.success) {
+                  alert("Harmonogram nawadniania zaktualizowany!")
+                  this.props.refreshCrops();
+                } else {
+                  alert("SQL Erro - błędne wartości!")
+                }
+              })
+              .catch((error) => { alert("Nie udało się dodać zasiewu!"); console.log(error); return error });
 
-        } else {
-          alert("SQL Error - błędne wartości!")
-        }
-      })
-      .catch((error) => {alert("Błąd! Rescheduling nieudany!"); return error});
-    } else{
+          } else {
+            alert("SQL Error - błędne wartości!")
+          }
+        })
+        .catch((error) => { alert("Błąd! Rescheduling nieudany!"); return error });
+    } else {
 
     }
   }
 
-  updateSim(sim){
-    this.setState({sim:sim});
-    }
+  updateSim(sim) {
+    this.setState({ sim: sim });
+  }
 
-tdcDateRange(tdc,start,finish){
-      const startDate = moment(start).startOf("day");
-      const finishdate = moment(finish).endOf("day");
-      const TDC = [];
-      for (const entry of tdc) {
-        if (
-          moment(entry.date).isBetween(startDate, finishdate, undefined, "[]")
-        ) {
-          let entryCp = JSON.parse(JSON.stringify(entry));
-          let entryDate = moment(entryCp.date);
-          entryCp.date = entryDate.format("DD.MM.YYYY");
-          TDC.push(entry);
-        }
+  tdcDateRange(tdc, start, finish) {
+    const startDate = moment(start).startOf("day");
+    const finishdate = moment(finish).endOf("day");
+    const TDC = [];
+    for (const entry of tdc) {
+      if (
+        moment(entry.date).isBetween(startDate, finishdate, undefined, "[]")
+      ) {
+        let entryCp = JSON.parse(JSON.stringify(entry));
+        let entryDate = moment(entryCp.date);
+        entryCp.date = entryDate.format("DD.MM.YYYY");
+        TDC.push(entry);
       }
-      return TDC;
-  }    
-    
+    }
+    return TDC;
+  }
+
 
   weekTDC(tdc) {
     const weekNow = moment().weeks();
@@ -379,32 +328,31 @@ tdcDateRange(tdc,start,finish){
   }
 
 
-  resetSchedule(){
+  resetSchedule() {
     const tdc = this.props.tdc;
-    const start=moment().startOf('day');
-    const finish=moment().week(start.isoWeek() +1).weekday(7);
-    const scheduleTDC=this.tdcDateRange(tdc,start,finish)
-const filteredScheduleTDC=scheduleTDC.filter((x)=>x.crop_id!==null);
-const cropsListArr=(filteredScheduleTDC.map((x)=> x.crop_id));
-const cropsListSet=new Set(cropsListArr);
-const cropsList=Array.from(cropsListSet.values());
+    const start = moment().startOf('day');
+    const finish = moment().week(start.isoWeek() + 1).weekday(7);
+    const scheduleTDC = this.tdcDateRange(tdc, start, finish)
+    const filteredScheduleTDC = scheduleTDC.filter((x) => x.crop_id !== null);
+    const cropsListArr = (filteredScheduleTDC.map((x) => x.crop_id));
+    const cropsListSet = new Set(cropsListArr);
+    const cropsList = Array.from(cropsListSet.values());
 
 
     if (window.confirm('Wyczyścić harmonogram nawadniania?')) {
-    fetch(request(`${WATERING_API}/cleanschedule`, 'GET'))
-    .then(res => res.json())
-    .then(result => {
-      console.log(result);
-      fetch(request(`${API_URL}/cleanschedule`, "POST", {crops:cropsList}))
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
-          this.props.refreshCrops();
-          alert("Harmonogram nawadaniania wyczyszczony.");
-        }
-      });
-    });
-  }
+      fetch(request(`${WATERING_API}/cleanschedule`, 'GET'))
+        .then(res => res.json())
+        .then(result => {
+          fetch(request(`${API_URL}/cleanschedule`, "POST", { crops: cropsList }))
+            .then((res) => res.json())
+            .then((result) => {
+              if (result.success) {
+                this.props.refreshCrops();
+                alert("Harmonogram nawadaniania wyczyszczony.");
+              }
+            });
+        });
+    }
   }
 
   render() {
@@ -412,43 +360,43 @@ const cropsList=Array.from(cropsListSet.values());
     if (this.props.crops !== '') cropsTable = this.renderRangeCropsTable();
     const allCrops = this.renderAllCropsTable();
 
-    const head=<div className='head'>
-    <div className='color'>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div className='cropNotes'>Notatki</div>
-    <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg"/></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
-    </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
-  </div>;
-   
+    const head = <div className='head'>
+      <div className='cropID'>ID</div><div className='color'>Kolor</div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div className="trays">Tace</div><div className='cropNotes'>Notatki</div>
+      <div className="iconTD"><FontAwesomeIcon icon={faTrashAlt} size="lg" /></div><div className="iconTD"><FontAwesomeIcon icon={faCalendarCheck} size="lg" />
+      </div><div className="iconTD"><FontAwesomeIcon icon={faCheckToSlot} size="lg" /></div>
+    </div>;
+
     return (
       <div className='Crops'>
         <div id="cropList">
           <div id="scheduleManager">
-          <div id="schedulerDiv"><button onClick={this.scheduleWatering}>SCHEDULER</button></div>
-          <div id="resetScheduleDiv"><button onClick={this.resetSchedule}>RESET HARMONOGRAMU</button></div>
+            <div id="schedulerDiv"><button onClick={this.scheduleWatering}>SCHEDULER</button></div>
+            <div id="resetScheduleDiv"><button onClick={this.resetSchedule}>RESET HARMONOGRAMU</button></div>
           </div>
-         <div id="cropDateRange">
-          <fieldset>
-        <legend>ZAKRES</legend>
-            <input type="date" onChange={this.handleCropDateFrom} value={this.state.cropDateFrom.format('YYYY-MM-DD')}></input>
-            <span> - </span>
-            <input type="date" min={this.state.cropDateFrom.clone().add(7,"days").format('YYYY-MM-DD')} onChange={this.handleCropDateTo} value={this.state.cropDateTo.format('YYYY-MM-DD')}></input>
+          <div id="cropDateRange">
+            <fieldset>
+              <legend>ZAKRES</legend>
+              <input type="date" onChange={this.handleCropDateFrom} value={this.state.cropDateFrom.format('YYYY-MM-DD')}></input>
+              <span> - </span>
+              <input type="date" min={this.state.cropDateFrom.clone().add(7, "days").format('YYYY-MM-DD')} onChange={this.handleCropDateTo} value={this.state.cropDateTo.format('YYYY-MM-DD')}></input>
             </fieldset>
-            {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> :<button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
-            </div>
-         {cropsTable.length >0 ? 
-          <div id="cropsTable">
-          {head}
-            <div className='body'>
-              {cropsTable}
-            </div>
-          </div>:''}
+            {this.state.showAllCrops ? <button onClick={() => this.setState({ showAllCrops: false })}>UKRYJ</button> : <button onClick={() => this.setState({ showAllCrops: true })}>WSZYSTKIE</button>}
+          </div>
+          {cropsTable.length > 0 ?
+            <div id="cropsTable">
+              {head}
+              <div className='body'>
+                {cropsTable}
+              </div>
+            </div> : ''}
           {this.state.showWeekView ? <WeekView customers={this.props.customers} orders={this.props.orders} updateSim={this.updateSim} addCrop={false} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.selectedCrop} className="scheduleCrop" trays={this.props.trays} tdc={this.state.tdc} microgreens={this.props.microgreens} crops={this.props.crops} setSelectedDay={this.props.setSelectedDay} setSelectedCrop={this.props.setSelectedCrop} ></WeekView> : null}
           {this.state.showAllCrops ?
             <div id="allCrops">
-                {head}
-                <div className='body'>
-                  {allCrops}
-                </div>
-              </div> :null}
+              {head}
+              <div className='body'>
+                {allCrops}
+              </div>
+            </div> : null}
         </div>
       </div>
     );

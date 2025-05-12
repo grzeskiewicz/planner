@@ -62,7 +62,11 @@ flex:1;
 
 
 #WeekView .tray{
-
+    display: flex;
+    flex-flow:column;
+    justify-content: center;
+    align-items: center;
+    font-size:0.7rem;
 }
 
 .tray.blocked{

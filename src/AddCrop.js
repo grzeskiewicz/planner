@@ -75,6 +75,10 @@ renderMicrogreensSelection() {
 
   addCrops(event) {
     event.preventDefault();
+    if (this.state.microgreensID === 99) {
+      alert("Wybierz rodzaj zasiewu!");
+      return;
+    }
     const crop = {
       microgreenID: this.state.microgreensID,
       notes: this.state.notes
@@ -84,8 +88,8 @@ renderMicrogreensSelection() {
       .then((res) => res.json())
       .then((result) => {
         if (result.success) {
+          this.setState({stage:2,crop: result.crop});
           this.props.refreshCrops();
-          this.setState({stage:2,crop: result.crop})
         } else {
           alert("SQL Error - błędne wartości!")
         }
@@ -175,7 +179,7 @@ render(){
 {this.state.stage===2 ?
 <div className='cropEntryWrapper'>
 <div className='head'>
-                  <div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div><div>X</div></div>
+                  <div>ID</div><div></div><div className='cropType'>Rodzaj</div><div>Start</div><div>Blackout</div><div>Światło</div><div>Zbiór</div><div>Tace</div><div>Notatki</div><div>X</div></div>
 <Crop sim={this.state.sim} addCrop={true} refreshCrops={this.props.refreshCrops} crop={this.state.crop} microgreenData={microgreenData} setSelectedCrop={this.props.setSelectedCrop}
         trays={this.props.trays} tdc={this.props.traydatecrops} refreshTDC={this.props.refreshTDC}></Crop></div>:''}
 {this.state.stage===2 ? <WeekView addCrop={1} updateSim={this.updateSim} refreshTDC={this.props.refreshTDC} saveScheduleTDC={this.saveScheduleTDC} selectedCrop={this.state.crop} className="scheduleCrop" trays={this.props.trays} tdc={this.props.tdc} 

@@ -15,8 +15,8 @@ class Crop extends React.Component {
     super(props);
     this.state = {
       editNotesEnabled: false,
-      notes: this.props.crop.notes,
-      showWeekView: false
+      showWeekView: false,
+      notes: ''
     };
     this.triggerEditNotes = this.triggerEditNotes.bind(this);
     this.editNotes = this.editNotes.bind(this);
@@ -24,37 +24,52 @@ class Crop extends React.Component {
     this.deleteCrop = this.deleteCrop.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({ notes: this.props.crop.notes });
+  }
+
+  componentDidUpdate() {
+    if (this.props.crop.notes !== this.state.notes) {
+      this.setState({ notes: this.props.crop.notes });
+    }
+  }
+
+  componentWillUnmount() { //?
+    this.setState({ notes: '' });
+    this.props.refreshCrops();
+  }
+
 
 
   deleteSchedule(crop) {
     if (window.confirm("Czy zakończyć zasiew?\nZostanie USUNIĘTY z harmonogramu nawadniania\noraz oznaczony w bazie jako ZAKOŃCZONY.\nPROCES NIEODWRACALNY")) {
 
-    fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
-      .then((res) => res.json())
-      .then((result) => {
-        if (result.success) {
+      fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
+        .then((res) => res.json())
+        .then((result) => {
+          if (result.success) {
 
-          fetch(request(`${API_URL}/completewatering`, "POST", { crop: crop.id }))
-            .then((res2) => res2.json())
-            .then((result2) => {
-              if (result.success) {
-                this.props.refreshCrops();
-              } else {
-                alert("SQL Error - błędne wartości!");
-              }
-            })
-            .catch((error) => {alert("Nie udało się zakończyć nawadniania w bazie!"); return error});
-        } else {
-          alert("SQL Error - błędne wartości!");
-        }
-      })
-      .catch((error) => {alert("Nie udało się usunąć zadania z centrum nawadniania!!!"); return error});
+            fetch(request(`${API_URL}/completewatering`, "POST", { crop: crop.id }))
+              .then((res2) => res2.json())
+              .then((result2) => {
+                if (result.success) {
+                  this.props.refreshCrops();
+                } else {
+                  alert("SQL Error - błędne wartości!");
+                }
+              })
+              .catch((error) => { alert("Nie udało się zakończyć nawadniania w bazie!"); return error });
+          } else {
+            alert("SQL Error - błędne wartości!");
+          }
+        })
+        .catch((error) => { alert("Nie udało się usunąć zadania z centrum nawadniania!!!"); return error });
 
     }
   }
 
 
- 
+
 
   deleteCrop(crop) {
     if (window.confirm("Czy usunąć zasiew (baza + harmonogram nawadniania)?")) {
@@ -64,15 +79,21 @@ class Crop extends React.Component {
           if (result.success) {
             this.props.deleteCrop();
             this.props.refreshCrops();
-            fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
-              .then((res2) => res2.json())
-              .then((result2) => {
-              }).catch((error) => {alert("Zasiew usunięty, ale nie udało się usunąć zadania z centrum nawadniania!!!"); return error});
+            if (crop.scheduled === 1) {
+              fetch(request(`${WATERING_API}/deleteschedule`, "POST", { crop: crop.id }))
+                .then((res2) => res2.json())
+                .then((result2) => {
+                }).catch((error) => {
+                  alert("Zasiew usunięty, ale nie udało się usunąć zadania z centrum nawadniania!!!");
+                  this.props.refreshCrops();
+                  return error
+                });
+            }
           } else {
             alert("SQL Error - błędne wartości!");
           }
         })
-        .catch((error) => {alert("Problem z usunięciem zasiewu!"); return error});
+        .catch((error) => { alert("Problem z usunięciem zasiewu!"); return error });
     } else {
     }
   }
@@ -99,7 +120,7 @@ class Crop extends React.Component {
           alert("SQL Error - błędne wartości!");
         }
       })
-      .catch((error) => {alert("Nie udało się zapisać notatek!"); return error});
+      .catch((error) => { alert("Nie udało się zapisać notatek!"); return error });
   }
 
   enter(e) {
@@ -120,40 +141,43 @@ class Crop extends React.Component {
 
   render() {
     const crop = this.props.crop;
-    let trays=crop.trays;
-    const isSelected=this.props.selectedCrop && this.props.selectedCrop.id===crop.id;
+    let trays = crop.trays;
+
+    const isSelected = this.props.selectedCrop && this.props.selectedCrop.id === crop.id;
     const microgreenData = this.props.microgreenData;
     let start = crop.harvest !== null ? (isMobile ? moment(crop.start).format("DD.MM") : moment(crop.start).format("DD.MM.YYYY")) : "-";
     let blackoutStart = crop.harvest !== null ? (isMobile ? moment(crop.blackoutStart).format("DD.MM") : moment(crop.blackoutStart).format("DD.MM.YYYY")) : "-";
     let lightExposureStart = crop.harvest !== null ? (isMobile ? moment(crop.lightExposureStart).format("DD.MM") : moment(crop.lightExposureStart).format("DD.MM.YYYY")) : "-";
     let harvest = crop.harvest !== null ? (isMobile ? moment(crop.harvest).format("DD.MM") : moment(crop.harvest).format("DD.MM.YYYY")) : "-";
 
-    if (this.props.sim!==null && this.props.sim.harvest!==null) {
-      const sim=this.props.sim;
-      start=isMobile ? moment(sim.start).format("DD.MM") : moment(sim.start).format("DD.MM.YYYY");
-      blackoutStart=isMobile ? moment(sim.blackout).format("DD.MM") : moment(sim.blackout).format("DD.MM.YYYY");
-      lightExposureStart=isMobile ? moment(sim.light).format("DD.MM") : moment(sim.light).format("DD.MM.YYYY");
-      harvest=isMobile ? moment(sim.harvest).format("DD.MM") : moment(sim.harvest).format("DD.MM.YYYY");
-      trays=sim.trays;
+    if (this.props.sim !== null && this.props.sim.harvest !== null) {
+      const sim = this.props.sim;
+      start = isMobile ? moment(sim.start).format("DD.MM") : moment(sim.start).format("DD.MM.YYYY");
+      blackoutStart = isMobile ? moment(sim.blackout).format("DD.MM") : moment(sim.blackout).format("DD.MM.YYYY");
+      lightExposureStart = isMobile ? moment(sim.light).format("DD.MM") : moment(sim.light).format("DD.MM.YYYY");
+      harvest = isMobile ? moment(sim.harvest).format("DD.MM") : moment(sim.harvest).format("DD.MM.YYYY");
+      trays = sim.trays;
     }
 
-    const today=moment();
-    const isStartToday=moment(crop.start).isSame(today,'day');
-    const isBlackoutToday=moment(crop.blackoutStart).isSame(today,'day');
-    const isLightToday=moment(crop.lightExposureStart).isSame(today,'day');
-    const isHarvestToday=moment(crop.harvest).isSame(today,'day');
-    const isCropDue=moment(crop.harvest).isBefore(today,'day');
-    console.log(moment(crop.blackoutStart).format('DD.MM.YYYY'),moment().format('DD.MM.YYYY'));
+    const today = moment();
+    const isStartToday = moment(crop.start).isSame(today, 'day');
+    const isBlackoutToday = moment(crop.blackoutStart).isSame(today, 'day');
+    const isLightToday = moment(crop.lightExposureStart).isSame(today, 'day');
+    const isHarvestToday = moment(crop.harvest).isSame(today, 'day');
+    const isCropDue = moment(crop.harvest).isBefore(today, 'day');
+    //console.log(moment(crop.blackoutStart).format('DD.MM.YYYY'), moment().format('DD.MM.YYYY'));
+    console.log(crop.start, blackoutStart, lightExposureStart, crop.harvest);
 
     return (
 
-      <div className={"cropEntry " + (isSelected ? "selected " : "") + (isCropDue ? "cropDue":"")} key={this.props.index}>
+      <div className={"cropEntry " + (isSelected ? "selected " : "") + (isCropDue ? "cropDue" : "")} key={this.props.index}>
+        <div className='cropID'>{crop.id}</div>
         <div className="color" style={{ backgroundColor: this.props.microgreenData.color }}>{" "}</div>
-        <div className={"cropType " + ((isStartToday || isBlackoutToday || isLightToday || isHarvestToday) ? "todayEvent":"" )}>{microgreenData.name_pl}</div>
-        <div className={isStartToday ? "todayEvent":""}>{start}</div>
-        <div className={isBlackoutToday ? "todayEvent":""}>{blackoutStart}</div>
-        <div className={isLightToday ? "todayEvent":""}>{lightExposureStart}</div>
-        <div className={isHarvestToday ? "todayEvent":""}>{harvest}</div>
+        <div className={"cropType " + ((isStartToday || isBlackoutToday || isLightToday || isHarvestToday) ? "todayEvent" : "")}>{microgreenData.name_pl}</div>
+        <div className={isStartToday ? "todayEvent" : ""}>{start}</div>
+        <div className={isBlackoutToday ? "todayEvent" : ""}>{blackoutStart}</div>
+        <div className={isLightToday ? "todayEvent" : ""}>{lightExposureStart}</div>
+        <div className={isHarvestToday ? "todayEvent" : ""}>{harvest}</div>
         <div className="trays">{trays}</div>
         <div className="cropNotes">
           {this.state.editNotesEnabled &&
@@ -171,9 +195,9 @@ class Crop extends React.Component {
         <div className="iconTD" onClick={() => this.deleteCrop(crop)}>
           <FontAwesomeIcon icon={faTrashAlt} size="lg" />
         </div>
-       { this.props.addCrop===false ? crop.scheduled === 1 ? <div className="iconTD">&#10004;</div> : <div className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></div>:null}
-        {crop.completed === 1 ? <div className="iconTD">&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> :  this.props.addCrop===true ? null:<div className="iconTD">-</div>}
-     
+        {this.props.addCrop === false ? crop.scheduled === 1 ? <div className="iconTD">&#10004;</div> : <div className="iconTD" onClick={() => this.scheduleCrop(crop)}><FontAwesomeIcon icon={faCalendarCheck} size="lg" /></div> : null}
+        {crop.completed === 1 ? <div className="iconTD">&#10004;</div> : crop.scheduled === 1 ? <div className="iconTD" onClick={() => this.deleteSchedule(crop)}>[Finish]</div> : this.props.addCrop === true ? null : <div className="iconTD">-</div>}
+
       </div>
     );
   }

@@ -41,10 +41,10 @@ export function groupByShelves(grpDay) {
     shelf4 = [];
   if (grpDay !== null && grpDay !== undefined) {
     for (const [valve, arr] of Object.entries(grpDay)) {
-      if (Number(valve) === 1 || Number(valve) == 2) shelf4.push(arr);
-      if (Number(valve) === 3 || Number(valve) == 4) shelf3.push(arr);
-      if (Number(valve) === 5 || Number(valve) == 6) shelf2.push(arr);
-      if (Number(valve) == 7 || Number(valve) == 8) shelf1.push(arr);
+      if (Number(valve) === 1 || Number(valve) === 2) shelf4.push(arr);
+      if (Number(valve) === 3 || Number(valve) === 4) shelf3.push(arr);
+      if (Number(valve) === 5 || Number(valve) === 6) shelf2.push(arr);
+      if (Number(valve) === 7 || Number(valve) === 8) shelf1.push(arr);
     }
     return [shelf4, shelf3, shelf2, shelf1];
   }
@@ -100,8 +100,8 @@ export function whichStageShelves(day, crop) {
 }
 
 export function cropInfoRender(cropInfo, microgreen,customersInfos) {
+if (!cropInfo || cropInfo==="undefined") return (<div className="cropInfo">USUNIĘTO</div>) 
   moment().locale('pl');
-//        {moment(cropInfo.start).format("dddd").substring(0, 3).toUpperCase()})
   return (
     <div className="cropInfo">
       <p>CROP ID:{cropInfo.id}</p>

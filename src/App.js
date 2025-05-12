@@ -97,10 +97,22 @@ class App extends React.Component {
     return fetch(request(`${API_URL}/crops`, 'GET'))
       .then(res => res.json())
       .then(result => {
-        this.setState({ crops: result });
+        this.setState({ crops: result,markedCrop:'' });
         return result;
       });
   }
+
+  refreshCrops(){
+    this.getCrops().then((crops) => {
+      this.getTrays().then((trays) => {
+        this.getFNDTrays().then((fndtrays) => {
+          this.getTrayDateCrops().then((tdc) => {
+          console.log("CROPS REFRESHED");
+          })
+        })
+      })
+    })
+    }
 
   getTrayDateCrops() {
     return fetch(request(`${API_URL}/traydatecrops`, 'GET'))
@@ -182,7 +194,6 @@ class App extends React.Component {
 
 
   render() {
-    //console.log(this.state.customers)
     const isReady = this.state.isReady;
 
     if (isReady) {

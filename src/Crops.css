@@ -149,11 +149,11 @@ justify-content: center;
   flex:3;
 }
 
-#cropsTable .head .color{
+#cropsTable .head .color,#cropsTable .head .cropID{
   flex:1;
 }
 
-.color{
+.color,.cropID{
   flex:1;
 }
 
