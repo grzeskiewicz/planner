@@ -24,7 +24,7 @@ class Device extends React.Component {
       this.handleValve=this.handleValve.bind(this);
       this.handleDuration=this.handleDuration.bind(this);
       this.getSocketInfo=this.getSocketInfo.bind(this);
-      this.resetValves=this.resetValves.bind(this);
+      this.resetValve=this.resetValve.bind(this);
       this.turnSocketON=this.turnSocketON.bind(this);
       this.turnSocketOFF=this.turnSocketOFF.bind(this);
 }
@@ -138,13 +138,13 @@ this.setState({info:result.data.Status});
     .catch((error) => {alert("Problem z uruchomieniem nawadniania!"); return error});
   }
 
-  resetValves(e){
+  resetValve(e){
     e.preventDefault();
-    fetch(request(`${WATERING_API}/resetvalves`, 'GET'))
+    fetch(request(`${WATERING_API}/resetvalve`, 'GET'))
       .then(res => res.json())
       .then(result => {
         if (result.success) {
-          alert("Przestawiono elektrozawory na stan zamknięcia.");}
+          alert("Przestawiono elektrozawór na stan zamknięcia.");}
       });
   }
 
@@ -166,7 +166,7 @@ render(){
    <fieldset>
     <legend>ELEKTROZAWORY</legend>
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
-   <button onClick={this.resetValves}>RESET ELEKTROZAWORÓW</button>
+   <button onClick={()=>this.resetValve(this.state.valve)}>RESET ELEKTROZAWORU</button>
   <p>ELEKTROZAWÓR:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
          <option value={1}>1</option>
