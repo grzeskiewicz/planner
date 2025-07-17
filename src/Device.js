@@ -166,7 +166,6 @@ render(){
    <fieldset>
     <legend>ELEKTROZAWORY</legend>
    <form disabled={this.state.isDisabled} className="runValveForm" onSubmit={this.runValve}>
-   <button onClick={()=>this.resetValve(this.state.valve)}>RESET ELEKTROZAWORU</button>
   <p>ELEKTROZAWÓR:</p>
   <select value={this.state.valve} onChange={this.handleValve} required>
          <option value={1}>1</option>
@@ -189,7 +188,9 @@ render(){
          <p>CZAS OTWARCIA[s]:</p>
          <input type="number" value={this.state.duration} onChange={this.handleDuration}></input>
          <button disabled={this.state.isDisabled} type='submit'>START</button>
-    </form></fieldset>
+    </form>
+       <button onClick={()=>this.resetValve(this.state.valve)}>RESET ELEKTROZAWORU</button>
+    </fieldset>
  :''}
 </div>);}
 }
