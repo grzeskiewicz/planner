@@ -189,7 +189,7 @@ render(){
          <input type="number" value={this.state.duration} onChange={this.handleDuration}></input>
          <button disabled={this.state.isDisabled} type='submit'>START</button>
     </form>
-       <button onClick={()=>this.resetValve(this.state.valve)}>RESET ELEKTROZAWORU</button>
+       <button onClick={this.resetValve}>RESET ELEKTROZAWORU</button>
     </fieldset>
  :''}
 </div>);}
