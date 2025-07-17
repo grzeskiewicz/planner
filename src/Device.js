@@ -140,7 +140,7 @@ this.setState({info:result.data.Status});
 
   resetValve(e){
     e.preventDefault();
-    fetch(request(`${WATERING_API}/resetvalve`, 'GET'))
+    fetch(request(`${WATERING_API}/resetvalve`, 'POST', {valve:this.state.valve}))
       .then(res => res.json())
       .then(result => {
         if (result.success) {
